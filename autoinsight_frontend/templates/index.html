@@ -12,7 +12,9 @@
 
 {% block script_foot %}
     <script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}" ></script>
-
+	<script>
+	var g_RESTAPI_HOST_BASE = '{{ settings.BACKEND_RESTAPI_URL }}';
+	</script>
 {% endblock %}
 
 {% block page_content %}
