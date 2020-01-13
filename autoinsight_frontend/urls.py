@@ -23,6 +23,8 @@ urlpatterns = [
     path(r'preprocess', TemplateView.as_view(template_name="preprocess.html")),
     path(r'leaderboard', TemplateView.as_view(template_name="leaderboard.html")),
     path(r'deploy', TemplateView.as_view(template_name="deploy.html")),
+
+    # old paths
     path(r'view_index', TemplateView.as_view(template_name="index.html")),
     path(r'view_preprocess', TemplateView.as_view(template_name="preprocess.html")),
     path(r'view_leaderboard', TemplateView.as_view(template_name="leaderboard.html")),
