@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>AutoInsight</title>
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,500,700|Noto+Serif+KR:700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="shortcut icon" href="img/favicon.ico">
+</head>
+
+<body>
+	<div class="wrapper">
+		<header>
+			<div class="container">
+				<h1>
+					<img src="img/logo_automl.png" class="img_logo" width="221" height="42" alt="AutoInsight">
+				</h1>
+			</div>
+		</header>
+		<!-- //header -->
+
+		<main>
+			<div class="container">
+				<nav>
+					<ul class="list_menu">
+						<li class="active">
+							<a class="link_menu" href="#none">Preprocess</a>
+						</li>
+						<li>
+							<a class="link_menu" href="#none">Leaderboard</a>
+						</li>
+						<li>
+							<a class="link_menu" href="#none">Deploy Model</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+
+			<div class="container">
+				<section class="section_content">
+					<h2 class="screen_out">Preprocess</h2><!-- tab menu 에서 선택된 텍스트가 들어갑니다. -->
+
+					<div class="area_tit">
+						<h3 class="tit_table">Iris</h3>
+						<div class="wrap_btn">
+							<button class="btn_m btn_border" type="button">Data Load</button>
+							<button class="btn_m btn_border" type="button">All Clear</button>
+						</div>
+					</div>
+
+					<div class="area_util">
+						<ul class="list_count">
+							<li>
+								<span class="ico_automl ico_arr"></span>Row Count <span class="txt_emph">150</span>
+							</li>
+							<li>
+								<span class="ico_automl ico_arr"></span>Column Count <span class="txt_emph">5</span>
+							</li>
+						</ul>
+						<button class="btn_m btn_correlation" type="button">Feature correlation</button>
+						<div class="wrap_search">
+							<input type="text" name="" id="" class="inp_txt" placeholder="searching..">
+							<button class="btn_search"><span class="ico_automl ico_search">검색</span></button>
+						</div>
+					</div>
+
+					<table class="tbl_thead tbl_preprocess">
+						<colgroup>
+							<col style="width:225px">
+							<col style="width:150px">
+							<col style="width:90px">
+							<col style="width:169px">
+							<col style="width:89px">
+							<col style="width:79px">
+							<col style="width:70px">
+							<col style="width:122px">
+							<col style="width:100px">
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+								<th class="txt_l">Name
+									<button class="btn_sort" type="button"><span class="ico_automl ico_sort">정렬</span></button>
+								</th>
+								<th>Datatype</th>
+								<th>Missing</th>
+								<th>interpolation
+									<button class="btn_interpolation" type="button"><span class="ico_automl ico_interpolation">설정</span></button>
+								</th>
+								<th>unique</th>
+								<th>mean</th>
+								<th>max</th>
+								<th>Distribution</th>
+								<th>Features</th>
+								<th>Target</th>
+							</tr>
+						</thead>
+					</table>
+					<div class="area_scroll"> <!-- area_scroll 클래스를 추가하면 테이블 영역에 스크롤이 생깁니다 -->
+						<table class="tbl_tbody tbl_preprocess">
+							<colgroup>
+								<col style="width:225px">
+								<col style="width:150px">
+								<col style="width:90px">
+								<col style="width:169px">
+								<col style="width:89px">
+								<col style="width:79px">
+								<col style="width:70px">
+								<col style="width:122px">
+								<col style="width:100px">
+								<col>
+							</colgroup>
+							<tbody>
+								<tr>
+									<td class="txt_l">sepal.lenght</td>
+									<td>
+										<div class="wrap_select">
+											<input type="text" name="" id="datatype1" class="inp_txt" readonly="readonly" value="Datatype">
+											<label for="datatype1" class="label_select"><span class="ico_automl ico_arr">옵션보기</span></label>
+											<div class="wrap_option">
+												<em class="tit_list">Datatype <span class="ico_automl ico_arr">선택하기</span></em>
+												<ul class="list_option">
+													<li>
+														<a class="link_option" href="#none">Datatype A</a>
+													</li>
+													<li>
+														<a class="link_option" href="#none">Datatype B</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</td>
+									<td>0</td>
+									<td>
+										<div class="wrap_select">
+											<input type="text" name="" id="interpolation1" class="inp_txt" readonly="readonly" value="Mean">
+											<label for="interpolation1" class="label_select"><span class="ico_automl ico_arr">옵션보기</span></label>
+											<div class="wrap_option">
+												<em class="tit_list">interpolation <span class="ico_automl ico_arr">선택하기</span></em>
+												<ul class="list_option">
+													<li>
+														<a class="link_option" href="#none">Mean</a>
+													</li>
+													<li>
+														<a class="link_option" href="#none">Drop</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</td>
+									<td>30</td>
+									<td>10</td>
+									<td>20</td>
+									<td>
+										<div>
+											<!-- 그래프가 들어갑니다. -->
+										</div>
+									</td>
+									<td>
+										<div class="wrap_check type_check2">
+											<input type="checkbox" name="" id="ck1" class="inp_check">
+											<label for="ck1" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label>
+										</div>
+									</td>
+									<td>
+										<div class="wrap_check type_check2">
+											<input type="checkbox" name="" id="ck2" class="inp_check">
+											<label for="ck2" class="label_check"><span class="ico_automl ico_check">sepal.lenght Target</span></label>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="area_util2">
+						<strong class="tit_select">AutoML Type</strong>
+						<div class="wrap_select">
+							<input type="text" name="" id="AutoML1" class="inp_txt" value="datatype">
+							<label for="AutoML1" class="label_select"><span class="ico_automl ico_arr">옵션보기</span></label>
+							<div class="wrap_option">
+								<em class="tit_list">AutoML Type <span class="ico_automl ico_arr">선택하기</span></em>
+								<ul class="list_option">
+									<li>
+										<a class="link_option" href="#none">Regression</a>
+									</li>
+									<li>
+										<a class="link_option" href="#none">Classification</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="wrap_btn">
+							<button class="btn_b btn_setup" type="button">
+								<span class="ico_automl ico_setup">설정</span>
+							</button>
+							<button class="btn_b btn_confirm" type="button">
+								Run AutoML <span class="ico_automl ico_arr"></span>
+							</button>
+						</div>
+					</div>
+				</section>
+			</div>
+		</main>
+		<!-- //main -->
+
+	</div>
+	<!-- //wrapper -->
+	
+	<!-- popup -->
+	<div class="dimmed_layer"></div>
+	<!-- Add New Dataset -->
+	<div class="modal fade wrap_popup popup_dataset">
+		<div class="inner_popup">
+			<div class="header_popup">
+				<strong class="tit_popup">Add New Dataset</strong>
+			</div>
+			<div class="body_popup">
+				<dl>
+					<div class="item_dl">
+						<dt>Name</dt>
+						<dd>
+							<label for="name" class="screen_out">Name</label>
+							<input type="text" name="" id="name" class="inp_txt">
+							<div class="area_file">
+								<div class="wrap_select">
+									<input type="text" name="" id="file1" class="inp_txt" readonly="readonly" value="Local">
+									<label for="file1" class="label_select"><span class="ico_automl ico_arr">옵션보기</span></label>
+									<div class="wrap_option">
+										<em class="tit_list">Local <span class="ico_automl ico_arr">선택하기</span></em>
+										<ul class="list_option">
+											<li>
+												<a href="#none" class="link_option">icon</a>
+											</li>
+											<li>
+												<a href="#none" class="link_option">hdfs</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+								
+								<div class="wrap_file">
+									<input type="file" name="" id="file2" class="inp_file">
+									<label for="file2" class="label_file">d://aaa/bbb/ccc<span class="ico_automl ico_search"></span></label>
+								</div>
+							</div>
+						</dd>
+					</div>
+					<div class="item_dl type_inline">
+						<dt>Seperator</dt>
+						<dd>
+							<div class="wrap_radio">
+								<div class="item_radio">
+									<input type="radio" name="seperator" id="seperator1" class="inp_radio">
+									<label for="seperator1" class="label_radio"><span class="ico_automl ico_radio"></span>Model File</label>
+								</div>
+								<div class="item_radio">
+									<input type="radio" name="seperator" id="seperator2" class="inp_radio">
+									<label for="seperator2" class="label_radio"><span class="ico_automl ico_radio"></span>Code</label>
+								</div>
+							</div>
+						</dd>
+					</div>
+					<div class="item_dl type_inline">
+						<dt>Random Sampling count</dt>
+						<dd>
+							<label for="count" class="screen_out">Random Sampling count</label>
+							<input type="text" name="" id="count" class="inp_txt" style="width:140px">
+						</dd>
+					</div>
+				</dl>				
+			</div>
+			<div class="footer_popup">
+				<div class="wrap_btn txt_r">
+					<button type="button" class="btn_m btn_confirm">Add Dataset</button>
+					<button type="button" class="btn_m">Cancle</button>
+				</div>
+				<button type="button" class="btn_close"><span class="ico_automl ico_close">팝업닫기</span></button>
+			</div>
+		</div>
+	</div>
+	<!-- //Add New Dataset -->
+
+	<!-- Feature Correlation -->
+	<div class="modal fade wrap_popup popup_correlation">
+		<div class="inner_popup">
+			<div class="header_popup">
+				<strong class="tit_popup">Feature Correlation</strong>
+			</div>
+			<div class="body_popup">
+				<!-- 그래프가 들어갑니다 -->
+				<img src="img/temp/img_temph2.png" alt="">
+			</div>
+		</div>
+	</div>
+	<!-- //Feature Correlation -->
+
+	<!-- Interploation Setup -->
+	<div class="modal fade wrap_popup popup_setup">
+		<div class="inner_popup">
+			<div class="header_popup">
+				<strong class="tit_popup">Interploation Setup</strong>
+			</div>
+			<div class="body_popup">
+				<div class="wrap_radio">
+					<div class="item_radio">
+						<input type="radio" name="deploy" id="setup1" class="inp_radio">
+						<label for="setup1" class="label_radio"><span class="ico_automl ico_radio"></span>mean</label>
+					</div>
+					<div class="item_radio">
+						<input type="radio" name="deploy" id="setup2" class="inp_radio">
+						<label for="setup2" class="label_radio"><span class="ico_automl ico_radio"></span>Drop</label>
+					</div>
+					<div class="item_radio">
+						<input type="radio" name="deploy" id="setup3" class="inp_radio">
+						<label for="setup3" class="label_radio"><span class="ico_automl ico_radio"></span>None</label>
+					</div>
+				</div>
+			</div>
+			<div class="footer_popup">
+				<div class="wrap_btn txt_r">
+					<button type="button" class="btn_m btn_confirm">Save</button>
+					<button type="button" class="btn_m">Close</button>
+				</div>
+				<button type="button" class="btn_close"><span class="ico_automl ico_close">팝업닫기</span></button>
+			</div>
+		</div>
+	</div>
+	<!-- //Interploation Setup -->
+
+	<!-- AutoML Parameter Setting : General -->
+	<div class="modal fade wrap_popup popup_parameter">
+		<div class="inner_popup">
+			<div class="header_popup">
+				<strong class="tit_popup">AutoML Parameter Setting</strong>
+			</div>
+			<div class="body_popup">
+				<ul class="list_menu">
+					<li class="active">
+						<a class="link_menu" href="#none">General</a>
+					</li>
+					<li>
+						<a class="link_menu" href="#none">Processor</a>
+					</li>
+					<li>
+						<a class="link_menu" href="#none">Algorithm</a>
+					</li>
+				</ul>
+				<div class="box_content">
+					<dl>
+						<div class="item_dl type_inline">
+							<dt>Eveluation</dt>
+							<dd>
+								<div class="wrap_select">
+									<input type="text" name="" id="eveluation" class="inp_txt" readonly="readonly" value="Accuracy">
+									<label for="eveluation" class="label_select"><span class="ico_automl ico_arr">옵션보기</span></label>
+									<div class="wrap_option">
+										<em class="tit_list">Accuracy</em>
+										<ul class="list_option">
+											<li>
+												<a class="link_option" href="#none">Accuracy A</a>
+											</li>
+											<li>
+												<a class="link_option" href="#none">Accuracy B</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</dd>
+						</div>
+
+						<div class="item_dl type_inline">
+							<dt>K-folds</dt>
+							<dd>
+								<div class="wrap_select">
+									<input type="text" name="" id="folds" class="inp_txt" readonly="readonly" value="3">
+									<label for="folds" class="label_select"><span class="ico_automl ico_arr">옵션보기</span></label>
+									<div class="wrap_option">
+										<em class="tit_list">K-folds</em>
+										<ul class="list_option">
+											<li>
+												<a class="link_option" href="#none">3</a>
+											</li>
+											<li>
+												<a class="link_option" href="#none">4</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</dd>
+						</div>
+
+						<div class="item_dl type_inline">
+							<dt>Train Split</dt>
+							<dd>
+								<div class="wrap_select">
+									<input type="text" name="" id="split" class="inp_txt" readonly="readonly" value="0.8">
+									<label for="split" class="label_select"><span class="ico_automl ico_arr">옵션보기</span></label>
+									<div class="wrap_option">
+										<em class="tit_list">Train Split</em>
+										<ul class="list_option">
+											<li>
+												<a class="link_option" href="#none">3</a>
+											</li>
+											<li>
+												<a class="link_option" href="#none">4</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</dd>
+						</div>
+
+						<div class="item_dl type_inline">
+							<dt>Over Sampling</dt>
+							<dd>
+								<div class="wrap_select">
+									<input type="text" name="" id="split" class="inp_txt" readonly="readonly" value="(None)">
+									<label for="split" class="label_select"><span class="ico_automl ico_arr">옵션보기</span></label>
+									<div class="wrap_option">
+										<em class="tit_list">(None)</em>
+										<ul class="list_option">
+											<li>
+												<a class="link_option" href="#none">3</a>
+											</li>
+											<li>
+												<a class="link_option" href="#none">4</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</dd>
+						</div>
+					</dl>
+				</div>
+			</div>
+			<div class="footer_popup">
+				<div class="wrap_btn txt_r">
+					<button type="button" class="btn_m btn_confirm">Save</button>
+					<button type="button" class="btn_m">Cancle</button>
+				</div>
+				<button type="button" class="btn_close"><span class="ico_automl ico_close">팝업닫기</span></button>
+			</div>
+		</div>
+	</div>
+	<!-- //AutoML Parameter Setting : General -->
+
+	<!-- AutoML Parameter Setting : Processor -->
+	<div class="modal fade wrap_popup popup_parameter">
+		<div class="inner_popup">
+			<div class="header_popup">
+				<strong class="tit_popup">AutoML Parameter Setting</strong>
+			</div>
+			<div class="body_popup">
+				<ul class="list_menu">
+					<li>
+						<a class="link_menu" href="#none">General</a>
+					</li>
+					<li class="active">
+						<a class="link_menu" href="#none">Processor</a>
+					</li>
+					<li>
+						<a class="link_menu" href="#none">Algorithm</a>
+					</li>
+				</ul>
+				<div class="box_content">
+					<dl>
+						<div class="item_dl type_inline type_bottom">
+							<dt>
+								<div class="wrap_check">
+									<input type="checkbox" name="" id="processor1" class="inp_check">
+									<label for="processor1" class="label_check"><span class="ico_automl ico_check"></span>NoN</label>
+								</div>
+							</dt>
+							<dd>
+								<label for="processor1_text" class="label_txt">Max % of Missing Allowed</label>
+								<input type="text" name="" id="processor1_text" class="inp_txt">
+							</dd>
+						</div>
+						<div class="item_dl type_inline type_bottom">
+							<dt>
+								<div class="wrap_check">
+									<input type="checkbox" name="" id="processor2" class="inp_check">
+									<label for="processor2" class="label_check"><span class="ico_automl ico_check"></span>NoN</label>
+								</div>
+							</dt>
+							<dd>
+								<label for="processor2_text" class="label_txt">Max % of Missing Allowed</label>
+								<input type="text" name="" id="processor2_text" class="inp_txt">
+							</dd>
+						</div>
+						<div class="item_dl type_inline type_bottom">
+							<dt>
+								<div class="wrap_check">
+									<input type="checkbox" name="" id="processor3" class="inp_check">
+									<label for="processor3" class="label_check"><span class="ico_automl ico_check"></span>NoN</label>
+								</div>
+							</dt>
+							<dd>
+								<label for="processor3_text" class="label_txt">Max % of Missing Allowed</label>
+								<input type="text" name="" id="processor3_text" class="inp_txt">
+							</dd>
+						</div>
+					</dl>
+				</div>
+			</div>
+			<div class="footer_popup">
+				<div class="wrap_btn txt_r">
+					<button type="button" class="btn_m btn_confirm">Save</button>
+					<button type="button" class="btn_m">Cancle</button>
+				</div>
+				<button type="button" class="btn_close"><span class="ico_automl ico_close">팝업닫기</span></button>
+			</div>
+		</div>
+	</div>
+	<!-- //AutoML Parameter Setting : Processor -->
+
+	<!-- AutoML Parameter Setting : Algorithm -->
+	<div class="modal fade wrap_popup popup_parameter">
+		<div class="inner_popup">
+			<div class="header_popup">
+				<strong class="tit_popup">AutoML Parameter Setting</strong>
+			</div>
+			<div class="body_popup">
+				<ul class="list_menu">
+					<li>
+						<a class="link_menu" href="#none">General</a>
+					</li>
+					<li>
+						<a class="link_menu" href="#none">Processor</a>
+					</li>
+					<li class="active">
+						<a class="link_menu" href="#none">Algorithm</a>
+					</li>
+				</ul>
+				<div class="box_content content_algorithm">
+					<ul class="list_tab">
+						<li class="active">
+							<a href="#none" class="link_tab">TPOT</a>
+						</li>
+						<li>
+							<a href="#none" class="link_tab">Auto-scikit</a>
+						</li>
+						<li>
+							<a href="#none" class="link_tab">Custom</a>
+						</li>
+					</ul>
+					<div class="cont_tab">
+						<div class="wrap_check">
+							<input type="checkbox" name="TPOT" id="TPOT1" class="inp_check">
+							<label for="TPOT1" class="label_check"><span class="ico_automl ico_check"></span>AAA</label>
+						</div>
+						<div class="wrap_check">
+							<input type="checkbox" name="TPOT" id="TPOT2" class="inp_check">
+							<label for="TPOT2" class="label_check"><span class="ico_automl ico_check"></span>AAA</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="footer_popup">
+				<div class="wrap_btn txt_r">
+					<button type="button" class="btn_m btn_confirm">Save</button>
+					<button type="button" class="btn_m">Cancle</button>
+				</div>
+				<button type="button" class="btn_close"><span class="ico_automl ico_close">팝업닫기</span></button>
+			</div>
+		</div>
+	</div>
+	<!-- //AutoML Parameter Setting : Algorithm -->
+
+	<!-- Model Information -->
+	<div class="modal fade wrap_popup popup_info">
+		<div class="inner_popup">
+			<div class="header_popup">
+				<strong class="tit_popup">Model Information</strong>
+			</div>
+			<div class="body_popup">
+				<ul class="list_menu">
+					<li>
+						<a class="link_menu" href="#none">Feature Importance</a>
+					</li>
+					<li>
+						<a class="link_menu" href="#none">ROC Curve</a>
+					</li>
+					<li class="active">
+						<a class="link_menu" href="#none">Classification</a>
+					</li>
+					<li>
+						<a class="link_menu" href="#none">Confusion Matrix</a>
+					</li>
+					<li>
+						<a class="link_menu" href="#none">Class Balance</a>
+					</li>
+				</ul>
+				<div class="box_content">
+					<!-- 그래프가 들어갑니다 -->
+					<img src="img/temp/img_temph3.png" alt="">
+				</div>
+			</div>
+			<div class="footer_popup">
+				<div class="wrap_btn txt_r">
+					<button type="button" class="btn_m btn_confirm">Add Dataset</button>
+					<button type="button" class="btn_m">Cancle</button>
+				</div>
+				<button type="button" class="btn_close"><span class="ico_automl ico_close">팝업닫기</span></button>
+			</div>
+		</div>
+	</div>
+	<!-- //Model Information -->
+
+	<!-- Model Explanation -->
+	<div class="modal fade wrap_popup popup_explanation">
+		<div class="inner_popup">
+			<div class="header_popup">
+				<strong class="tit_popup">Model Explanation</strong>
+			</div>
+			<div class="body_popup">
+				<dl>
+					<div class="item_dl type_inline">
+						<dt>Feature Count</dt>
+						<dd>
+							<div class="wrap_select">
+								<input type="text" name="" id="featureCount" class="inp_txt" readonly="readonly" value="5">
+								<label for="featureCount" class="label_select"><span class="ico_automl ico_arr">옵션보기</span></label>
+								<div class="wrap_option">
+									<em class="tit_list">5</em>
+									<ul class="list_option">
+										<li>
+											<a class="link_option" href="#none">4</a>
+										</li>
+										<li>
+											<a class="link_option" href="#none">4</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</dd>
+					</div>
+
+					<div class="item_dl type_inline item_random">
+						<dt>Random</dt>
+						<dd>
+							<div class="wrap_check type_switch">
+								<input type="checkbox" name="" id="random" class="inp_check">
+								<label for="random" class="label_check">off</label><!-- input check시 텍스트 on 으로 수정-->
+							</div>
+						</dd>
+					</div>
+
+					<div class="item_dl type_inline">
+						<dt>Row Numb</dt>
+						<dd>
+							<label for="num" class="screen_out">row number</label>
+							<input type="text" class="inp_txt" style="width:140px">
+						</dd>
+					</div>
+
+					<div class="item_dl">
+						<dt>Prediction probabilities</dt>
+						<dd>
+							<div class="wrap_prediction">
+								<strong class="tit_prediction">No Chrn</strong>
+								<div class="graph_prediction">
+									<!-- 그래프가 들어갑니다 -->
+									<img src="img/temp/img_temph1.png" alt="">
+								</div>
+								<span class="num_prediction">0.87</span>
+							</div>
+							<div class="wrap_prediction">
+								<strong class="tit_prediction">Chrn</strong>
+								<div class="graph_prediction">
+									<!-- 그래프가 들어갑니다 -->
+									<img src="img/temp/img_temph1.png" alt="">
+								</div>
+								<span class="num_prediction">0.13</span>
+							</div>
+						</dd>
+					</div>
+				</dl>
+
+				<div class="detail_prediction">
+					<table class="tbl_prediction">
+						<colgroup>
+							<col style="width:245px">
+							<col>
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col">Feature</th>
+								<th scope="col" class="txt_c">Value</th>
+							</tr> 
+						</thead>
+						<tbody>
+							<tr>
+								<td>MadeCallTORedtention Team</td>
+								<td class="txt_c">0.00</td>
+							</tr>
+							<tr class="type_chrn"><!-- chrn일때 클래스 추가 -->
+								<td>MadeCallTORedtention Team</td>
+								<td class="txt_c">0.00</td>
+							</tr>
+							<tr>
+								<td>MadeCallTORedtention Team</td>
+								<td class="txt_c">0.00</td>
+							</tr>
+							<tr>
+								<td>MadeCallTORedtention Team</td>
+								<td class="txt_c">0.00</td>
+							</tr>
+							<tr class="type_chrn"><!-- chrn일때 클래스 추가 -->
+								<td>MadeCallTORedtention Team</td>
+								<td class="txt_c">0.00</td>
+							</tr>
+						</tbody>
+					</table>
+					<div>
+						<!-- 그래프가 들어갑니다. -->
+						<img src="img/temp/img_temph4.png" alt="">
+					</div>
+				</div>
+			</div>
+			<div class="footer_popup">
+				<button type="button" class="btn_close"><span class="ico_automl ico_close">팝업닫기</span></button>
+			</div>
+		</div>
+	</div>
+	<!-- //Model Explanation -->
+
+	<!-- 10/31 추가팝업 AutoML Parameter Setting -->
+	<div class="modal fadewrap_popup popup_parameter">
+		<div class="inner_popup">
+			<div class="header_popup">
+				<strong class="tit_popup">AutoML Parameter Setting</strong>
+			</div>
+			<div class="body_popup">
+				<table class="tbl_g">
+					<colgroup>
+						<col style="width:172px">
+						<col style="width:138px">
+						<col style="width:138px">
+						<col style="width:138px">
+						<col style="width:138px">
+						<col>
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="col" class="border_line">title0</th>
+							<th scope="col">sepal.lenght</th>
+							<th scope="col">sepal.width</th>
+							<th scope="col">petal.lenght</th>
+							<th scope="col">petal.width</th>
+							<th scope="col">Variety</th>
+						</tr>
+					</thead>
+					<tbody>
+							<tr>
+								<th scope="row">title1</th>
+								<td>0</td>
+								<td>30</td>
+								<td>10</td>
+								<td>20</td>
+								<td>20</td>
+							</tr>
+							<tr>
+								<th scope="row">title2</th>
+								<td>0</td>
+								<td>30</td>
+								<td>10</td>
+								<td>20</td>
+								<td>20</td>
+							</tr>
+							<tr>
+								<th scope="row">title3</th>
+								<td>0</td>
+								<td>30</td>
+								<td>10</td>
+								<td>20</td>
+								<td>20</td>
+							</tr>
+							<tr>
+								<th scope="row">title4</th>
+								<td>0</td>
+								<td>30</td>
+								<td>10</td>
+								<td>20</td>
+								<td>20</td>
+							</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="footer_popup">
+					<div class="wrap_btn txt_r">
+						<button type="button" class="btn_m btn_confirm">Save</button>
+						<button type="button" class="btn_m">Cancle</button>
+						<button type="button" class="btn_m">Back</button>
+					</div>
+				<button type="button" class="btn_close"><span class="ico_automl ico_close">팝업닫기</span></button>
+			</div>
+		</div>
+	</div>
+	<!-- //10/31 추가팝업 AutoML Parameter Setting -->
+	
+	<!-- //popup -->
+</body>
+</html>

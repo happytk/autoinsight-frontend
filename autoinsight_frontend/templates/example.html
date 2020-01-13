@@ -1,0 +1,179 @@
+{% load static %}
+{% block style_head %}
+<link href="{% static 'autoinsight_frontend/css/style.css' %}" rel="stylesheet">
+<link href="{% static 'autoinsight_frontend/css/fileinput.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block script_foot %}
+<script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}" ></script>
+<script type="text/javascript" src="{% static 'autoinsight_frontend/js/fileinput.js' %}"></script>
+<script type="text/javascript" src="{% static 'autoinsight_frontend/js/kr.js' %}"></script>
+<script type="text/javascript" src="{% static 'autoinsight_frontend/js/example.js' %}"></script>
+
+{% endblock %}
+
+{% block page_content %}
+<button type="button" class="btn btn-ok" data-dismiss="modal" onclick="$FRONTEND._p.exampleFunction()">Example!</button>
+<input id="datainput" type="file" class="file"/>
+    <button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.uploadFile()">Submit</button>
+    <button type="button" style="cursor:pointer; WIDTH: 95pt; HEIGHT: 25pt" class="btn iee-btn" data-dismiss="modal" onclick="$FRONTEND._p.deploy_modelFunction()">
+          deploy_model!</button>  <input type="TEXT"  id="pk" name="ipKey" placeholder="Primary Key" size="20">
+            <input type="TEXT"  id="model_type" placeholder="Model Type" size="20">
+{% endblock %}
+
+<div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="home-tab">
+                        <dl>
+                            <div class="item_dl type_inline">
+                                <dt>Eveluation</dt>
+                                <dd>
+                                    <div class="wrap_select">
+                                        <input type="text" name="" id="eveluation" class="inp_txt" readonly="readonly" value="Accuracy">
+                                        <label for="eveluation" class="label_select"><span class="ico_automl ico_arr">옵션보기</span></label>
+                                        <div class="wrap_option">
+                                            <em class="tit_list">Accuracy</em>
+                                            <ul class="list_option">
+                                                <li>
+                                                    <a class="link_option" href="#none">Accuracy A</a>
+                                                </li>
+                                                <li>
+                                                    <a class="link_option" href="#none">Accuracy B</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </dd>
+                            </div>
+
+                            <div class="item_dl type_inline">
+                                <dt>K-folds</dt>
+                                <dd>
+                                    <div class="wrap_select">
+                                        <input type="text" name="" id="folds" class="inp_txt" readonly="readonly" value="3">
+                                        <label for="folds" class="label_select"><span class="ico_automl ico_arr">옵션보기</span></label>
+                                        <div class="wrap_option">
+                                            <em class="tit_list">K-folds</em>
+                                            <ul class="list_option">
+                                                <li>
+                                                    <a class="link_option" href="#none">3</a>
+                                                </li>
+                                                <li>
+                                                    <a class="link_option" href="#none">4</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </dd>
+                            </div>
+
+                            <div class="item_dl type_inline">
+                                <dt>Train Split</dt>
+                                <dd>
+                                    <div class="wrap_select">
+                                        <input type="text" name="" id="split" class="inp_txt" readonly="readonly" value="0.8">
+                                        <label for="split" class="label_select"><span class="ico_automl ico_arr">옵션보기</span></label>
+                                        <div class="wrap_option">
+                                            <em class="tit_list">Train Split</em>
+                                            <ul class="list_option">
+                                                <li>
+                                                    <a class="link_option" href="#none">3</a>
+                                                </li>
+                                                <li>
+                                                    <a class="link_option" href="#none">4</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </dd>
+                            </div>
+
+                            <div class="item_dl type_inline">
+                                <dt>Over Sampling</dt>
+                                <dd>
+                                    <div class="wrap_select">
+                                        <input type="text" name="" id="split" class="inp_txt" readonly="readonly" value="(None)">
+                                        <label for="split" class="label_select"><span class="ico_automl ico_arr">옵션보기</span></label>
+                                        <div class="wrap_option">
+                                            <em class="tit_list">(None)</em>
+                                            <ul class="list_option">
+                                                <li>
+                                                    <a class="link_option" href="#none">3</a>
+                                                </li>
+                                                <li>
+                                                    <a class="link_option" href="#none">4</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </dd>
+                            </div>
+                        </dl>
+                        </div>
+                        <!-- //General -->
+
+                        <!-- Processor -->
+                        <div class="tab-pane fade" id="processor" role="tabpanel" aria-labelledby="processor-tab">
+                        <dl>
+                            <div class="item_dl type_inline type_bottom">
+                                <dt>
+                                    <div class="wrap_check">
+                                        <input type="checkbox" name="" id="processor1" class="inp_check">
+                                        <label for="processor1" class="label_check"><span class="ico_automl ico_check"></span>NoN</label>
+                                    </div>
+                                </dt>
+                                <dd>
+                                    <label for="processor1_text" class="label_txt">Max % of Missing Allowed</label>
+                                    <input type="text" name="" id="processor1_text" class="inp_txt">
+                                </dd>
+                            </div>
+                            <div class="item_dl type_inline type_bottom">
+                                <dt>
+                                    <div class="wrap_check">
+                                        <input type="checkbox" name="" id="processor2" class="inp_check">
+                                        <label for="processor2" class="label_check"><span class="ico_automl ico_check"></span>NoN</label>
+                                    </div>
+                                </dt>
+                                <dd>
+                                    <label for="processor2_text" class="label_txt">Max % of Missing Allowed</label>
+                                    <input type="text" name="" id="processor2_text" class="inp_txt">
+                                </dd>
+                            </div>
+                            <div class="item_dl type_inline type_bottom">
+                                <dt>
+                                    <div class="wrap_check">
+                                        <input type="checkbox" name="" id="processor3" class="inp_check">
+                                        <label for="processor3" class="label_check"><span class="ico_automl ico_check"></span>NoN</label>
+                                    </div>
+                                </dt>
+                                <dd>
+                                    <label for="processor3_text" class="label_txt">Max % of Missing Allowed</label>
+                                    <input type="text" name="" id="processor3_text" class="inp_txt">
+                                </dd>
+                            </div>
+                        </dl>
+                            </div>
+                        <!-- //Processor -->
+
+                        <!-- Algorithm -->
+                        <div class="tab-pane fade" id="algorithm" role="tabpanel" aria-labelledby="algorithm-tab">
+                        <ul class="list_tab">
+                            <li class="active">
+                                <a href="#none" class="link_tab">TPOT</a>
+                            </li>
+                            <li>
+                                <a href="#none" class="link_tab">Auto-scikit</a>
+                            </li>
+                            <li>
+                                <a href="#none" class="link_tab">Custom</a>
+                            </li>
+                        </ul>
+                        <div class="cont_tab">
+                            <div class="wrap_check">
+                                <input type="checkbox" name="TPOT" id="TPOT1" class="inp_check">
+                                <label for="TPOT1" class="label_check"><span class="ico_automl ico_check"></span>AAA</label>
+                            </div>
+                            <div class="wrap_check">
+                                <input type="checkbox" name="TPOT" id="TPOT2" class="inp_check">
+                                <label for="TPOT2" class="label_check"><span class="ico_automl ico_check"></span>AAA</label>
+                            </div>
+                        </div>
+                        </div>

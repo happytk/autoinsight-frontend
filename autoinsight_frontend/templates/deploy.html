@@ -1,0 +1,67 @@
+{% load static %}
+{% block style_head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AutoInsight</title>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,500,700|Noto+Serif+KR:700&display=swap" rel="stylesheet">
+    <!-- static -->
+    <link href="{% static 'autoinsight_frontend/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'autoinsight_frontend/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'autoinsight_frontend/js/main.css' %}">
+    <link rel="shortcut icon" href="{% static 'autoinsight_frontend/img/favicon.ico' %}">
+{% endblock %}
+
+{% block script_foot %}
+    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}" ></script>
+    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/site.js' %}"></script>
+    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/deploy.js' %}"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            const node = document.querySelector('#deployer_app');
+            if (node) {
+                initDeployerApp(node);
+            }
+        });
+        $(document).ready(function() {
+            $FRONTEND._p.getStatus();
+        });
+    </script>
+{% endblock %}
+
+{% block page_content %}
+    <div class="wrapper">
+        <header>
+            <div class="container">
+                <h1>
+                    <img src="{% static 'autoinsight_frontend/img/logo_automl.png' %}" class="img_logo" width="221" height="42" alt="AutoInsight">
+                </h1>
+            </div>
+        </header>
+        <!-- //header -->
+
+        <main>
+            <div class="container">
+                <nav>
+                    <ul class="list_menu">
+                        <li>
+                            <a class="link_menu" href="view_preprocess">Preprocess</a>
+                        </li>
+                        <li>
+                            <a class="link_menu" href="view_leaderboard">Leaderboard <div id="leaderboard_loader"></div></a>
+                        </li>
+                        <li class="active">
+                            <a class="link_menu" href="view_deploy">Deploy Model</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="container">
+                <section class="section_content" id="deployer_app">
+                </section>
+            </div>
+        </main>
+        <!-- //main -->
+    </div>
+    <!-- //wrapper -->
+{% endblock %}

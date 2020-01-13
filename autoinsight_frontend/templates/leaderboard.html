@@ -1,0 +1,238 @@
+{% load static %}
+{% block style_head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AutoInsight</title>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,500,700|Noto+Serif+KR:700&display=swap" rel="stylesheet">
+    <!-- static -->
+    <link href="{% static 'autoinsight_frontend/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'autoinsight_frontend/css/bootstrap-table.min.css' %}" rel="stylesheet">
+    <link href="{% static 'autoinsight_frontend/css/style.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'autoinsight_frontend/img/favicon.ico' %}">
+{% endblock %}
+
+{% block script_foot %}
+    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}" ></script>
+    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/bootstrap.min.js' %}"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/extensions/auto-refresh/bootstrap-table-auto-refresh.min.js"></script>
+    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/leaderboard.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <!-- high chart -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/heatmap.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://highcharts.github.io/pattern-fill/pattern-fill-v2.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    <!-- //high chart -->
+    <script>
+        $(document).ready(function() {
+            $FRONTEND._p.init();
+        });
+    </script>
+
+{% endblock %}
+{% block page_content %}
+    <div class="wrapper">
+        <header>
+            <div class="container">
+                <h1>
+                    <img src="{% static 'autoinsight_frontend/img/logo_automl.png' %}" class="img_logo" width="221" height="42" alt="AutoInsight">
+                </h1>
+            </div>
+        </header>
+        <!-- //header -->
+
+        <main>
+            <div class="container">
+                <nav>
+                    <ul class="list_menu">
+                        <li>
+                            <a class="link_menu" href="view_preprocess">Preprocess</a>
+                        </li>
+                        <li class="active">
+                            <a class="link_menu" href="view_leaderboard">Leaderboard <div id="leaderboard_loader"></div></a>
+                        </li>
+                        <li>
+                            <a class="link_menu" href="view_deploy">Deploy Model</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="container">
+                <section class="section_content">
+                    <h2 class="screen_out">Leaderboard</h2><!-- tab menu 에서 선택된 텍스트가 들어갑니다. -->
+
+                    <div class="info_table">
+                        <div class="area_progress">
+                            <strong class="tit_progress">Total Progress</strong>
+                            <div class="graph_progress">
+                                <span id="progress_bar" class="bar_progress"></span>
+                            </div>
+                            <span class="num_progress"><label id="percent"></label></span>
+                            <div class="time_progress">
+                                <label id="elapsed"></label>
+                                <span class="time_total">/ <label id="timeout"></label></span>
+                            </div>
+                        </div>
+                        <div class="area_chart">
+                            <span class="tit_chart">score trend</span>
+                            <canvas id="score_trend" width="300" height="100"></canvas>
+                        </div>
+                        <button id="stopButton" class="btn_m btn_stop" type="button" onclick="$FRONTEND._p.stopAutoml()"><span class="ico_automl ico_stop"></span>Stop</button>
+                    </div>
+
+                    <table id="learderboard_table"
+                           data-toggle="table"
+                           data-pagination="true"
+                           data-side-pagination="server"
+                           data-url="/api/runtime/leaderboard"
+                           data-data-field="results"
+                           data-total-field="count"
+                           class="tbl_g tbl_thead table_leaderboard">
+                        <colgroup>
+                            <col style="width:371px">
+                            <col style="width:225px">
+                            <col style="width:231px">
+                            <col style="width:221px">
+                            <col>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th data-field="estimator" data-formatter="$FRONTEND._p.modelFormatter" class="txt_l">Model
+                                <button class="btn_sort" type="button"><span class="ico_automl ico_sort">정렬</span></button>
+                            </th>
+                            <th data-field="score" class="txt_l">Score
+                                <button class="btn_sort" type="button"><span class="ico_automl ico_sort">정렬</span></button>
+                            </th>
+                            <th data-field="pk" data-formatter="$FRONTEND._p.informationFormatter">Information</th>
+                            <th data-field="pk" data-formatter="$FRONTEND._p.explanationFormatter">Explanation</th>
+                            <th data-field="pk" data-formatter="$FRONTEND._p.deployFormatter">Deploy</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </section>
+            </div>
+        </main>
+        <!-- //main -->
+
+    </div>
+
+    <!-- Model Information -->
+    <div class="modal fade popup_info" id="modal-information" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="header_popup">
+                    <strong class="tit_popup">Model Information</strong>
+                </div>
+                <div class="body_popup" id="modal-information-loading">
+                    불러오는중, 시간이 걸릴 수 있습니다.
+                </div>
+                <div class="body_popup" id="modal-information-error">
+                    죄송합니다. 이 모델은 정보를 불러올 수 없습니다.
+                </div>
+                <div class="body_popup" id="modal-information-done">
+                    <ul class="nav nav-tabs list_menu" id="myTab"  role="tablist">
+                        <li class="active">
+                            <a class="link_menu" data-toggle="tab" href="#feature" role="tab" aria-controls="feature" aria-selected="false">Feature Importance</a>
+                        </li>
+                        <li>
+                            <a class="link_menu classification-info" data-toggle="tab" href="#roc" role="tab" aria-controls="roc" aria-selected="false">ROC Curve</a>
+                        </li>
+                        <!--<li class="active">
+                            <a class="link_menu" data-toggle="tab" href="#classification" role="tab" aria-controls="classification" aria-selected="true">Classification</a>
+                        </li>-->
+                        <li>
+                            <a class="link_menu classification-info" data-toggle="tab" href="#matrix" role="tab" aria-controls="matrix" aria-selected="false">Confusion Matrix</a>
+                        </li>
+                        <li>
+                            <a class="link_menu classification-info" data-toggle="tab" href="#balance" role="tab" aria-controls="balance" aria-selected="false">Class Balance</a>
+                        </li>
+                        <li>
+                            <a class="link_menu regression-info" data-toggle="tab" href="#residuals" role="tab" aria-controls="residuals" aria-selected="false">Residuals</a>
+                        </li>
+                    </ul>
+                    <div id="myTabContent" class="tab-content box_content">
+                        <div class="tab-pane fade active in" id="feature" role="tabpanel" aria-labelledby="feature-tab">
+                            <div id="featureChart"></div>
+                        </div>
+                        <div class="tab-pane" id="roc" role="tabpanel" aria-labelledby="roc-tab">
+                            <canvas id="rocChart"></canvas>
+                        </div>
+                        <!--<div class="tab-pane fade active in" id="classification" role="tabpanel" aria-labelledby="classification-tab">
+                        </div>-->
+                        <div class="tab-pane" id="matrix" role="tabpanel" aria-labelledby="matrix-tab">
+                            <div id="conf_matrix" style="height: 400px; width:100%"></div>
+                        </div>
+                        <div class="tab-pane" id="balance" role="tabpanel" aria-labelledby="balance-tab">
+                            <div id="balanceChart"></div>
+                        </div>
+                        <div class="tab-pane" id="residuals" role="tabpanel" aria-labelledby="residuals-tab">
+                            <canvas id="residualsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer_popup">
+                    <div class="wrap_btn txt_r">
+                        <button type="button" class="btn_m btn_confirm" data-dismiss="modal">Confirm</button>
+                        <button type="button" class="btn_m" data-dismiss="modal">Cancel</button>
+                    </div>
+                    <button type="button" class="btn_close" data-dismiss="modal"><span class="ico_automl ico_close">팝업닫기</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //Model Information -->
+
+    <!-- Model Explanation -->
+    <div class="modal fade popup_explanation" id="modal-explanation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="header_popup">
+                    <strong class="tit_popup">Model Explanation</strong>
+                </div>
+                <div class="body_popup" id="modal-explanation-loading">
+                    불러오는중, 시간이 걸릴 수 있습니다.
+                </div>
+                <div class="body_popup" id="modal-explanation-error">
+                    죄송합니다. 이 모델은 정보를 불러올 수 없습니다.
+                </div>
+                <div class="body_popup" id="modal-explanation-done">
+                    <iframe style='border: 0; width:100%;height: 300px;'></iframe>
+                </div>
+                <div class="footer_popup">
+                    <button type="button" class="btn_close" data-dismiss="modal"><span class="ico_automl ico_close">팝업닫기</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //Model Explanation -->
+
+    <!-- Model Deploy -->
+    <div class="modal fade" id="modal-deploy" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="header_popup">
+                    <strong class="tit_popup">Model Deploy</strong>
+                </div>
+                <div class="body_popup" id="modal-deploy-loading">
+                    모델을 배포중입니다.
+                </div>
+                <div class="body_popup" id="modal-deploy-error">
+                    죄송합니다. 모델 배포에 실패했습니다.
+                </div>
+                <div class="body_popup" id="modal-deploy-done">
+                    모델을 배포를 완료했습니다. 배포화면으로 이동합니다.
+                </div>
+                {% comment %} <div class="footer_popup">
+                    <button type="button" class="btn_close" data-dismiss="modal"><span class="ico_automl ico_close">팝업닫기</span></button>
+                </div> {% endcomment %}
+            </div>
+        </div>
+    </div>
+    <!-- //Model Explanation -->
+
+{% endblock %}
