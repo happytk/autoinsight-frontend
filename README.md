@@ -1,1 +1,1 @@
-# autoinsight-public
+# autoinsight-frontend
