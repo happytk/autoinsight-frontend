@@ -1,1 +1,1 @@
-# auto-insight-public
+# autoinsight-public
