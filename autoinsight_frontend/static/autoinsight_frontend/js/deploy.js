@@ -4,7 +4,7 @@ var $FRONTEND = (function (module) {
     _p.getStatus = function(){
         return $.ajax({
             type: 'get',
-            url: '/autoinsight_restapi/get_progress',
+            url: g_RESTAPI_HOST_BASE + 'runtime/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){

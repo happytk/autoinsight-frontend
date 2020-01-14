@@ -62,7 +62,7 @@ PredictionResult.propTypes = {
 
 const PredictForm = ({ predictUrl }) => {
   const { data, loading } = useGet({
-    path: 'api/dataset/columns/',
+    path: g_RESTAPI_HOST_BASE + 'dataset/columns/',
   });
   const mutateObj = useMutate({
     verb: 'POST',
@@ -341,7 +341,7 @@ DeployInfo.propTypes = {
 
 export default () => {
   const { data, loading } = useGet({
-    path: 'api/deployment/',
+    path: g_RESTAPI_HOST_BASE + 'deployment/',
   });
 
   if (loading) {

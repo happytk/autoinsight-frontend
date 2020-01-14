@@ -13,6 +13,9 @@
 {% endblock %}
 
 {% block script_foot %}
+    <script>
+	var g_RESTAPI_HOST_BASE = '{{ BACKEND_RESTAPI_URL }}'; // base.js로 이전예정
+	</script>
     <script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}" ></script>
     <script type="text/javascript" src="{% static 'autoinsight_frontend/js/bootstrap.min.js' %}"></script>
     <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
@@ -50,13 +53,13 @@
                 <nav>
                     <ul class="list_menu">
                         <li>
-                            <a class="link_menu" href="view_preprocess">Preprocess</a>
+                            <a class="link_menu" href="preprocess">Preprocess</a>
                         </li>
                         <li class="active">
-                            <a class="link_menu" href="view_leaderboard">Leaderboard <div id="leaderboard_loader"></div></a>
+                            <a class="link_menu" href="leaderboard">Leaderboard <div id="leaderboard_loader"></div></a>
                         </li>
                         <li>
-                            <a class="link_menu" href="view_deploy">Deploy Model</a>
+                            <a class="link_menu" href="deploy">Deploy Model</a>
                         </li>
                     </ul>
                 </nav>
@@ -89,7 +92,7 @@
                            data-toggle="table"
                            data-pagination="true"
                            data-side-pagination="server"
-                           data-url="/api/runtime/leaderboard"
+                           data-url="{{ BACKEND_RESTAPI_URL }}runtime/leaderboard"
                            data-data-field="results"
                            data-total-field="count"
                            class="tbl_g tbl_thead table_leaderboard">

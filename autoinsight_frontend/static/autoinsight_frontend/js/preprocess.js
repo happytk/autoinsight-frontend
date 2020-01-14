@@ -7,7 +7,7 @@ var $FRONTEND = (function (module) {
     //초기화면 세팅
     _p.init = function(){
         $('#dataset').fileinput({
-            uploadUrl:"/api/source/workspace_files/",
+            uploadUrl: g_RESTAPI_HOST_BASE+"source/workspace_files/",
             browseClass:'btn btn-default ',
             // language: "kr",
             maxFileSize: 2000000,
@@ -117,7 +117,7 @@ var $FRONTEND = (function (module) {
 
             $.ajax({
                 type: 'get',
-                url: '/api/runtime/',
+                url: _p.BACKEND_RESTAPI_URL+'/runtime/',
                 dataType: 'json',
                 success: function (resultData, textStatus, request) {
 
@@ -154,7 +154,7 @@ var $FRONTEND = (function (module) {
 
             return $.ajax({
                 type: 'get',
-                url: '/api/dataset/',
+                url: g_RESTAPI_HOST_BASE+'dataset/',
                 dataType: 'json',
                 success: function (resultData, textStatus, request) {
                     if (resultData['error_msg'] == null ){
@@ -225,7 +225,7 @@ var $FRONTEND = (function (module) {
 
             return $.ajax({
                 type: 'post',
-                url: "/api/source/from_sklearn_dataset/",
+                url: g_RESTAPI_HOST_BASE+"source/from_sklearn_dataset/",
                 data: data,
                 dataType: 'json',
                 success: function (resultData, textStatus, request) {
@@ -259,7 +259,7 @@ var $FRONTEND = (function (module) {
     _p.loadStatus = function (){
         $.ajax({
             type: 'get',
-            url: '/api/runtime/',
+            url: g_RESTAPI_HOST_BASE+'runtime/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 //Modal 세팅
@@ -277,7 +277,7 @@ var $FRONTEND = (function (module) {
         });
         return $.ajax({
             type: 'get',
-            url: '/api/dataset/',
+            url: g_RESTAPI_HOST_BASE+'dataset/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
@@ -312,7 +312,7 @@ var $FRONTEND = (function (module) {
         try {
             $.ajax({
                 type: 'delete',
-                url: '/api/source/',
+                url: g_RESTAPI_HOST_BASE + 'source/',
                 dataType: 'json'
             })
         }
@@ -322,7 +322,7 @@ var $FRONTEND = (function (module) {
         try {
             $.ajax({
                 type: 'delete',
-                url: '/api/runtime/',
+                url: g_RESTAPI_HOST_BASE + 'runtime/',
                 dataType: 'json'
             })
         }
@@ -332,7 +332,7 @@ var $FRONTEND = (function (module) {
         try {
             $.ajax({
                 type: 'delete',
-                url: '/api/deployment/',
+                url: g_RESTAPI_HOST_BASE + 'deployment/',
                 dataType: 'json'
             })
         }
@@ -417,7 +417,7 @@ var $FRONTEND = (function (module) {
         data.isFeature = $('#feature_' + rowid).is(":checked");
         return $.ajax({
             type: 'patch',
-            url: '/api/dataset/columns/{0}/'.format(rowid),
+            url: g_RESTAPI_HOST_BASE + 'dataset/columns/{0}/'.format(rowid),
             data: data,
             dataType: 'json',
             success: function (resultData, textStatus, request) {
@@ -438,7 +438,7 @@ var $FRONTEND = (function (module) {
         data.isTarget = false;
         return $.ajax({
             type: 'patch',
-            url: '/api/dataset/columns/{0}/'.format(targetColumn.id),
+            url: g_RESTAPI_HOST_BASE + 'dataset/columns/{0}/'.format(targetColumn.id),
             data: data,
             dataType: 'json',
             success: function (resultData, textStatus, request) {
@@ -450,7 +450,7 @@ var $FRONTEND = (function (module) {
                     data.isTarget = true;
                     $.ajax({
                         type: 'patch',
-                        url: '/api/dataset/columns/{0}/'.format(rowid),
+                        url: g_RESTAPI_HOST_BASE + 'dataset/columns/{0}/'.format(rowid),
                         data: data,
                         dataType: 'json',
                         success: function (resultData, textStatus, request) {
@@ -690,7 +690,7 @@ var $FRONTEND = (function (module) {
 
         return $.ajax({
             type: 'patch',
-            url: '/api/runtime/',
+            url: g_RESTAPI_HOST_BASE + 'runtime/',
             data: JSON.stringify(data),
             dataType: 'json',
             contentType: 'application/json',
@@ -800,7 +800,7 @@ var $FRONTEND = (function (module) {
         // }
         return $.ajax({
             type: 'patch',
-            url : '/api/dataset/',
+            url : g_RESTAPI_HOST_BASE + 'dataset/',
             data: JSON.stringify(data),
             dataType: 'json',
             contentType: 'application/json',
@@ -822,7 +822,7 @@ var $FRONTEND = (function (module) {
 
         return $.ajax({
             type: 'post',
-            url: '/api/dataset/preprocess/',
+            url: g_RESTAPI_HOST_BASE + 'dataset/preprocess/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
@@ -842,13 +842,13 @@ var $FRONTEND = (function (module) {
         data.estimatorType = $('#estimator_type option:selected').val();
         return $.ajax({
             type: 'post',
-            url : '/api/runtime/start/',
+            url : g_RESTAPI_HOST_BASE + 'runtime/start/',
             data: JSON.stringify(data),
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
                     alert("AutoML 구동을 시작합니다.") ;
-                    window.location.replace("/autoinsight_frontend/view_leaderboard");
+                    window.location.replace("/leaderboard");
                 } else {
                     alert(resultData['error_msg']);
                 }

@@ -17,6 +17,9 @@
 {% endblock %}
 
 {% block script_foot %}
+    <script>
+	var g_RESTAPI_HOST_BASE = '{{ BACKEND_RESTAPI_URL }}'; // base.js로 이전예정
+	</script>
     <script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}" ></script>
     <script type="text/javascript" src="{% static 'autoinsight_frontend/js/bootstrap.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'autoinsight_frontend/js/bootstrap-table.min.js' %}"></script>
@@ -53,13 +56,13 @@
                 <nav>
                     <ul class="list_menu">
                         <li class="active">
-                            <a class="link_menu" href="view_preprocess">Preprocess<div id="preprocess_loader"></div></a>
+                            <a class="link_menu" href="preprocess">Preprocess<div id="preprocess_loader"></div></a>
                         </li>
                         <li>
-                            <a class="link_menu" href="view_leaderboard">Leaderboard <div id="leaderboard_loader"></div></a>
+                            <a class="link_menu" href="leaderboard">Leaderboard <div id="leaderboard_loader"></div></a>
                         </li>
                         <li>
-                            <a class="link_menu" href="view_deploy">Deploy Model</a>
+                            <a class="link_menu" href="deploy">Deploy Model</a>
                         </li>
                     </ul>
                 </nav>
@@ -95,7 +98,7 @@
                     <table id="column_table"
                            data-toggle="table"
                            data-pagination="false"
-                           data-url="/api/dataset/columns/"
+                           data-url="{{ BACKEND_RESTAPI_URL }}dataset/columns/"
                            class="tbl_g tbl_preprocess">
                         <colgroup>
                             <col style="width:170px">
