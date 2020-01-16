@@ -1,7 +1,10 @@
 var $FRONTEND = (function (module) {
     var _p = module._p = module._p || {};
-    var columns =[]
     _p.init = function () {
+        $('#deployed').hide()
+        $('#not_deployed').hide()
+        $('#bulk_result').hide()
+        $('#single_result').hide()
         _p.getStatus()
         _p.getDeployment()
         _p.getColumns()
@@ -36,14 +39,22 @@ var $FRONTEND = (function (module) {
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
-                    $('#estimator_name').text(resultData.target.estimatorName)
+                    if(resultData.target.estimatorName !== null){
+                        $('#estimator_name').text(resultData.target.estimatorName)
+                    }else{
+                        $('#estimator_name').text(resultData.target.estimator)
+                    }
+
                     $('#score').text(resultData.target.score)
                     $('#created_at').text(resultData.createdAt)
+                    $('#deployed').show()
                 } else {
+                    $('#not_deployed').show()
                     console.log(resultData['error_msg'])
                 }
             },
             error: function (res) {
+                $('#not_deployed').show()
                 console.log("Ajax call failure")
             }
         })
@@ -58,8 +69,7 @@ var $FRONTEND = (function (module) {
                 if (resultData['error_msg'] == null ){
                     var tablehtml = ""
                     $(resultData).each(function(index, column) {
-                        if(column.isTarget === false){
-                            columns.push(column.name)
+                        if(column.isFeature === true){
                             tablehtml += '<tr><td>'+column.name+'</td><td>'+column.datatype+'</td><td><input type="text" class="form-control predict-input" mean="'+column.mean+'"></td></tr>'
                         }
                     })
@@ -80,7 +90,7 @@ var $FRONTEND = (function (module) {
         })
     }
 
-    _p.predict = function(){
+    _p.singlePredict = function(){
         var data = {}
         inputstring =""
         len = $(".predict-input").length
@@ -97,8 +107,39 @@ var $FRONTEND = (function (module) {
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
-                    alert("예측결과 : "+resultData.result[0])
+                    var tablehtml = ""
+                    tablehtml += '<tr><td>'+resultData.inputs[0]+'</td><td>'+resultData.result[0]+'</td><td>'+resultData.errors[0]+'</td></tr>'
+                    $('#single_result_tbody').html(tablehtml)
+                    $('#single_result_lime').text(resultData.lime)
+                    $('#single_result').show()
+                } else {
+                    console.log(resultData['error_msg'])
+                }
+            },
+            error: function (res) {
+                console.log("Ajax call failure")
+            }
+        })
+    }
 
+    _p.bulkPredict = function(){
+        var data = {}
+
+        data.inputs = $('#outlined-textarea').val()
+
+        return $.ajax({
+            type: 'post',
+            url: g_RESTAPI_HOST_BASE + 'deployment/predict/',
+            data: data,
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                if (resultData['error_msg'] == null ){
+                    var tablehtml = ""
+                    $(resultData.inputs).each(function(index, value) {
+                        tablehtml += '<tr><td>'+value+'</td><td>'+resultData.result[index]+'</td><td>'+resultData.errors[index]+'</td></tr>'
+                    })
+                    $('#bulk_result_tbody').html(tablehtml)
+                    $('#bulk_result').show()
                 } else {
                     console.log(resultData['error_msg'])
                 }
