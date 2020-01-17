@@ -121,4 +121,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-BACKEND_RESTAPI_URL = 'http://localhost:8080/api/'
+BACKEND_RESTAPI_URL = 'http://169.56.84.222:5001/api/'

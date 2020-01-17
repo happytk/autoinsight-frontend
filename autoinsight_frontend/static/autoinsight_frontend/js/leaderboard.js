@@ -37,7 +37,8 @@ var $FRONTEND = (function (module) {
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData.error_msg == null) {
-                    if (resultData.live === true) {
+                    console.log(resultData)
+                    if (resultData.status === "learning") {
                         $('#leaderboard_loader').addClass('loader')
                         $('#stopButton').attr('disabled', false)
                     }
@@ -73,7 +74,7 @@ var $FRONTEND = (function (module) {
                     clearInterval(interval)
                     console.log('stopped', resultData.error_msg)
                 } else {
-                    if (resultData.live === false) {
+                    if (resultData.status !== "learning") {
                         $('#leaderboard_loader').removeClass('loader')
                         clearInterval(interval)
                     }

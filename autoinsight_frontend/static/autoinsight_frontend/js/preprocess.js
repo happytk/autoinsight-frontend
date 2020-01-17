@@ -263,7 +263,7 @@ var $FRONTEND = (function (module) {
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 //Modal 세팅
-                if(resultData['live']===true){
+                if(resultData['status']==="learning"){
                     $('.toggle-disable').prop('disabled', true);
                     $('#leaderboard_loader').addClass("loader");
                 }else{
