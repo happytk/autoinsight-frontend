@@ -121,4 +121,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-BACKEND_RESTAPI_URL = 'http://169.56.84.222:5001/api/'
+BACKEND_RESTAPI_URL = os.environ.get('AUTOINSIGHT_BACKEND_HOST', 'http://localhost:8000/api/')
+if BACKEND_RESTAPI_URL is None:
+    raise Exception('BACKEND_RESTAPI_HOST must be set')
