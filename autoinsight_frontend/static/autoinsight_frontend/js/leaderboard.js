@@ -37,7 +37,7 @@ var $FRONTEND = (function (module) {
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData.error_msg == null) {
-                    if (resultData.status === "status") {
+                    if (resultData.status === "learning") {
                         $('#leaderboard_loader').addClass('loader')
                         $('#stopButton').attr('disabled', false)
                     }
