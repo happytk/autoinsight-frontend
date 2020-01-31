@@ -4,7 +4,7 @@ FROM python:3.7-alpine
 ENV PYTHONUNBUFFERED 1
 
 RUN pip install --upgrade pip
-RUN pip install django==2.2
+RUN pip install django==2.2.9
 
 COPY . /code/
 WORKDIR /code/
