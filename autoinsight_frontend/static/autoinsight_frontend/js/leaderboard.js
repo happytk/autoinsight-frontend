@@ -251,10 +251,10 @@ var $FRONTEND = (function (module) {
             $('.regression-info').show()
         }
         if(model_info[model_pk] !== null){
-            _p.drawFeature(model_info[model_pk].featureImportances)
-            _p.drawRoc(model_info[model_pk].rocCurve)
-            _p.drawMatrix(model_info[model_pk].confusionMatrix)
-            _p.drawBalance(model_info[model_pk].classBalance)
+            _p.drawFeature(model_info[model_pk].featureImportancesJson)
+            _p.drawRoc(model_info[model_pk].rocCurveJson)
+            _p.drawMatrix(model_info[model_pk].confusionMatrixJson)
+            _p.drawBalance(model_info[model_pk].classBalanceJson)
             $('#modal-information #modal-information-loading').hide()
             $('#modal-information #modal-information-done').show()
         }else{
@@ -267,13 +267,13 @@ var $FRONTEND = (function (module) {
                     if (resultData.error_msg == null) {
                         $('#modal-information #modal-information-loading').hide()
                         $('#modal-information #modal-information-done').show()
-                        _p.drawFeature(resultData.featureImportances)
+                        _p.drawFeature(resultData.featureImportancesJson)
                         if (estimator_type === 'classifier') {
-                            _p.drawRoc(resultData.rocCurve)
-                            _p.drawMatrix(resultData.confusionMatrix)
-                            _p.drawBalance(resultData.classBalance)
+                            _p.drawRoc(resultData.rocCurveJson)
+                            _p.drawMatrix(resultData.confusionMatrixJson)
+                            _p.drawBalance(resultData.classBalanceJson)
                         } else {
-                            _p.drawResiduals(resultData.predError)
+                            _p.drawResiduals(resultData.predErrorJson)
                         }
                     } else {
                         $('#modal-information #modal-information-loading').hide()
@@ -309,7 +309,7 @@ var $FRONTEND = (function (module) {
             type: 'get',
             url: g_RESTAPI_HOST_BASE + '{0}/{1}/explanation/'.format(model_type, model_pk),
             data: data,
-            dataType: 'html',
+            dataType: 'json',
             success: function (resultData, textStatus, request) {
                 $('#modal-explanation #modal-explanation-loading').hide()
                 if (resultData.error_msg) {
@@ -317,7 +317,7 @@ var $FRONTEND = (function (module) {
                     console.log(resultData.error_msg)
                 } else {
                     $('#modal-explanation #modal-explanation-done').show()
-                    $('#modal-explanation #modal-explanation-done iframe').attr('srcdoc', resultData)
+                    $('#modal-explanation #modal-explanation-done iframe').attr('srcdoc', resultData.limeHtml)
                 }
             },
             error: function (res) {

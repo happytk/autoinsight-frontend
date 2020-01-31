@@ -114,10 +114,9 @@ var $FRONTEND = (function (module) {
                     $('#pre_Othreshold_all').show();
                 }
             });
-
             $.ajax({
                 type: 'get',
-                url: _p.BACKEND_RESTAPI_URL+'/runtime/',
+                url: g_RESTAPI_HOST_BASE+'runtime/',
                 dataType: 'json',
                 success: function (resultData, textStatus, request) {
 
