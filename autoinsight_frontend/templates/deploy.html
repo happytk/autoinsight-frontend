@@ -1,72 +1,73 @@
 {% load static %}
 {% block style_head %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>AutoInsight</title>
-    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,500,700|Noto+Serif+KR:700&display=swap" rel="stylesheet">
-    <!-- static -->
-    <link href="{% static 'autoinsight_frontend/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'autoinsight_frontend/css/style.css' %}" rel="stylesheet">
-    <link href="{% static 'autoinsight_frontend/js/main.css' %}">
-    <link rel="shortcut icon" href="{% static 'autoinsight_frontend/img/favicon.ico' %}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>AutoInsight</title>
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,500,700|Noto+Serif+KR:700&display=swap" rel="stylesheet">
+<!-- static -->
+<link href="{% static 'autoinsight_frontend/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'autoinsight_frontend/css/style.css' %}" rel="stylesheet">
+<link href="{% static 'autoinsight_frontend/js/main.css' %}">
+<link rel="shortcut icon" href="{% static 'autoinsight_frontend/img/favicon.ico' %}">
 {% endblock %}
 
 {% block script_foot %}
-    <script>
-        var g_RESTAPI_HOST_BASE = '{{ BACKEND_RESTAPI_URL }}'; // base.js로 이전예정
-    </script>
-    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}" ></script>
-    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/deploy.js' %}"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $FRONTEND._p.init();
-        });
-    </script>
+<script>
+  var g_RESTAPI_HOST_BASE = '{{ BACKEND_RESTAPI_URL }}'; // base.js로 이전예정
+</script>
+<script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}" ></script>
+<script type="text/javascript" src="{% static 'autoinsight_frontend/js/deploy.js' %}"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $FRONTEND._p.init();
+  });
+</script>
 {% endblock %}
 
 {% block page_content %}
-    <div class="wrapper">
-        <header>
-            <div class="container">
-                <a href="/">
-                    <h1>
-                        <img src="{% static 'autoinsight_frontend/img/logo_automl.png' %}" class="img_logo" width="221" height="42" alt="AutoInsight">
-                    </h1></a>
-            </div>
-        </header>
-        <!-- //header -->
+<div class="wrapper">
+    <header>
+        <div class="container">
+            <a href="/">
+                <h1>
+                    <img src="{% static 'autoinsight_frontend/img/logo_automl.png' %}" class="img_logo" width="221" height="42" alt="AutoInsight">
+                </h1></a>
+        </div>
+    </header>
+    <!-- //header -->
 
-        <main>
-            <div class="container">
-                <nav>
-                    <ul class="list_menu">
-                        <li>
-                            <a class="link_menu" href="preprocess">Preprocess</a>
-                        </li>
-                        <li>
-                            <a class="link_menu" href="leaderboard">Leaderboard <div id="leaderboard_loader"></div></a>
-                        </li>
-                        <li class="active">
-                            <a class="link_menu" href="deploy">Deploy Model</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="container">
-                <section class="section_content" id="deployed">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">배포기본정보</h3>
-                        </div><div class="panel-body">
-                        <h2 id="estimator_name"></h2>
-                        <div>훈련된 예측 스코어: <span id="score" style="text-decoration: underline;"></span></div>
-                        <div>배포일자: <span id="created_at" style="text-decoration: underline;"></span></div>
-                        <div class="alert alert-success" role="alert" style="margin-top: 30px;">
-                            <a class="btn btn-danger btn-lg" href="{{ BACKEND_RESTAPI_URL }}deployment/export">모델바이너리 내려받기</a>
-                            <div style="margin-top: 25px;">이 바이너리 파일은 로컬환경에서 작업할 수 있는 환경을 제공하기 위해 다운로드할 수 있습니다.
-                                <br>로컬환경에 관련 library는 설치되어 있어야 합니다. (python3.7 이상, autoinsight모듈필요.)
-                                <pre style="display: block; overflow-x: auto; padding: 0.5em; color: rgb(0, 0, 0); background: rgb(248, 248, 255);">
+    <main>
+        <div class="container">
+            <nav>
+                <ul class="list_menu">
+                    <li>
+                        <a class="link_menu" href="preprocess">Preprocess</a>
+                    </li>
+                    <li>
+                        <a class="link_menu" href="leaderboard">Leaderboard <div id="leaderboard_loader"></div></a>
+                    </li>
+                    <li class="active">
+                        <a class="link_menu" href="deploy">Deploy Model</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="container">
+            <!--<section class="section_content" id="deployer_app">
+            </section>-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">배포기본정보</h3>
+                </div><div class="panel-body">
+                <h2 id="estimator_name"></h2>
+                <div>훈련된 예측 스코어: <span id="score" style="text-decoration: underline;"></span></div>
+                <div>배포일자: <span id="created_at" style="text-decoration: underline;"></span></div>
+                <div class="alert " role="alert" style="margin-top: 10px;">
+                    <a class="btn_confirm btn_m" href="{{ BACKEND_RESTAPI_URL }}deployment/export">모델바이너리 내려받기</a>
+                    <div style="margin: 15px 0 0;">이 바이너리 파일은 로컬환경에서 작업할 수 있는 환경을 제공하기 위해 다운로드할 수 있습니다.
+                        <br>로컬환경에 관련 library는 설치되어 있어야 합니다. (python3.7 이상, autoinsight모듈필요.)
+                        <pre style="margin-top: 15px;display: block; overflow-x: auto; padding: 0.5em; color: rgb(0, 0, 0); background: #E8E8E8;">
                                 <code>
 <span style="color: rgb(64, 128, 128); font-style: italic;"># This trained model doesn't include the preprocessor</span>
 <span style="color: rgb(64, 128, 128); font-style: italic;"># (will be implemented soon!)</span>
@@ -75,107 +76,111 @@ trained_model = pickle.load(<span style="color: rgb(33, 145, 97);">'downloaded_m
 trained_model.predict(X)
                                 </code>
                             </pre>
-                            </div>
-                        </div>
                     </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">데이터 예측하기</h3>
-                        </div>
-                        <div class="panel-body">
-                            <div class="alert alert-danger" role="alert">
-                                <h4>이 폼에 대한 데이터 처리는 RestAPI URL로 열려있습니다.</h4>
-                                <table class="table table-condensed" style="margin-top: 30px;">
-                                    <tbody>
-                                    <tr>
-                                        <td width="100px"><span class="badge badge-danger">URL</span></td>
-                                        <td><span style="text-decoration: underline;">{{ BACKEND_RESTAPI_URL }}deployment/predict/</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span class="badge badge-danger">Method</span>
-                                        </td>
-                                        <td><b>POST</b>로 접근합니다.</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span class="badge badge-danger">Input</span>
-                                        </td>
-                                        <td>
-                                            <b>inputs</b>을 키값으로 갖는 Comma(,)로 구분된 Data를 Input으로 전달합니다.
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span class="badge badge-danger">Output</span>
-                                        </td>
-                                        <td><b>inputs</b>은 호출에 사용된 입력값, <b>result</b>예측값, <b>errors</b> 호출시 에러가 있으면 전달 <b>lime</b>예측하는데 사용한 설명자료(html)</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>특성이름</th>
-                                    <th>데이터유형</th>
-                                    <th><button type="button" class="btn btn-primary btn-sm" onclick="$FRONTEND._p.fillMean();">평균값으로 채우기</button></th>
-                                </tr>
-                                </thead>
-                                <tbody id="predict_table">
-                                </tbody>
-                            </table>
-                            <button type="button" class="btn btn-primary btn-lg btn-block" onclick="$FRONTEND._p.singlePredict();">예측하기</button>
-                            <div id="single_result" class="panel-body">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>inputs</th>
-                                    <th>result</th>
-                                    <th>errors</th>
-                                </tr>
-                                </thead>
-                                <tbody id="single_result_tbody">
-                                </tbody>
-                            </table>
-                            <h4>Prediction 설명</h4>
-                            <p id="single_result_lime"></p>
-
-                        </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">데이터 예측하기(CSV)</h3>
-                        </div>
-                        <div class="panel-body">
-                            <textarea id="outlined-textarea" label="Prediction Form for Bulkdata" placeholder="csv형식의 데이터를 여러 행 붙여넣을 수 있습니다." class="form-control" rows="8" style="width: 100%;"></textarea>
-                            <button type="button" class="btn btn-primary btn-lg btn-block" onclick="$FRONTEND._p.bulkPredict();">예측하기</button>
-                        </div>
-                        <div id="bulk_result" class="panel-body">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>inputs</th>
-                                    <th>results</th>
-                                    <th>errors</th>
-                                </tr>
-                                </thead>
-                                <tbody id="bulk_result_tbody">
-                                </tbody>
-                            </table>
-
-                        </div>
-                    </div>
-            </section>
-                <section class="section_content" id="not_deployed">
-                    <p>배포된 모델이 존재하지 않습니다.</p>
-                </section>
+                </div>
             </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">데이터 예측하기</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="alert" role="alert">
+                        <h4 class="panel-title">이 폼에 대한 데이터 처리는 RestAPI URL로 열려있습니다.</h4>
+                        <table class="table table-condensed" style="margin: 15px 0 0;">
+                            <tbody>
+                            <tr>
+                                <td width="100px"><span class="badge badge-danger">URL</span></td>
+                                <td><span style="text-decoration: underline;">{{ BACKEND_RESTAPI_URL }}deployment/predict/</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="badge badge-danger">Method</span>
+                                </td>
+                                <td><b>POST</b>로 접근합니다.</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="badge badge-danger">Input</span>
+                                </td>
+                                <td>
+                                    <b>inputs</b>을 키값으로 갖는 Comma(,)로 구분된 Data를 Input으로 전달합니다.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="badge badge-danger">Output</span>
+                                </td>
+                                <td><b>inputs</b>은 호출에 사용된 입력값, <b>result</b>예측값, <b>errors</b> 호출시 에러가 있으면 전달 <b>lime</b>예측하는데 사용한 설명자료(html)</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <table class="table table-bordered table-hover tbl_g">
+                        <thead>
+                        <tr>
+                            <th>특성이름</th>
+                            <th>데이터유형</th>
+                            <th><button type="button" class="btn_correlation btn_s" onclick="$FRONTEND._p.fillMean();">평균값으로 채우기</button></th>
+                        </tr>
+                        </thead>
+                        <tbody id="predict_table">
+                        </tbody>
+                    </table>
+                    <div class="text-center">
+                        <button type="button" class="btn_confirm btn_b" onclick="$FRONTEND._p.singlePredict();">예측하기</button>
+                    </div>
+                    <div id="single_result" class="panel-body">
+                        <table class="table table-bordered table-hover tbl_g">
+                            <thead>
+                            <tr>
+                                <th>inputs</th>
+                                <th>result</th>
+                                <th>errors</th>
+                            </tr>
+                            </thead>
+                            <tbody id="single_result_tbody">
+                            </tbody>
+                        </table>
+                        <h5>Prediction 설명</h5>
+                        <p id="single_result_lime" class="prediction_description"></p>
 
-        </main>
-        <!-- //main -->
-    </div>
-    <!-- //wrapper -->
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">데이터 예측하기(CSV)</h3>
+                </div>
+                <div class="panel-body">
+                    <textarea id="outlined-textarea" label="Prediction Form for Bulkdata" placeholder="csv형식의 데이터를 여러 행 붙여넣을 수 있습니다." class="form-control" rows="8" style="width: 100%;"></textarea>
+                    <div class="text-center" style="margin-top: 20px">
+                        <button type="button" class="btn_confirm btn_b" onclick="$FRONTEND._p.bulkPredict();">예측하기</button>
+                    </div>
+                </div>
+                <div id="bulk_result" class="panel-body">
+                    <table class="table table-bordered table-hover tbl_g">
+                        <thead>
+                        <tr>
+                            <th>inputs</th>
+                            <th>results</th>
+                            <th>errors</th>
+                        </tr>
+                        </thead>
+                        <tbody id="bulk_result_tbody">
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <!--</section>-->
+            <section class="section_content" id="not_deployed">
+                <p>배포된 모델이 존재하지 않습니다.</p>
+            </section>
+
+        </div>
+    </main>
+    <!-- //main -->
+</div>
+<!-- //wrapper -->
 {% endblock %}
