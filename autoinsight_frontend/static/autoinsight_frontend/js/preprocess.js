@@ -3,7 +3,7 @@ var $FRONTEND = (function (module) {
 
 
     _p.dataset_name ="";
-    var targetColumn, columnCombobox;
+    var targetColumn, columnCombobox, status, isFirst;
     //초기화면 세팅
     _p.init = function(){
         $('#dataset').fileinput({
@@ -45,11 +45,14 @@ var $FRONTEND = (function (module) {
             alert("파일이 저장되었습니다.");
             $('.modal').modal('hide');
             _p.loadStatus();
+            isFirst = true;
             $('#column_table').bootstrapTable('refresh')
         });
 
 
         $('#column_table').on('load-success.bs.table', function (data, jqXHR) {
+
+
             targetColumn={};
             columnCombobox ="";
             $(jqXHR).each(function(index, column) {
@@ -57,16 +60,19 @@ var $FRONTEND = (function (module) {
                 columnCombobox += '<option value="'+column.name+'">'+column.name+'</option>';
                 if(column.isTarget){
                     $('#feature_'+column['id']).attr("disabled", true);
-                    if(column.taskType === 'multiclass' || column.taskType === 'binary'){
-                        $('#estimator_type').val("classifier");
-                        $('#metric').val('accuracy');
-                    }else{
-                        $('#estimator_type').val("regressor");
-                        $('#metric').val('r2');
+                    if(isFirst === true){
+                        if(column.taskType === 'multiclass' || column.taskType === 'binary'){
+                            $('#estimator_type').val("classifier");
+                            $('#metric').val('accuracy');
+                        }else{
+                            $('#estimator_type').val("regressor");
+                            $('#metric').val('r2');
+                        }
+                        _p.updateEstimatorType();
+                        isFirst = false
                     }
                     targetColumn.id = column.id;
                     targetColumn.name = column.name;
-                    targetColumn.unique = column.unique;
                 }
             });
 
@@ -75,9 +81,14 @@ var $FRONTEND = (function (module) {
                 $(this).html(columnCombobox);
             });
 
+
             $('.toggle-disable').prop('disabled', false)
             $('#preprocess_loader').removeClass("loader")
 
+        });
+
+        $('#estimator_type').change(function() {
+            _p.updateEstimatorType();
         });
 
 
@@ -232,6 +243,7 @@ var $FRONTEND = (function (module) {
                         alert("저장된 데이터를 불러옵니다.");
                         $('.modal').modal('hide');
                         _p.loadStatus();
+                        isFirst = true;
                         $('#column_table').bootstrapTable('refresh')
                     } else {
                         alert(resultData['error_msg']);
@@ -261,14 +273,17 @@ var $FRONTEND = (function (module) {
             url: g_RESTAPI_HOST_BASE+'runtime/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
-                //Modal 세팅
-                if(resultData['status']==="learning"){
+                console.log(resultData)
+                status = resultData.status
+                //화면 세팅
+                if(status === "learning"){
                     $('.toggle-disable').prop('disabled', true);
                     $('#leaderboard_loader').addClass("loader");
                 }else{
                     $('.toggle-disable').prop('disabled', false);
                     $('#loader').removeClass("loader");
                 }
+                $('#estimator_type').val(resultData.estimatorType);
             },
             error: function (res) {
                 alert(res.responseJSON.message);
@@ -432,6 +447,21 @@ var $FRONTEND = (function (module) {
         })
     };
 
+    _p.updateEstimatorType = function(rowid) {
+        var data = {};
+        data.estimatorType = $('#estimator_type option:selected').val();
+        return $.ajax({
+            type: 'patch',
+            url: g_RESTAPI_HOST_BASE + 'runtime/',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            contentType: 'application/json',
+            error: function (res) {
+                alert(res.responseJSON.message);
+            }
+        })
+    };
+
     _p.updateTarget = function(rowid){
         var data ={};
         data.isTarget = false;
@@ -456,12 +486,12 @@ var $FRONTEND = (function (module) {
                             if (resultData['error_msg'] == null ){
                                 targetColumn.id = resultData.id;
                                 targetColumn.name = resultData.name;
-                                targetColumn.unique = resultData.unique;
                                 if(resultData.taskType === 'multiclass' || resultData.taskType === 'binary'){
                                     $('#estimator_type').val("classifier");
                                 }else{
                                     $('#estimator_type').val("regressor");
                                 }
+                                _p.updateEstimatorType();
                                 $('#feature_'+rowid).prop("checked", false);
                                 $('#feature_'+rowid).attr("disabled", true);
                             } else {
@@ -834,19 +864,17 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                alert(res.responseJSON.message);
+                alert(res.responseText);
             }
         })
     };
 
     _p.runAutoml = function(){
-        var data = {};
-        data.estimatorType = $('#estimator_type option:selected').val();
         return $.ajax({
             type: 'post',
             url : g_RESTAPI_HOST_BASE + 'runtime/start/',
-            data: JSON.stringify(data),
             dataType: 'json',
+            contentType: 'application/json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
                     alert("AutoML 구동을 시작합니다.") ;
