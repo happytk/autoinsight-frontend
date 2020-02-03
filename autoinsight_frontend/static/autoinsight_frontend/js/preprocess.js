@@ -454,13 +454,16 @@ var $FRONTEND = (function (module) {
                         dataType: 'json',
                         success: function (resultData, textStatus, request) {
                             if (resultData['error_msg'] == null ){
-                                $('#feature_'+rowid).prop("checked", false);
-                                $('#feature_'+rowid).attr("disabled", true);
+                                targetColumn.id = resultData.id;
+                                targetColumn.name = resultData.name;
+                                targetColumn.unique = resultData.unique;
                                 if(resultData.taskType === 'multiclass' || resultData.taskType === 'binary'){
                                     $('#estimator_type').val("classifier");
                                 }else{
                                     $('#estimator_type').val("regressor");
                                 }
+                                $('#feature_'+rowid).prop("checked", false);
+                                $('#feature_'+rowid).attr("disabled", true);
                             } else {
                                 alert(resultData['error_msg']);
                             }
