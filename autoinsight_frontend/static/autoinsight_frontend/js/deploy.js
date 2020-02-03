@@ -27,7 +27,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                console.log("Ajax call failure")
+                alert(res.responseJSON.message)
             }
         })
     }
@@ -55,7 +55,7 @@ var $FRONTEND = (function (module) {
             },
             error: function (res) {
                 $('#not_deployed').show()
-                console.log("Ajax call failure")
+                alert(res.responseJSON.message)
             }
         })
     }
@@ -79,7 +79,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                console.log("Ajax call failure")
+                alert(res.responseJSON.message)
             }
         })
     }
@@ -117,7 +117,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                console.log("Ajax call failure")
+                alert(res.responseJSON.message)
             }
         })
     }
@@ -145,7 +145,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                console.log("Ajax call failure")
+                alert(res.responseJSON.message)
             }
         })
     }

@@ -56,7 +56,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                console.log('Ajax call failure')
+                alert(res.responseJSON.message)
             }
         })
     }
@@ -94,7 +94,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                console.log('Ajax call failure')
+                alert(res.responseJSON.message)
             }
         })
         return $.ajax({
@@ -128,7 +128,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                console.log('Ajax call failure')
+                alert(res.responseJSON.message)
             }
         })
     }
@@ -149,7 +149,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                console.log('Ajax call failure')
+                alert(res.responseJSON.message)
             }
         })
     }
@@ -285,7 +285,7 @@ var $FRONTEND = (function (module) {
                     $('#modal-information #modal-information-loading').hide()
                     $('#modal-information #modal-information-done').hide()
                     $('#modal-information #modal-information-error').show()
-                    console.log('Ajax call failure')
+                    alert(res.responseJSON.message)
                 }
             })
         }
@@ -323,7 +323,7 @@ var $FRONTEND = (function (module) {
             error: function (res) {
                 $('#modal-explanation #modal-explanation-loading').hide()
                 $('#modal-explanation #modal-explanation-error').show()
-                console.log('Ajax call failure')
+                alert(res.responseJSON.message)
             }
         })
     }

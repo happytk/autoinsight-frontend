@@ -147,7 +147,7 @@ var $FRONTEND = (function (module) {
 
                 },
                 error: function (res) {
-                    alert("오류가 발생하였습니다.") ;
+                    alert(res.responseJSON.message);
                 }
             });
 
@@ -195,7 +195,7 @@ var $FRONTEND = (function (module) {
                     }
                 },
                 error: function (res) {
-                    alert("오류가 발생하였습니다.") ;
+                    alert(res.responseJSON.message);
                 }
             });
         });
@@ -240,7 +240,7 @@ var $FRONTEND = (function (module) {
                     }
                 },
                 error: function (res) {
-                    alert("오류가 발생하였습니다.") ;
+                    alert(res.responseJSON.message);
                     $('.toggle-disable').prop('disabled', false)
                     $('#preprocess_loader').removeClass("loader")
                 }
@@ -271,7 +271,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                alert("오류가 발생하였습니다.") ;
+                alert(res.responseJSON.message);
             }
         });
         return $.ajax({
@@ -302,7 +302,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                alert("오류가 발생하였습니다.") ;
+                alert(res.responseJSON.message);
             }
         });
     };
@@ -427,7 +427,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                alert("오류가 발생하였습니다.");
+                alert(res.responseJSON.message);
             }
         })
     };
@@ -469,7 +469,7 @@ var $FRONTEND = (function (module) {
                             }
                         },
                         error: function (res) {
-                            alert("오류가 발생하였습니다.") ;
+                            alert(res.responseJSON.message);
                         }
                     })
                 } else {
@@ -477,7 +477,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                alert("오류가 발생하였습니다.") ;
+                alert(res.responseJSON.message);
             }
         })
     };
@@ -704,7 +704,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                alert("오류가 발생하였습니다.") ;
+                alert(res.responseJSON.message);
             }
         })
     };
@@ -814,7 +814,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                alert("오류가 발생하였습니다.") ;
+                alert(res.responseJSON.message);
             }
         })
 
@@ -834,7 +834,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                alert("오류가 발생하였습니다.") ;
+                alert(res.responseJSON.message);
             }
         })
     };
@@ -856,7 +856,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                alert("오류가 발생하였습니다.") ;
+                alert(res.responseJSON.message);
             }
         })
     };
