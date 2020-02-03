@@ -110,8 +110,7 @@ var $FRONTEND = (function (module) {
                     var tablehtml = ""
                     tablehtml += '<tr><td>'+resultData.inputs[0]+'</td><td>'+resultData.result[0]+'</td><td>'+resultData.errors[0]+'</td></tr>'
                     $('#single_result_tbody').html(tablehtml)
-                    $('#single_result_lime iframe').attr('srcdoc', resultData.lime)
-                    // $('#single_result_lime').text(resultData.lime)
+                    $('#single_result_lime iframe').attr('srcdoc', resultData.lime.asHtml)
                     $('#single_result').show()
                 } else {
                     console.log(resultData['error_msg'])
