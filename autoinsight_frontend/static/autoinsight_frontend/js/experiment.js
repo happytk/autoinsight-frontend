@@ -107,9 +107,8 @@ var $FRONTEND = (function (module) {
         });
 
         $('#dataset').on('fileuploaded', function (objectEvent, params){
-            alert("파일이 저장되었습니다.");
-            $('.modal').modal('hide');
-            location.reload()
+            _p.createExperiment(params.response.id)
+
         });
 
 
@@ -173,9 +172,8 @@ var $FRONTEND = (function (module) {
                 dataType: 'json',
                 success: function (resultData, textStatus, request) {
                     if (resultData['error_msg'] == null ){
-                        alert("저장된 데이터를 불러옵니다.");
-                        $('.modal').modal('hide');
-                        location.reload();
+                        _p.createExperiment(resultData.id)
+
                         // $('#runtime_table').bootstrapTable('refresh')
                     } else {
                         alert(resultData['error_msg']);
@@ -198,6 +196,30 @@ var $FRONTEND = (function (module) {
             $("#dataset").fileinput("upload");
         }
     };
+
+    _p.createExperiment = function(source_id){
+        return $.ajax({
+                type: 'post',
+                url: g_RESTAPI_HOST_BASE+"sources/"+source_id+"/experiment/",
+                dataType: 'json',
+                success: function (resultData, textStatus, request) {
+                    if (resultData['error_msg'] == null ){
+                        $('.modal').modal('hide');
+                        location.reload()
+                    } else {
+                        alert(resultData['error_msg']);
+                    }
+                    $('.toggle-disable').prop('disabled', false)
+                    $('#preprocess_loader').removeClass("loader")
+                },
+                error: function (res) {
+                    alert(res.responseJSON.message);
+                    $('.toggle-disable').prop('disabled', false)
+                    $('#preprocess_loader').removeClass("loader")
+                }
+            })
+
+    }
 
     _p.updateScale = function(runtime_id){
         var data = {};
