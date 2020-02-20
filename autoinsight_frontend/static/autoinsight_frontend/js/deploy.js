@@ -13,7 +13,7 @@ var $FRONTEND = (function (module) {
     _p.getStatus = function(){
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE + 'runtime/',
+            url: g_RESTAPI_HOST_BASE +'runtimes/'+runtime_id + '/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
@@ -35,7 +35,7 @@ var $FRONTEND = (function (module) {
     _p.getDeployment = function(){
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE + 'deployment/',
+            url: g_RESTAPI_HOST_BASE +'runtimes/'+runtime_id + '/deployment/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
@@ -63,7 +63,7 @@ var $FRONTEND = (function (module) {
     _p.getColumns = function(){
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE + 'dataset/columns/',
+            url: g_RESTAPI_HOST_BASE +'runtimes/'+runtime_id + '/dataset/columns/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
@@ -102,7 +102,7 @@ var $FRONTEND = (function (module) {
 
         return $.ajax({
             type: 'post',
-            url: g_RESTAPI_HOST_BASE + 'deployment/predict/',
+            url: g_RESTAPI_HOST_BASE +'runtimes/'+ runtime_id + '/deployment/predict/',
             data: data,
             dataType: 'json',
             success: function (resultData, textStatus, request) {
@@ -129,7 +129,7 @@ var $FRONTEND = (function (module) {
 
         return $.ajax({
             type: 'post',
-            url: g_RESTAPI_HOST_BASE + 'deployment/predict/',
+            url: g_RESTAPI_HOST_BASE +'runtimes/'+runtime_id + '/deployment/predict/',
             data: data,
             dataType: 'json',
             success: function (resultData, textStatus, request) {

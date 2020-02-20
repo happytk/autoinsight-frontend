@@ -15,6 +15,7 @@
 {% block script_foot %}
     <script>
 	var g_RESTAPI_HOST_BASE = '{{ BACKEND_RESTAPI_URL }}'; // base.js로 이전예정
+    var runtime_id = '{{ runtime_id }}';
 	</script>
     <script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}" ></script>
     <script type="text/javascript" src="{% static 'autoinsight_frontend/js/bootstrap.min.js' %}"></script>
@@ -54,13 +55,13 @@
                 <nav>
                     <ul class="list_menu">
                         <li>
-                            <a class="link_menu" href="preprocess">Preprocess</a>
+                            <a class="link_menu" href="/preprocess/{{ runtime_id }}/">Preprocess</a>
                         </li>
                         <li class="active">
-                            <a class="link_menu" href="leaderboard">Leaderboard <div id="leaderboard_loader"></div></a>
+                            <a class="link_menu" href="/leaderboard/{{ runtime_id }}/">Leaderboard <div id="leaderboard_loader"></div></a>
                         </li>
                         <li>
-                            <a class="link_menu" href="deploy">Deploy Model</a>
+                            <a class="link_menu" href="/deploy/{{ runtime_id }}/">Deploy Model</a>
                         </li>
                     </ul>
                 </nav>
@@ -93,7 +94,7 @@
                            data-toggle="table"
                            data-pagination="true"
                            data-side-pagination="server"
-                           data-url="{{ BACKEND_RESTAPI_URL }}runtime/leaderboard/"
+                           data-url="{{ BACKEND_RESTAPI_URL }}runtimes/{{ runtime_id }}/leaderboard/"
                            data-data-field="results"
                            data-total-field="count"
                            class="tbl_g tbl_thead table_leaderboard">

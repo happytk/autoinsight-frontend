@@ -33,7 +33,7 @@ var $FRONTEND = (function (module) {
     _p.getStatus = function () {
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE + 'runtime/',
+            url: g_RESTAPI_HOST_BASE +'runtimes/'+runtime_id + '/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData.error_msg == null) {
@@ -66,7 +66,7 @@ var $FRONTEND = (function (module) {
         var elapsed
         $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE + 'runtime/',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData.error_msg) {
@@ -99,7 +99,7 @@ var $FRONTEND = (function (module) {
         })
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE + 'runtime/score_trend/',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+ runtime_id + '/score_trend/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData.err_msg == null && resultData.length !== 0) {
@@ -136,7 +136,7 @@ var $FRONTEND = (function (module) {
     _p.stopAutoml = function () {
         return $.ajax({
             type: 'post',
-            url: g_RESTAPI_HOST_BASE + 'runtime/stop/',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+ runtime_id + '/stop/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData.err_msg == null) {
@@ -215,7 +215,7 @@ var $FRONTEND = (function (module) {
 
         return $.ajax({
             type: 'post',
-            url: g_RESTAPI_HOST_BASE + 'deployment/',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+ runtime_id + '/deployment/',
             data: data,
             dataType: 'json',
             success: function (resultData, textStatus, request) {
@@ -227,7 +227,7 @@ var $FRONTEND = (function (module) {
                     $('#modal-deploy #modal-deploy-loading').hide()
                     $('#modal-deploy #modal-deploy-done').show()
                     $('#modal-deploy #modal-deploy-error').hide()
-                    window.location.replace('/deploy')
+                    window.location.replace('/deploy/'+runtime_id+"/")
                 }
             },
             error: function (res) {
@@ -261,7 +261,7 @@ var $FRONTEND = (function (module) {
             model_type = model_type+'s'
             return $.ajax({
                 type: 'get',
-                url: g_RESTAPI_HOST_BASE + '{0}/{1}/stats/'.format(model_type, model_pk),
+                url: g_RESTAPI_HOST_BASE + 'runtimes/{0}/{1}/{2}/stats/'.format(runtime_id, model_type, model_pk),
                 dataType: 'json',
                 success: function (resultData, textStatus, request) {
                     if (resultData.error_msg == null) {
@@ -307,7 +307,7 @@ var $FRONTEND = (function (module) {
 
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE + '{0}/{1}/explanation/'.format(model_type, model_pk),
+            url: g_RESTAPI_HOST_BASE + 'runtimes/{0}/{1}/{2}/explanation/'.format(runtime_id, model_type, model_pk),
             data: data,
             dataType: 'json',
             success: function (resultData, textStatus, request) {

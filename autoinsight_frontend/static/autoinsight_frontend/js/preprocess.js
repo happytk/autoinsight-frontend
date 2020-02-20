@@ -3,29 +3,29 @@ var $FRONTEND = (function (module) {
 
 
     _p.dataset_name ="";
-    var targetColumn, columnCombobox, status, isFirst;
+    var targetColumn, columnCombobox, isFirst;
     //초기화면 세팅
     _p.init = function(){
-        $('#dataset').fileinput({
-            uploadUrl: g_RESTAPI_HOST_BASE+"source/workspace_files/",
-            browseClass:'btn btn-default ',
-            // language: "kr",
-            maxFileSize: 2000000,
-            msgPlaceholder: "Select a CSV or TSV file",
-            elErrorContainer: '#kartik-file-errors5',
-            showUpload: false,
-            showRemove: false,
-            showPreview: false,
-            showBrowse: true,
-            dropZoneEnabled: false,
-            allowedFileExtensions: ["csv","tsv"],
-            uploadExtraData: function (previewId, index) {
-                var data = {};
-                data.dataset_name=_p.dataset_name;
-                data.sample_size = $('#sample_size').val();
-                return data;
-            }
-        });
+        // $('#dataset').fileinput({
+        //     uploadUrl: g_RESTAPI_HOST_BASE+"source/workspace_files/",
+        //     browseClass:'btn btn-default ',
+        //     // language: "kr",
+        //     maxFileSize: 2000000,
+        //     msgPlaceholder: "Select a CSV or TSV file",
+        //     elErrorContainer: '#kartik-file-errors5',
+        //     showUpload: false,
+        //     showRemove: false,
+        //     showPreview: false,
+        //     showBrowse: true,
+        //     dropZoneEnabled: false,
+        //     allowedFileExtensions: ["csv","tsv"],
+        //     uploadExtraData: function (previewId, index) {
+        //         var data = {};
+        //         data.dataset_name=_p.dataset_name;
+        //         data.sample_size = $('#sample_size').val();
+        //         return data;
+        //     }
+        // });
 
         $('#saved_dataset_area').hide();
         $('#source_type').change(function() {
@@ -41,11 +41,11 @@ var $FRONTEND = (function (module) {
         });
 
         _p.loadStatus();
+        isFirst = true;
         $('#dataset').on('fileuploaded', function (objectEvent, params){
             alert("파일이 저장되었습니다.");
             $('.modal').modal('hide');
             _p.loadStatus();
-            isFirst = true;
             $('#column_table').bootstrapTable('refresh')
         });
 
@@ -127,7 +127,7 @@ var $FRONTEND = (function (module) {
             });
             $.ajax({
                 type: 'get',
-                url: g_RESTAPI_HOST_BASE+'runtime/',
+                url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id,
                 dataType: 'json',
                 success: function (resultData, textStatus, request) {
 
@@ -164,7 +164,7 @@ var $FRONTEND = (function (module) {
 
             return $.ajax({
                 type: 'get',
-                url: g_RESTAPI_HOST_BASE+'dataset/',
+                url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/dataset/',
                 dataType: 'json',
                 success: function (resultData, textStatus, request) {
                     if (resultData['error_msg'] == null ){
@@ -224,59 +224,57 @@ var $FRONTEND = (function (module) {
     };
 
     //파일 업로드 관련
-    _p.addDataset = function() {
-        $('.toggle-disable').prop('disabled', true)
-        $('#preprocess_loader').addClass("loader")
-        if($('#source_type').val()=="saved"){
-            var data = {};
-            data.dataset_name = $('#saved_dataset').val();
-            if($('#sample_size').val() > 0) data.sample_size = $('#sample_size').val();
-
-
-            return $.ajax({
-                type: 'post',
-                url: g_RESTAPI_HOST_BASE+"source/from_sklearn_dataset/",
-                data: data,
-                dataType: 'json',
-                success: function (resultData, textStatus, request) {
-                    if (resultData['error_msg'] == null ){
-                        alert("저장된 데이터를 불러옵니다.");
-                        $('.modal').modal('hide');
-                        _p.loadStatus();
-                        isFirst = true;
-                        $('#column_table').bootstrapTable('refresh')
-                    } else {
-                        alert(resultData['error_msg']);
-                        $('.toggle-disable').prop('disabled', false)
-                        $('#preprocess_loader').removeClass("loader")
-                    }
-                },
-                error: function (res) {
-                    alert(res.responseJSON.message);
-                    $('.toggle-disable').prop('disabled', false)
-                    $('#preprocess_loader').removeClass("loader")
-                }
-            })
-        }else {
-            _p.dataset_name = $('#dataset_name_input').val();
-            if (_p.dataset_name == "") {
-                alert("Dataset 이름을 입력해 주세요.");
-                return false;
-            }
-            $("#dataset").fileinput("upload");
-        }
-    };
+    // _p.addDataset = function() {
+    //     $('.toggle-disable').prop('disabled', true)
+    //     $('#preprocess_loader').addClass("loader")
+    //     if($('#source_type').val()=="saved"){
+    //         var data = {};
+    //         data.dataset_name = $('#saved_dataset').val();
+    //         if($('#sample_size').val() > 0) data.sample_size = $('#sample_size').val();
+    //
+    //
+    //         return $.ajax({
+    //             type: 'post',
+    //             url: g_RESTAPI_HOST_BASE+"source/from_sklearn_dataset/",
+    //             data: data,
+    //             dataType: 'json',
+    //             success: function (resultData, textStatus, request) {
+    //                 if (resultData['error_msg'] == null ){
+    //                     alert("저장된 데이터를 불러옵니다.");
+    //                     $('.modal').modal('hide');
+    //                     _p.loadStatus();
+    //                     isFirst = true;
+    //                     $('#column_table').bootstrapTable('refresh')
+    //                 } else {
+    //                     alert(resultData['error_msg']);
+    //                     $('.toggle-disable').prop('disabled', false)
+    //                     $('#preprocess_loader').removeClass("loader")
+    //                 }
+    //             },
+    //             error: function (res) {
+    //                 alert(res.responseJSON.message);
+    //                 $('.toggle-disable').prop('disabled', false)
+    //                 $('#preprocess_loader').removeClass("loader")
+    //             }
+    //         })
+    //     }else {
+    //         _p.dataset_name = $('#dataset_name_input').val();
+    //         if (_p.dataset_name == "") {
+    //             alert("Dataset 이름을 입력해 주세요.");
+    //             return false;
+    //         }
+    //         $("#dataset").fileinput("upload");
+    //     }
+    // };
 
     _p.loadStatus = function (){
         $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE+'runtime/',
+            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id + '/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
-                console.log(resultData)
-                status = resultData.status
                 //화면 세팅
-                if(status === "learning"){
+                if(resultData.status === "learning"){
                     $('.toggle-disable').prop('disabled', true);
                     $('#leaderboard_loader').addClass("loader");
                 }else{
@@ -291,27 +289,22 @@ var $FRONTEND = (function (module) {
         });
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE+'dataset/',
+            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
-                    if(resultData.name===""){
-                        $("#dataset_name").text("Welcome!");
-                        $("#dataset_info").hide();
-                    }else{
-                        $("#dataset_info").show();
-                        $("#dataset_name").text(resultData['name']);
-                        $("#row_count").text(resultData['rowCount']);
-                        $("#col_count").text(resultData['colCount']);
-                        var corr = JSON.parse(resultData['corrJson'] );
-                        corr.data =[];
-                        for(var i = 0; i < corr.z.length; i++) {
-                            for(var j = 0; j < corr.z[i].length; j++) {
-                                corr.data.push([i,j,corr.z[i][j]]);
-                            }
+                    $("#dataset_info").show();
+                    $("#dataset_name").text(resultData['name']);
+                    $("#row_count").text(resultData['rowCount']);
+                    $("#col_count").text(resultData['colCount']);
+                    var corr = JSON.parse(resultData['corrJson'] );
+                    corr.data =[];
+                    for(var i = 0; i < corr.z.length; i++) {
+                        for(var j = 0; j < corr.z[i].length; j++) {
+                            corr.data.push([i,j,corr.z[i][j]]);
                         }
-                        _p.drawCorrelation(corr);
                     }
+                    _p.drawCorrelation(corr);
                 } else {
                     alert(resultData['error_msg']);
                 }
@@ -431,7 +424,7 @@ var $FRONTEND = (function (module) {
         data.isFeature = $('#feature_' + rowid).is(":checked");
         return $.ajax({
             type: 'patch',
-            url: g_RESTAPI_HOST_BASE + 'dataset/columns/{0}/'.format(rowid),
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id+'/columns/{0}/'.format(rowid),
             data: data,
             dataType: 'json',
             success: function (resultData, textStatus, request) {
@@ -452,7 +445,7 @@ var $FRONTEND = (function (module) {
         data.estimatorType = $('#estimator_type option:selected').val();
         return $.ajax({
             type: 'patch',
-            url: g_RESTAPI_HOST_BASE + 'runtime/',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id+'/',
             data: JSON.stringify(data),
             dataType: 'json',
             contentType: 'application/json',
@@ -467,7 +460,7 @@ var $FRONTEND = (function (module) {
         data.isTarget = false;
         return $.ajax({
             type: 'patch',
-            url: g_RESTAPI_HOST_BASE + 'dataset/columns/{0}/'.format(targetColumn.id),
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/dataset/columns/{0}/'.format(targetColumn.id),
             data: data,
             dataType: 'json',
             success: function (resultData, textStatus, request) {
@@ -479,7 +472,7 @@ var $FRONTEND = (function (module) {
                     data.isTarget = true;
                     $.ajax({
                         type: 'patch',
-                        url: g_RESTAPI_HOST_BASE + 'dataset/columns/{0}/'.format(rowid),
+                        url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/dataset/columns/{0}/'.format(rowid),
                         data: data,
                         dataType: 'json',
                         success: function (resultData, textStatus, request) {
@@ -722,7 +715,7 @@ var $FRONTEND = (function (module) {
 
         return $.ajax({
             type: 'patch',
-            url: g_RESTAPI_HOST_BASE + 'runtime/',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id +'/',
             data: JSON.stringify(data),
             dataType: 'json',
             contentType: 'application/json',
@@ -832,7 +825,7 @@ var $FRONTEND = (function (module) {
         // }
         return $.ajax({
             type: 'patch',
-            url : g_RESTAPI_HOST_BASE + 'dataset/',
+            url : g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/dataset/',
             data: JSON.stringify(data),
             dataType: 'json',
             contentType: 'application/json',
@@ -850,35 +843,35 @@ var $FRONTEND = (function (module) {
 
     };
 
-    _p.preprocess = function(){
-
-        return $.ajax({
-            type: 'post',
-            url: g_RESTAPI_HOST_BASE + 'dataset/preprocess/',
-            dataType: 'json',
-            success: function (resultData, textStatus, request) {
-                if (resultData['error_msg'] == null ){
-                    _p.runAutoml();
-                } else {
-                    alert(resultData['error_msg']);
-                }
-            },
-            error: function (res) {
-                alert(res.responseText);
-            }
-        })
-    };
+    // _p.preprocess = function(){
+    //
+    //     return $.ajax({
+    //         type: 'post',
+    //         url: g_RESTAPI_HOST_BASE + 'dataset/preprocess/',
+    //         dataType: 'json',
+    //         success: function (resultData, textStatus, request) {
+    //             if (resultData['error_msg'] == null ){
+    //                 _p.runAutoml();
+    //             } else {
+    //                 alert(resultData['error_msg']);
+    //             }
+    //         },
+    //         error: function (res) {
+    //             alert(res.responseText);
+    //         }
+    //     })
+    // };
 
     _p.runAutoml = function(){
         return $.ajax({
             type: 'post',
-            url : g_RESTAPI_HOST_BASE + 'runtime/start/',
+            url : g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/start/',
             dataType: 'json',
             contentType: 'application/json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
                     alert("AutoML 구동을 시작합니다.") ;
-                    window.location.replace("/leaderboard");
+                    window.location.replace("/leaderboard/"+runtime_id+"/");
                 } else {
                     alert(resultData['error_msg']);
                 }
