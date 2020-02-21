@@ -3,7 +3,6 @@ var $FRONTEND = (function (module) {
 
 
     _p.dataset_name ="";
-    var isFirst;
     var REFRESH_RUNTIMES_QUERY = `
                                     query {
                                       runtimes {
@@ -88,8 +87,8 @@ var $FRONTEND = (function (module) {
             allowedFileExtensions: ["csv","tsv"],
             uploadExtraData: function (previewId, index) {
                 var data = {};
-                data.dataset_name=_p.dataset_name;
-                data.sample_size = $('#sample_size').val();
+                data.dataset_name=$('#dataset_name_input').val()
+                data.sample_size = $('#sample_size').val()
                 return data;
             }
         });
@@ -114,13 +113,14 @@ var $FRONTEND = (function (module) {
 
     };
 
-    _p.checkboxFormatter =  function (value, row) {
-        return '<input type="checkbox" value="'+value+'">'
-
-    }
 
     _p.datasetFormatter =  function (value, row) {
-        return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target:'+value.targetName+', '+value.featureNames.length+'features)'
+        if(row.status === 'ready') {
+            return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target:'+value.targetName+', '+value.featureNames.length+'features)'
+        }else{
+            return '<a  href="/leaderboard/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target:'+value.targetName+', '+value.featureNames.length+'features)'
+        }
+
     }
 
     _p.progressFormatter =  function (value, row) {
@@ -129,7 +129,12 @@ var $FRONTEND = (function (module) {
 
     _p.workerscaleFormatter =  function (value, row) {
         var worker_scales = [1, 2, 3, 4]
-        var selectBox ='<div class="wrap_select"><select id="workerscale_' + row.id + '" class="form-control" data-style="btn-info" onchange="$FRONTEND._p.updateScale('+row.id+')">'
+        var selectBox ='<div class="wrap_select"><select id="workerscale_' + row.id + '" class="form-control" data-style="btn-info"'
+        if(row.status === 'ready') {
+            selectBox += 'onchange="$FRONTEND._p.updateScale(' + row.id + ')">'
+        }else{
+            selectBox += 'disabled>'
+        }
         for (var i = 0; i < worker_scales.length; i++) {
             if (value === worker_scales[i]) {
                 selectBox += '<option value="'+worker_scales[i]+'" selected>'+worker_scales[i]+'</option>'

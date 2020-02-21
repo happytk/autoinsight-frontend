@@ -77,7 +77,7 @@ var $FRONTEND = (function (module) {
                         $('#leaderboard_loader').removeClass('loader')
                         clearInterval(interval)
                     }
-                    percent = Math.round(resultData.doneSlot / resultData.totalSlot * 100) + '%'
+                    percent = Math.round(resultData.doneSlot / resultData.timeout * 100) + '%'
                     $('#percent').text(percent)
                     $('#progress_bar').css('width', percent)
 
@@ -185,7 +185,7 @@ var $FRONTEND = (function (module) {
     }
 
     _p.explanationFormatter = function (value, row) {
-        if (row.tryLimeHtml) {
+        if (row.limeHtmlValid) {
             return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-explanation" onclick="$FRONTEND._p.setExplanationModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, row.typ)
         } else {
             return '<button class="btn_s btn_border" disabled>-</button>';
@@ -194,15 +194,14 @@ var $FRONTEND = (function (module) {
 
     _p.deployFormatter = function (value, row) {
         if (row.deployed) {
-            return '<button id ="deploy' + value + '" class="btn_deploy" type="button" disabled><span class="ico_automl ico_check">Deploy</span></button>'.format(value, row.typ)
+            return '<button id ="deploy' + value + '" class="btn_deploy" type="button" disabled><span class="ico_automl ico_check">Deploy</span></button>'
         }
-        return '<button id ="deploy' + value + '" class="btn_deploy" type="button" onclick="$FRONTEND._p.deployModel(\'{0}\',\'{1}\')"><span class="ico_automl ico_arr">Deploy</span></button>'.format(value, row.typ)
+        return '<button id ="deploy' + value + '" class="btn_deploy" type="button" onclick="$FRONTEND._p.deployModel('+value+')"><span class="ico_automl ico_arr">Deploy</span></button>'
     }
 
-    _p.deployModel = function (model_pk, model_type) {
+    _p.deployModel = function (model_pk) {
         var data = {}
-        data.model_pk = model_pk
-        data.model_type = model_type
+        data.modelPk = model_pk
 
         $('.ico_check').toggleClass('ico_check', 'ico_arr')
         $('#deploy' + model_pk + 'span').toggleClass('ico_arr', 'ico_check') // .html('<span class="ico_automl ico_check">Deploy</span>')

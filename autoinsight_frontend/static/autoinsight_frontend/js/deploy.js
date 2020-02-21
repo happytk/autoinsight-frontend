@@ -1,5 +1,6 @@
 var $FRONTEND = (function (module) {
     var _p = module._p = module._p || {};
+    var columns
     _p.init = function () {
         $('#deployed').hide()
         $('#not_deployed').hide()
@@ -68,9 +69,11 @@ var $FRONTEND = (function (module) {
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
                     var tablehtml = ""
+                    columns = []
                     $(resultData).each(function(index, column) {
                         if(column.isFeature === true){
                             tablehtml += '<tr><td>'+column.name+'</td><td>'+column.datatype+'</td><td><input type="text" class="form-control predict-input" mean="'+column.mean+'"></td></tr>'
+                            columns.push(column.name)
                         }
                     })
                     $('#predict_table').html(tablehtml)
@@ -92,12 +95,15 @@ var $FRONTEND = (function (module) {
 
     _p.singlePredict = function(){
         var data = {}
-        inputstring =""
+        inputstring ='{'
         len = $(".predict-input").length
         $(".predict-input").each(function(index, value) {
-            inputstring+=$(this).val()
-            if(index+1 < len) inputstring+= ","
+            inputstring+='"'+columns[index]+'"'+':'
+            inputstring+='"'+$(this).val()+'"'
+            if(index+1 < len) inputstring+= ','
         })
+        inputstring+='}'
+
         data.inputs = inputstring
 
         return $.ajax({
@@ -108,7 +114,7 @@ var $FRONTEND = (function (module) {
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
                     var tablehtml = ""
-                    tablehtml += '<tr><td>'+resultData.inputs[0]+'</td><td>'+resultData.result[0]+'</td><td>'+resultData.errors[0]+'</td></tr>'
+                    tablehtml += '<tr><td>'+JSON.stringify(resultData.input)+'</td><td>'+resultData.result+'</td><td>'+resultData.error+'</td></tr>'
                     $('#single_result_tbody').html(tablehtml)
                     $('#single_result_lime iframe').attr('srcdoc', resultData.lime.asHtml)
                     $('#single_result').show()
@@ -122,33 +128,33 @@ var $FRONTEND = (function (module) {
         })
     }
 
-    _p.bulkPredict = function(){
-        var data = {}
-
-        data.inputs = $('#outlined-textarea').val()
-
-        return $.ajax({
-            type: 'post',
-            url: g_RESTAPI_HOST_BASE +'runtimes/'+runtime_id + '/deployment/predict/',
-            data: data,
-            dataType: 'json',
-            success: function (resultData, textStatus, request) {
-                if (resultData['error_msg'] == null ){
-                    var tablehtml = ""
-                    $(resultData.inputs).each(function(index, value) {
-                        tablehtml += '<tr><td>'+value+'</td><td>'+resultData.result[index]+'</td><td>'+resultData.errors[index]+'</td></tr>'
-                    })
-                    $('#bulk_result_tbody').html(tablehtml)
-                    $('#bulk_result').show()
-                } else {
-                    console.log(resultData['error_msg'])
-                }
-            },
-            error: function (res) {
-                alert(res.responseJSON.message)
-            }
-        })
-    }
+    // _p.bulkPredict = function(){
+    //     var data = {}
+    //
+    //     data.inputs = $('#outlined-textarea').val()
+    //
+    //     return $.ajax({
+    //         type: 'post',
+    //         url: g_RESTAPI_HOST_BASE +'runtimes/'+runtime_id + '/deployment/predict/',
+    //         data: data,
+    //         dataType: 'json',
+    //         success: function (resultData, textStatus, request) {
+    //             if (resultData['error_msg'] == null ){
+    //                 var tablehtml = ""
+    //                 $(resultData.inputs).each(function(index, value) {
+    //                     tablehtml += '<tr><td>'+value+'</td><td>'+resultData.result[index]+'</td><td>'+resultData.errors[index]+'</td></tr>'
+    //                 })
+    //                 $('#bulk_result_tbody').html(tablehtml)
+    //                 $('#bulk_result').show()
+    //             } else {
+    //                 console.log(resultData['error_msg'])
+    //             }
+    //         },
+    //         error: function (res) {
+    //             alert(res.responseJSON.message)
+    //         }
+    //     })
+    // }
 
 
     return module;

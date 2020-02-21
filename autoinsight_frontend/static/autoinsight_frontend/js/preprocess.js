@@ -40,7 +40,7 @@ var $FRONTEND = (function (module) {
             }
         });
 
-        _p.loadStatus();
+        var status = _p.loadStatus();
         isFirst = true;
         $('#dataset').on('fileuploaded', function (objectEvent, params){
             alert("파일이 저장되었습니다.");
@@ -68,7 +68,7 @@ var $FRONTEND = (function (module) {
                             $('#estimator_type').val("regressor");
                             $('#metric').val('r2');
                         }
-                        _p.updateEstimatorType();
+                        if(status === 'ready') _p.updateEstimatorType();
                         isFirst = false
                     }
                     targetColumn.id = column.id;
@@ -268,12 +268,14 @@ var $FRONTEND = (function (module) {
     // };
 
     _p.loadStatus = function (){
+        var status =""
         $.ajax({
             type: 'get',
             url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id + '/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 //화면 세팅
+                status = resultData.status
                 if(resultData.status === "learning"){
                     $('.toggle-disable').prop('disabled', true);
                     $('#leaderboard_loader').addClass("loader");
@@ -287,7 +289,7 @@ var $FRONTEND = (function (module) {
                 alert(res.responseJSON.message);
             }
         });
-        return $.ajax({
+        $.ajax({
             type: 'get',
             url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/',
             dataType: 'json',
@@ -313,6 +315,7 @@ var $FRONTEND = (function (module) {
                 alert(res.responseJSON.message);
             }
         });
+        return status
     };
 
     _p.clearAll = function(){

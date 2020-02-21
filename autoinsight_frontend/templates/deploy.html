@@ -41,6 +41,7 @@
         <main>
             <div class="container">
                 <nav>
+                    <button id="data_btn" class="btn_m btn_border" type="button" onclick="window.location.href='/experiment'">Back to Experiment</button>
                     <ul class="list_menu">
                         <li>
                             <a class="link_menu" href="/preprocess/{{ runtime_id }}/">Preprocess</a>
@@ -146,7 +147,7 @@ trained_model.predict(X)
                         </div>
                         </div>
                     </div>
-                    <div class="panel panel-default">
+                    <!--<div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">데이터 예측하기(CSV)</h3>
                         </div>
@@ -168,7 +169,7 @@ trained_model.predict(X)
                             </table>
 
                         </div>
-                    </div>
+                    </div>-->
             </section>
                 <section class="section_content" id="not_deployed">
                     <p>배포된 모델이 존재하지 않습니다.</p>

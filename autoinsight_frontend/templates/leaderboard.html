@@ -53,6 +53,7 @@
         <main>
             <div class="container">
                 <nav>
+                    <button id="data_btn" class="btn_m btn_border" type="button" onclick="window.location.href='/experiment'">Back to Experiment</button>
                     <ul class="list_menu">
                         <li>
                             <a class="link_menu" href="/preprocess/{{ runtime_id }}/">Preprocess</a>
@@ -107,7 +108,7 @@
                         </colgroup>
                         <thead>
                         <tr>
-                            <th data-field="estimator" data-formatter="$FRONTEND._p.modelFormatter" class="txt_l">Model
+                            <th data-field="estimatorName" data-formatter="$FRONTEND._p.modelFormatter" class="txt_l">Model
                                 <button class="btn_sort" type="button"><span class="ico_automl ico_sort">정렬</span></button>
                             </th>
                             <th data-field="score" class="txt_l">Score
