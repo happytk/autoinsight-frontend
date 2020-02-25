@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>AutoInsight</title>
+    <title>Autoinsight</title>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,500,700|Noto+Serif+KR:700&display=swap" rel="stylesheet">
     <!-- static -->
     <link href="{% static 'autoinsight_frontend/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -18,8 +18,8 @@
 
 {% block script_foot %}
     <script>
-	var g_RESTAPI_HOST_BASE = '{{ BACKEND_RESTAPI_URL }}'; // base.js로 이전예정
-	</script>
+        var g_RESTAPI_HOST_BASE = '{{ BACKEND_RESTAPI_URL }}'; // base.js로 이전예정
+    </script>
     <script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}" ></script>
     <script type="text/javascript" src="{% static 'autoinsight_frontend/js/bootstrap.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'autoinsight_frontend/js/bootstrap-table.min.js' %}"></script>
@@ -54,7 +54,7 @@
                     <div class="area_tit">
                         <h3 id="dataset_name" class="tit_table">Experiments</h3>
                         <div class="wrap_btn">
-                            <button id="data_btn" class="btn_m btn_border toggle-disable" type="button" data-toggle="modal" data-target="#modal-dataset">Create New</button>
+                            <button id="data_btn" class="btn_m btn_border" type="button" data-toggle="modal" data-target="#modal-dataset">Create New</button>
                         </div>
                     </div>
 
@@ -64,12 +64,12 @@
                             <col style="width:60px">
                             <col style="width:120px">
                             <col style="width:90px">
-                            <col style="width:120px">
                             <col style="width:90px">
                             <col style="width:90px">
-                            <col style="width:110px">
                             <col style="width:100px">
                             <col style="width:100%">
+                            <col style="width:150px">
+                            <col style="width:110px">
                             <col style="width:90px">
                             <col style="width:130px">
                             <col>
@@ -81,13 +81,12 @@
                             <th class="txt_l" data-field="dataset" data-formatter="$FRONTEND._p.datasetFormatter">Dataset
                             </th>
                             <th data-field="status">Status</th>
-                            <th data-field="estimatorType">Estimator<br>Type
-                            </th>
                             <th data-field="modelsCnt">Models<br>Count</th>
                             <th data-field="bestScore">Best<br>Score</th>
-                            <th data-field="metric">metric</th>
                             <th data-field="doneSlot" data-formatter="$FRONTEND._p.progressFormatter">Progress</th>
                             <th data-field="createdAt">Created At</th>
+                            <th data-field="estimatorType" data-formatter="$FRONTEND._p.estimatorFormatter">Estimator<br>Type</th>
+                            <th data-field="metric" data-formatter="$FRONTEND._p.metricFormatter">metric</th>
                             <th data-field="workerScale" data-formatter="$FRONTEND._p.workerscaleFormatter">Worker<br>Scale</th>
                             <th data-field="id" data-formatter="$FRONTEND._p.actionFormatter">Action</th>
                         </tr>
@@ -174,5 +173,75 @@
         </div>
     </div>
     <!-- //Add New Dataset -->
+
+    <div class="modal fade popup_parameter" id="modal-setting" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="header_popup">
+                    <strong class="tit_popup">Runtime Setting</strong>
+                </div>
+                <div class="body_popup">
+                    <!-- General -->
+                    <dl class="list_general">
+                        <div class="item_dl type_inline">
+                            <dt>Scoring Metric</dt>
+                            <dd>
+                                <div class="wrap_select">
+                                    <select name="" id="metric" class="form-control toggle-disable">
+                                    </select>
+                                </div>
+                            </dd>
+                        </div>
+                        <div class="item_dl item_evaluation type_inline">
+                            <div>
+                                <dt>Evaluation</dt>
+                                <dd>
+                                    <div class="wrap_select">
+                                        <select name="" id="resampling_strategy" class="form-control toggle-disable">
+                                            <option value="holdout">Holdout</option>
+                                            <!--<option value="holdout-iterative-fit">Holdout-Iterative-Fit</option>-->
+                                            <option value="cv">CV</option>
+                                            <!--<option value="partial-cv">Partial-CV</option>-->
+                                        </select>
+                                    </div>
+                                </dd>
+                            </div>
+
+                            <div id="train_split_area">
+                                <dt>Train Split</dt>
+                                <dd>
+                                    <input id="split_testdata_rate" class="inp_txt toggle-disable" type="number" step="0.01" value="0.67">
+                                </dd>
+                                <!--<button type="button" class="btn btn_custom" data-toggle="modal" data-target="#modal-customize">Customize</button>-->
+                            </div>
+
+                            <div id="k_folds_area">
+                                <dt>K-folds</dt>
+                                <dd>
+                                    <input type="number" name="" id="resampling_strategy_cv_folds" class="inp_txt inp_timeout toggle-disable" min="1" max="10" value="5">
+                                </dd>
+                            </div>
+                        </div>
+
+                        <div class="item_dl type_inline">
+                            <dt>Time Out (.min)</dt>
+                            <dd>
+                                <input type="number" name="" id="gen_time_out" class="inp_txt inp_timeout toggle-disable" min="1" max="180" value="60">
+                            </dd>
+                        </div>
+                    </dl>
+                    <!-- //General -->
+                </div>
+                <div class="footer_popup">
+                    <div class="wrap_btn txt_r">
+                        <input type="number" name="" id="runtime_id" style="display: none;">
+                        <button type="button" class="btn_m btn_confirm toggle-disable" onclick="$FRONTEND._p.saveGenConf()"  data-dismiss="modal">Save</button>
+                        <button type="button" class="btn_m" data-dismiss="modal">Cancel</button>
+                    </div>
+                    <button type="button" class="btn_close" data-dismiss="modal"><span class="ico_automl ico_close">팝업닫기</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

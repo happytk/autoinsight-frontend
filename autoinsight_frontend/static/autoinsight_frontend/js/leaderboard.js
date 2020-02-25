@@ -181,12 +181,12 @@ var $FRONTEND = (function (module) {
     }
 
     _p.informationFormatter = function (value, row) {
-        return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-information" onclick="$FRONTEND._p.setInformationModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, row.typ)
+        return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-information" onclick="$FRONTEND._p.setInformationModal('+value+')" type="button" >View</button>'
     }
 
     _p.explanationFormatter = function (value, row) {
         if (row.limeHtmlValid) {
-            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-explanation" onclick="$FRONTEND._p.setExplanationModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, row.typ)
+            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-explanation" onclick="$FRONTEND._p.setExplanationModal('+value+')" type="button" >View</button>'
         } else {
             return '<button class="btn_s btn_border" disabled>-</button>';
         }
@@ -238,7 +238,7 @@ var $FRONTEND = (function (module) {
     }
 
     // Modal 관련
-    _p.setInformationModal = function (model_pk, model_type) {
+    _p.setInformationModal = function (model_pk) {
         $('#modal-information #modal-information-loading').show()
         $('#modal-information #modal-information-done').hide()
         $('#modal-information #modal-information-error').hide()
@@ -249,6 +249,7 @@ var $FRONTEND = (function (module) {
             $('.classification-info').hide()
             $('.regression-info').show()
         }
+
         if(model_info[model_pk] !== null){
             _p.drawFeature(model_info[model_pk].featureImportancesJson)
             _p.drawRoc(model_info[model_pk].rocCurveJson)
@@ -257,10 +258,9 @@ var $FRONTEND = (function (module) {
             $('#modal-information #modal-information-loading').hide()
             $('#modal-information #modal-information-done').show()
         }else{
-            model_type = model_type+'s'
             return $.ajax({
                 type: 'get',
-                url: g_RESTAPI_HOST_BASE + 'runtimes/{0}/{1}/{2}/stats/'.format(runtime_id, model_type, model_pk),
+                url: g_RESTAPI_HOST_BASE + 'runtimes/{0}/models/{1}/stats/'.format(runtime_id, model_pk),
                 dataType: 'json',
                 success: function (resultData, textStatus, request) {
                     if (resultData.error_msg == null) {
@@ -295,10 +295,9 @@ var $FRONTEND = (function (module) {
 
     }
 
-    _p.setExplanationModal = function (model_pk, model_type) {
+    _p.setExplanationModal = function (model_pk) {
 
         var data = {}
-        model_type = model_type + 's'
 
         $('#modal-explanation #modal-explanation-loading').show()
         $('#modal-explanation #modal-explanation-done').hide()
@@ -306,7 +305,7 @@ var $FRONTEND = (function (module) {
 
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE + 'runtimes/{0}/{1}/{2}/explanation/'.format(runtime_id, model_type, model_pk),
+            url: g_RESTAPI_HOST_BASE + 'runtimes/{0}/models/{1}/explanation/'.format(runtime_id, model_pk),
             data: data,
             dataType: 'json',
             success: function (resultData, textStatus, request) {

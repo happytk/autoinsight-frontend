@@ -130,7 +130,6 @@ var $FRONTEND = (function (module) {
                 url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id,
                 dataType: 'json',
                 success: function (resultData, textStatus, request) {
-
                     metricCombobox ="";
                     $.each(resultData['availableMetrics'], function( index, value ) {
                         if(value === resultData['metric']){
@@ -276,12 +275,14 @@ var $FRONTEND = (function (module) {
             success: function (resultData, textStatus, request) {
                 //화면 세팅
                 status = resultData.status
-                if(resultData.status === "learning"){
+                if(resultData.status === "ready"){
+                    $('.toggle-disable').prop('disabled', false);
+                    $('#loader').removeClass("loader");
+                }else if(resultData.status === "learning"){
                     $('.toggle-disable').prop('disabled', true);
                     $('#leaderboard_loader').addClass("loader");
                 }else{
-                    $('.toggle-disable').prop('disabled', false);
-                    $('#loader').removeClass("loader");
+                    $('.toggle-disable').prop('disabled', true);
                 }
                 $('#estimator_type').val(resultData.estimatorType);
             },
@@ -667,8 +668,8 @@ var $FRONTEND = (function (module) {
             '<option value="BoxCoxTransformation">Box-Cox Transformation</option>' +
             '<option value="YeoJohnsonTransformation" selected>Yeo-Johnson Transformation</option>' +
             '</select></div></dd>' +
-            '<button type="button" class="btn_cal" onclick="$FRONTEND._p.removePowerTrans({0})">-</button></div>'.format(i)+
-            '<div class="txt_next"><button type="button" class="btn_cal" onclick="$FRONTEND._p.addPowerTrans({0})">+</button></div></div>'.format(i+1);
+            '<button type="button" class="btn_cal toggle-disable" onclick="$FRONTEND._p.removePowerTrans({0})">-</button></div>'.format(i)+
+            '<div class="txt_next"><button type="button" class="btn_cal toggle-disable" onclick="$FRONTEND._p.addPowerTrans({0})">+</button></div></div>'.format(i+1);
         $('#powerTrans_area').append(appendHtml);
 
     };
@@ -701,39 +702,6 @@ var $FRONTEND = (function (module) {
         }
     }
 
-
-    _p.saveGenConf = function() {
-        var data = {};
-        data.metric = $('#metric option:selected').val();
-        data.resamplingStrategy = $('#resampling_strategy option:selected').val();
-        data.resamplingStrategyHoldoutTrainSize = $('#split_testdata_rate').val();
-        data.resamplingStrategyCvFolds = $('#resampling_strategy_cv_folds').val();
-        data.overSampling = $('#gen_over_sampling option:selected').val();
-        var timeout = $('#gen_time_out').val();
-        if (timeout < 1 ||timeout > 180) {
-            alert("Timeout은 1~180 사이의 값으로 입력해 주세요");
-            return false;
-        }
-        data.timeout = timeout*60;
-
-        return $.ajax({
-            type: 'patch',
-            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id +'/',
-            data: JSON.stringify(data),
-            dataType: 'json',
-            contentType: 'application/json',
-            success: function (resultData, textStatus, request) {
-                if (resultData['error_msg'] == null ){
-                    _p.savePreConf();
-                } else {
-                    alert(resultData['error_msg']);
-                }
-            },
-            error: function (res) {
-                alert(res.responseJSON.message);
-            }
-        })
-    };
 
     _p.savePreConf = function(){
         var data = {};
