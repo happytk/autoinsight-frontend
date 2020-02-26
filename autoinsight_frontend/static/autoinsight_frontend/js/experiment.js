@@ -3,6 +3,8 @@ var $FRONTEND = (function (module) {
 
 
     _p.dataset_name ="";
+    var hasCreating
+    var interval
     var REFRESH_RUNTIMES_QUERY = `
                                     query {
                                       runtimes {
@@ -108,16 +110,35 @@ var $FRONTEND = (function (module) {
 
         $('#dataset').on('fileuploaded', function (objectEvent, params){
             _p.createRuntime(params.response.id)
-
         });
+
+        if(hasCreating){
+            console.log("@@@@@")
+            hasCreating = false
+            _p.playInterval()
+        }else{
+            clearInterval(interval)
+        }
+
+
 
 
     };
 
+    _p.playInterval = function () {
+
+        interval = setInterval(function () { location.reload() }, 1000)
+        // return false
+    }
+
 
     _p.datasetFormatter =  function (value, row) {
         if(row.status === 'ready') {
-            return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target:'+value.targetName+', '+value.featureNames.length+'features)'
+            return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureNames.length+' features)'
+        }else if(row.status === 'creating') {
+            hasCreating = true
+             _p.playInterval()
+            return '-'
         }else{
             return '<a  href="/leaderboard/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target:'+value.targetName+', '+value.featureNames.length+'features)'
         }
@@ -291,14 +312,14 @@ var $FRONTEND = (function (module) {
 
     _p.setModal = function(runtime_id) {
         $('#resampling_strategy').change(function() {
-                if ($(this).val() === 'holdout' || $(this).val() === 'holdout-iterative-fit') {
-                    $('#k_folds_area').hide();
-                    $('#train_split_area').show();
-                }else{
-                    $('#k_folds_area').show();
-                    $('#train_split_area').hide();
-                }
-            });
+            if ($(this).val() === 'holdout' || $(this).val() === 'holdout-iterative-fit') {
+                $('#k_folds_area').hide();
+                $('#train_split_area').show();
+            }else{
+                $('#k_folds_area').show();
+                $('#train_split_area').hide();
+            }
+        });
 
         return $.ajax({
             type: 'get',
