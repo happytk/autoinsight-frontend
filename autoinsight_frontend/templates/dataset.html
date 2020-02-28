@@ -31,7 +31,7 @@
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/heatmap.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/preprocess.js' %}"></script>
+    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/dataset.js' %}"></script>
     <script>
         $(document).ready(function() {
             $FRONTEND._p.init();
@@ -57,10 +57,10 @@
                 <nav>
                     <button id="data_btn" class="btn_m btn_border" type="button" onclick="window.location.href='/experiment'">Back to Experiment</button>
                     <ul class="list_menu">
-                        <li>
+                        <li class="active">
                             <a class="link_menu" href="/dataset/{{ runtime_id }}/">Dataset</a>
                         </li>
-                        <li class="active">
+                        <li>
                             <a class="link_menu" href="/preprocess/{{ runtime_id }}/">Preprocess<div id="preprocess_loader"></div></a>
                         </li>
                         <li>
@@ -75,7 +75,7 @@
 
             <div class="container">
                 <section class="section_content">
-                    <h2 class="screen_out">Preprocess</h2><!-- tab menu 에서 선택된 텍스트가 들어갑니다. -->
+                    <h2 class="screen_out"></h2><!-- tab menu 에서 선택된 텍스트가 들어갑니다. -->
 
                     <div class="area_tit">
                         <h3 id="dataset_name" class="tit_table"></h3>
@@ -100,7 +100,7 @@
                             <button class="btn_search"><span class="ico_automl ico_search">검색</span></button>
                         </div>-->
                     </div>
-                    <table id="column_table"
+                    <!-- <table id="column_table"
                            data-toggle="table"
                            data-pagination="false"
                            data-url = "{{ BACKEND_RESTAPI_URL }}runtimes/{{ runtime_id }}/dataset/columns/"
@@ -163,7 +163,7 @@
                                 Run AutoML <span class="ico_automl ico_arr"></span>
                             </button>
                         </div>
-                    </div>
+                    </div>-->
                 </section>
             </div>
         </main>
@@ -504,10 +504,10 @@
                                             </div>
                                         </a>
                                         <div class="wrap_select">
-                                            <select id="pre_SMethod" class="form-control" multiple="multiple">
-                                                <!--<option value="Standard" selected>Standardize</option>
+                                            <select name="" id="pre_SMethod" class="form-control">
+                                                <option value="Standard" selected>Standardize</option>
                                                 <option value="MinMax">Minmax</option>
-                                                <option value="MaxAbs">Normalize</option>-->
+                                                <option value="MaxAbs">Normalize</option>
                                             </select>
                                         </div>
                                     </dd>
@@ -533,14 +533,14 @@
                                             </div>
                                         </a>
                                         <div class="wrap_select">
-                                            <select name="" id="pre_FMethod" class="form-control" multiple="multiple">
-                                                <!--<option value="SelectPercentile" selected>SelectPercentile</option>
-                                                <option value="SelectKBest">SelectKBest</option>
-                                                <option value="SelectFwe">SelectFwe</option>
-                                                <option value="FastICA">FastICA</option>
-                                                <option value="FeatureAgglomeration">FeatureAgglomeration</option>
-                                                <option value="PCA">PCA</option>
-                                                <option value="Nystroem">Nystroem</option>-->
+                                            <select name="" id="pre_FMethod" class="form-control">
+                                                <option value="Standard" selected>SelectPercentile</option>
+                                                <option value="MinMax">SelectKBest</option>
+                                                <option value="MaxAbs">SelectFwe</option>
+                                                <option value="MinMax">FastICA</option>
+                                                <option value="MinMax">FeatureAgglomeration</option>
+                                                <option value="MinMax">PCA</option>
+                                                <option value="MinMax">Nystroem</option>
                                             </select>
                                         </div>
                                     </dd>

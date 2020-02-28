@@ -44,6 +44,9 @@
                     <button id="data_btn" class="btn_m btn_border" type="button" onclick="window.location.href='/experiment'">Back to Experiment</button>
                     <ul class="list_menu">
                         <li>
+                            <a class="link_menu" href="/dataset/{{ runtime_id }}/">Dataset</a>
+                        </li>
+                        <li>
                             <a class="link_menu" href="/preprocess/{{ runtime_id }}/">Preprocess</a>
                         </li>
                         <li>
@@ -122,7 +125,7 @@ trained_model.predict(X)
                                 <tr>
                                     <th>특성이름</th>
                                     <th>데이터유형</th>
-                                    <th><button type="button" class="btn btn-primary btn-sm" onclick="$FRONTEND._p.fillMean();">평균값으로 채우기</button></th>
+                                    <th><button type="button" class="btn btn-primary btn-sm" onclick="$FRONTEND._p.fillMostFrequent();">평균값으로 채우기</button></th>
                                 </tr>
                                 </thead>
                                 <tbody id="predict_table">

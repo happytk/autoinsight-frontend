@@ -8,6 +8,9 @@ def view_index(request, template_name="index.html"):
 def view_experiment(request, template_name="experiment.html"):
     return render(request, template_name, {'BACKEND_RESTAPI_URL': settings.BACKEND_RESTAPI_URL})
 
+def view_dataset(request, runtime_id, template_name="dataset.html"):
+    return render(request, template_name, {'BACKEND_RESTAPI_URL': settings.BACKEND_RESTAPI_URL, 'runtime_id':runtime_id})
+
 def view_preprocess(request, runtime_id, template_name="preprocess.html"):
     return render(request, template_name, {'BACKEND_RESTAPI_URL': settings.BACKEND_RESTAPI_URL, 'runtime_id':runtime_id})
 

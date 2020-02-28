@@ -72,7 +72,7 @@ var $FRONTEND = (function (module) {
                     columns = []
                     $(resultData).each(function(index, column) {
                         if(column.isFeature === true){
-                            tablehtml += '<tr><td>'+column.name+'</td><td>'+column.datatype+'</td><td><input type="text" class="form-control predict-input" mean="'+column.mean+'"></td></tr>'
+                            tablehtml += '<tr><td>'+column.name+'</td><td>'+column.datatype+'</td><td><input type="text" class="form-control predict-input" mostFrequent="'+column.mostFrequent+'"></td></tr>'
                             columns.push(column.name)
                         }
                     })
@@ -87,9 +87,9 @@ var $FRONTEND = (function (module) {
         })
     }
 
-    _p.fillMean = function(){
+    _p.fillMostFrequent = function(){
         $(".predict-input").each(function(index, value) {
-            $(this).val($(this).attr("mean"))
+            $(this).val($(this).attr("mostFrequent"))
         })
     }
 

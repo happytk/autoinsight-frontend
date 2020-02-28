@@ -60,20 +60,7 @@ var $FRONTEND = (function (module) {
 
     //초기화면 세팅
     _p.init = function(){
-        $.ajax({
-            type: 'post',
-            url: g_RESTAPI_HOST_BASE+'graphql',
-            data: JSON.stringify({query:REFRESH_RUNTIMES_QUERY}),
-            contentType: "application/json",
-            success: function (resultData, textStatus, request) {
-                //feature 개수, target column 추가
-                $('#runtime_table').bootstrapTable({data: resultData.data.runtimes})
-
-            },
-            error: function (res) {
-                console.log(res);
-            }
-        });
+        _p.refreshTable()
 
         $('#dataset').fileinput({
             uploadUrl: g_RESTAPI_HOST_BASE+"sources/workspace_files/",
@@ -113,7 +100,7 @@ var $FRONTEND = (function (module) {
         });
 
         if(hasCreating){
-            console.log("@@@@@")
+            // console.log("@@@@@")
             hasCreating = false
             _p.playInterval()
         }else{
@@ -127,17 +114,33 @@ var $FRONTEND = (function (module) {
 
     _p.playInterval = function () {
 
-        interval = setInterval(function () { location.reload() }, 1000)
+        interval = setInterval(function () { _p.refreshTable() }, 1000)
         // return false
+    }
+    _p.refreshTable = function () {
+        $.ajax({
+            type: 'post',
+            url: g_RESTAPI_HOST_BASE+'graphql',
+            data: JSON.stringify({query:REFRESH_RUNTIMES_QUERY}),
+            contentType: "application/json",
+            success: function (resultData, textStatus, request) {
+                //feature 개수, target column 추가
+                $('#runtime_table').bootstrapTable('load',{rows: resultData.data.runtimes})
+
+            },
+            error: function (res) {
+                console.log(res);
+            }
+        });
     }
 
 
     _p.datasetFormatter =  function (value, row) {
         if(row.status === 'ready') {
-            return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureNames.length+' features)'
+            return '<a  href="/dataset/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureNames.length+' features)'
         }else if(row.status === 'creating') {
             hasCreating = true
-             _p.playInterval()
+            _p.playInterval()
             return '-'
         }else{
             return '<a  href="/leaderboard/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target:'+value.targetName+', '+value.featureNames.length+'features)'
@@ -272,7 +275,7 @@ var $FRONTEND = (function (module) {
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
                     $('.modal').modal('hide');
-                    location.reload()
+                    _p.refreshTable()
                 } else {
                     alert(resultData['error_msg']);
                 }
@@ -301,7 +304,7 @@ var $FRONTEND = (function (module) {
             data: data,
             success: function (resultData, textStatus, request) {
                 // console.log(resultData)
-                location.reload();
+                _p.refreshTable()
             },
             error: function (res) {
                 alert(res.responseJSON.message);
@@ -386,7 +389,7 @@ var $FRONTEND = (function (module) {
             dataType: 'json',
             success: function (resultData, textStatus, request) {
 
-                location.reload();
+                _p.refreshTable()
             },
             contentType: 'application/json',
             error: function (res) {
@@ -406,7 +409,7 @@ var $FRONTEND = (function (module) {
                 } else {
                     alert(resultData['error_msg']);
                 }
-                location.reload();
+                _p.refreshTable()
             },
             error: function (res) {
                 alert(res.responseJSON.message);
@@ -425,7 +428,7 @@ var $FRONTEND = (function (module) {
                 } else {
                     alert(resultData['error_msg']);
                 }
-                location.reload();
+                _p.refreshTable()
             },
             error: function (res) {
                 alert(res.responseJSON.message);
@@ -439,7 +442,7 @@ var $FRONTEND = (function (module) {
             url: g_RESTAPI_HOST_BASE+"runtimes/"+runtime_id+"/",
             dataType: 'json',
             success: function (resultData, textStatus, request) {
-                location.reload();
+                _p.refreshTable()
             },
             error: function (res) {
                 alert(res.responseJSON.message);
