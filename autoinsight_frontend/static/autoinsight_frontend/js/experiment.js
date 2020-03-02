@@ -3,8 +3,7 @@ var $FRONTEND = (function (module) {
 
 
     _p.dataset_name ="";
-    var hasCreating
-    var interval
+    var hasCreating, interval
     var REFRESH_RUNTIMES_QUERY = `
                                     query {
                                       runtimes {
@@ -84,7 +83,7 @@ var $FRONTEND = (function (module) {
         });
         $('#saved_dataset_area').hide();
         $('#source_type').change(function() {
-            if ($(this).val() === 'saved') {
+            if ($(this).val() === 'sklearn') {
                 $('#dataset_name_input').hide();
                 $('#saved_dataset_area').show();
                 $('#dataset').fileinput('disable');
@@ -134,10 +133,9 @@ var $FRONTEND = (function (module) {
         });
     }
 
-
     _p.datasetFormatter =  function (value, row) {
         if(row.status === 'ready') {
-            return '<a  href="/dataset/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureNames.length+' features)'
+            return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureNames.length+' features)'
         }else if(row.status === 'creating') {
             hasCreating = true
             _p.playInterval()
@@ -229,7 +227,9 @@ var $FRONTEND = (function (module) {
     _p.addDataset = function() {
         $('.toggle-disable').prop('disabled', true)
         $('#preprocess_loader').addClass("loader")
-        if($('#source_type').val()=="saved"){
+        var active_tab = $("ul.nav-tabs li.active a")[0].getAttribute('name');
+        if(active_tab==="newdata"){
+            if($('#source_type').val()=="sklearn"){
             var data = {};
             data.dataset_name = $('#saved_dataset').val();
             if($('#sample_size').val() > 0) data.sample_size = $('#sample_size').val();
@@ -265,6 +265,12 @@ var $FRONTEND = (function (module) {
             }
             $("#dataset").fileinput("upload");
         }
+        }else{
+            source_id = $("input[name='source_id']:checked").val();
+            _p.createRuntime(source_id)
+
+        }
+
     };
 
     _p.createRuntime = function(source_id){
@@ -449,6 +455,12 @@ var $FRONTEND = (function (module) {
             }
         })
     }
+
+    _p.sourceIdFormatter =  function (value, row) {
+        return '<input type="radio" name="source_id" value="'+value+'">'
+    }
+
+
 
 
 
