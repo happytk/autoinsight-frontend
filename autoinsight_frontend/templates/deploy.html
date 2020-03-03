@@ -4,7 +4,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>Autoinsight</title>
-<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,500,700|Noto+Serif+KR:700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,500,700|Noto+Serif+KR:700&display=swap"
+      rel="stylesheet">
 <!-- static -->
 <link href="{% static 'autoinsight_frontend/css/bootstrap.min.css' %}" rel="stylesheet">
 <link href="{% static 'autoinsight_frontend/css/style.css' %}" rel="stylesheet">
@@ -17,10 +18,10 @@
   var g_RESTAPI_HOST_BASE = '{{ BACKEND_RESTAPI_URL }}'; // base.js로 이전예정
   var runtime_id = '{{ runtime_id }}';
 </script>
-<script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}" ></script>
+<script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'autoinsight_frontend/js/deploy.js' %}"></script>
 <script type="text/javascript">
-  $(document).ready(function() {
+  $(document).ready(function () {
     $FRONTEND._p.init();
   });
 </script>
@@ -32,10 +33,13 @@
         <div class="container">
             <a href="/">
                 <h1>
-                    <img src="{% static 'autoinsight_frontend/img/logo_automl.png' %}" class="img_logo" width="221" height="42" alt="AutoInsight">
+                    <img src="{% static 'autoinsight_frontend/img/logo_automl.png' %}" class="img_logo" width="221"
+                         height="42" alt="AutoInsight">
                 </h1></a>
         </div>
-        <button id="data_btn" class="btn_m btn_border" style="margin-left: 78%;" type="button" onclick="window.location.href='/experiment'">Back to Experiment</button>
+        <button id="data_btn" class="btn_m btn_border" style="margin-left: 78%;" type="button"
+                onclick="window.location.href='/experiment'">Back to Experiment
+        </button>
     </header>
     <!-- //header -->
 
@@ -50,7 +54,9 @@
                         <a class="link_menu" href="/preprocess/{{ runtime_id }}/">Preprocess</a>
                     </li>
                     <li>
-                        <a class="link_menu" href="/leaderboard/{{ runtime_id }}/">Leaderboard <div id="leaderboard_loader"></div></a>
+                        <a class="link_menu" href="/leaderboard/{{ runtime_id }}/">Leaderboard
+                            <div id="leaderboard_loader"></div>
+                        </a>
                     </li>
                     <li class="active">
                         <a class="link_menu" href="/deploy/{{ runtime_id }}/">Deploy Model</a>
@@ -63,26 +69,29 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">배포기본정보</h3>
-                    </div><div class="panel-body">
-                    <h2 id="estimator_name"></h2>
-                    <div>훈련된 예측 스코어: <span id="score" style="text-decoration: underline;"></span></div>
-                    <div>배포일자: <span id="created_at" style="text-decoration: underline;"></span></div>
-                    <div class="alert alert-success" role="alert" style="margin-top: 30px;">
-                        <a class="btn btn-danger btn-lg" href="{{ BACKEND_RESTAPI_URL }}runtimes/{{ runtime_id }}/deployment/export">모델바이너리 내려받기</a>
-                        <div style="margin-top: 25px;">이 바이너리 파일은 로컬환경에서 작업할 수 있는 환경을 제공하기 위해 다운로드할 수 있습니다.
-                            <br>로컬환경에 관련 library는 설치되어 있어야 합니다. (python3.7 이상, autoinsight모듈필요.)
-                            <pre style="display: block; overflow-x: auto; padding: 0.5em; color: rgb(0, 0, 0); background: rgb(248, 248, 255);">
+                    </div>
+                    <div class="panel-body">
+                        <h2 id="estimator_name"></h2>
+                        <div>훈련된 예측 스코어: <span id="score" style="text-decoration: underline;"></span></div>
+                        <div>배포일자: <span id="created_at" style="text-decoration: underline;"></span></div>
+                        <div class="alert alert-success" role="alert" style="margin-top: 30px;">
+                            <a class="btn_confirm btn_m"
+                               href="{{ BACKEND_RESTAPI_URL }}runtimes/{{ runtime_id }}/deployment/export">모델바이너리
+                                내려받기</a>
+                            <div style="margin-top: 25px;">이 바이너리 파일은 로컬환경에서 작업할 수 있는 환경을 제공하기 위해 다운로드할 수 있습니다.
+                                <br>로컬환경에 관련 library는 설치되어 있어야 합니다. (python3.7 이상, autoinsight모듈필요.)
+                                <pre style="display: block; overflow-x: auto; padding: 0.5em; color: rgb(0, 0, 0); background: rgb(248, 248, 255);">
                                 <code>
-<span style="color: rgb(64, 128, 128); font-style: italic;"># This trained model doesn't include the preprocessor</span>
-<span style="color: rgb(64, 128, 128); font-style: italic;"># (will be implemented soon!)</span>
-<span style="color: rgb(149, 65, 33);">import</span> pickle
-trained_model = pickle.load(<span style="color: rgb(33, 145, 97);">'downloaded_model'</span>)
-trained_model.predict(X)
+                                    <span style="color: rgb(64, 128, 128); font-style: italic;"># This trained model doesn't include the preprocessor</span>
+                                    <span style="color: rgb(64, 128, 128); font-style: italic;"># (will be implemented soon!)</span>
+                                    <span style="color: rgb(149, 65, 33);">import</span> pickle
+                                    trained_model = pickle.load(<span style="color: rgb(33, 145, 97);">'downloaded_model'</span>)
+                                    trained_model.predict(X)
                                 </code>
                             </pre>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -95,7 +104,8 @@ trained_model.predict(X)
                                 <tbody>
                                 <tr>
                                     <td width="100px"><span class="badge badge-danger">URL</span></td>
-                                    <td><span style="text-decoration: underline;">{{ BACKEND_RESTAPI_URL }}deployment/predict/</span></td>
+                                    <td><span style="text-decoration: underline;">{{ BACKEND_RESTAPI_URL }}deployment/predict/</span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -115,7 +125,9 @@ trained_model.predict(X)
                                     <td>
                                         <span class="badge badge-danger">Output</span>
                                     </td>
-                                    <td><b>inputs</b>은 호출에 사용된 입력값, <b>result</b>예측값, <b>errors</b> 호출시 에러가 있으면 전달 <b>lime</b>예측하는데 사용한 설명자료(html)</td>
+                                    <td><b>inputs</b>은 호출에 사용된 입력값, <b>result</b>예측값, <b>errors</b> 호출시 에러가 있으면 전달 <b>lime</b>예측하는데
+                                        사용한 설명자료(html)
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -125,13 +137,21 @@ trained_model.predict(X)
                             <tr>
                                 <th>특성이름</th>
                                 <th>데이터유형</th>
-                                <th><button type="button" class="btn btn-primary btn-sm" onclick="$FRONTEND._p.fillMostFrequent();">평균값으로 채우기</button></th>
+                                <th>
+                                    <button type="button" class="btn_correlation btn_s"
+                                            onclick="$FRONTEND._p.fillMostFrequent();">평균값으로 채우기
+                                    </button>
+                                </th>
                             </tr>
                             </thead>
                             <tbody id="predict_table">
                             </tbody>
                         </table>
-                        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="$FRONTEND._p.singlePredict();">예측하기</button>
+                        <div class="text-center">
+                            <button type="button" class="btn_confirm btn_b"
+                                    onclick="$FRONTEND._p.singlePredict();">예측하기
+                            </button>
+                        </div>
                         <div id="single_result" class="panel-body">
                             <table class="table">
                                 <thead>
@@ -145,7 +165,9 @@ trained_model.predict(X)
                                 </tbody>
                             </table>
                             <h4>Prediction 설명</h4>
-                            <p id="single_result_lime"><iframe style='border: 0; width:100%;height: 300px;'></iframe></p>
+                            <p id="single_result_lime">
+                                <iframe style='border: 0; width:100%;height: 300px;'></iframe>
+                            </p>
 
                         </div>
                     </div>
