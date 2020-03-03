@@ -6,6 +6,26 @@ var $FRONTEND = (function (module) {
     var targetColumn, columnCombobox, isFirst;
     //초기화면 세팅
     _p.init = function(){
+        // $('#dataset').fileinput({
+        //     uploadUrl: g_RESTAPI_HOST_BASE+"source/workspace_files/",
+        //     browseClass:'btn btn-default ',
+        //     // language: "kr",
+        //     maxFileSize: 2000000,
+        //     msgPlaceholder: "Select a CSV or TSV file",
+        //     elErrorContainer: '#kartik-file-errors5',
+        //     showUpload: false,
+        //     showRemove: false,
+        //     showPreview: false,
+        //     showBrowse: true,
+        //     dropZoneEnabled: false,
+        //     allowedFileExtensions: ["csv","tsv"],
+        //     uploadExtraData: function (previewId, index) {
+        //         var data = {};
+        //         data.dataset_name=_p.dataset_name;
+        //         data.sample_size = $('#sample_size').val();
+        //         return data;
+        //     }
+        // });
 
         $('#saved_dataset_area').hide();
         $('#source_type').change(function() {
@@ -105,10 +125,6 @@ var $FRONTEND = (function (module) {
                     $('#pre_Othreshold_all').show();
                 }
             });
-
-
-
-
             $.ajax({
                 type: 'get',
                 url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id,
@@ -137,71 +153,6 @@ var $FRONTEND = (function (module) {
 
                     var tmp = resultData['timeout']/60;
                     $('#gen_time_out').val(tmp);
-
-                    if(resultData['includeOneHotEncoding']){
-                        $('#pre_1HotEncod').prop( "checked", true );
-                    }
-
-                    if(resultData['includeVarianceThreshold']){
-                        $('#pre_VarThreshold').prop( "checked", true );
-                    }
-
-
-                    smethodCombobox ="";
-                    $.each(resultData['availableScalingMethods'], function( index, value ) {
-                        smethodCombobox += '<option value="'+value+'">'+value+'</option>';
-                    });
-
-                    $('#pre_SMethod').html(smethodCombobox);
-
-                    $('#pre_SMethod').multiselect(
-                        {
-                            includeSelectAllOption: true,
-                            numberDisplayed: 1,
-                            onChange: function($option) {
-                                // Check if the filter was used.
-                                var query = $('#pre_SMethod li.multiselect-filter input').val();
-                                if (query) {
-                                    $('#pre_SMethod li.multiselect-filter input').val('').trigger('keydown');
-                                }
-                            }
-                        }
-                    );
-                    if(resultData['includeScalingMethods'] !== null) {
-                        $('#pre_Scaling').prop( "checked", true )
-                        $('#pre_SMethod').multiselect('select', resultData['includeScalingMethods']);
-                        $('#pre_SMethod').multiselect('refresh');
-                    }
-
-                    fmethodCombobox ="";
-                    $.each(resultData['availableFeatureEngineerings'], function( index, value ) {
-                        if(value === resultData['availableFeatureEngineerings']){
-                            fmethodCombobox += '<option value="'+value+'" selected>'+value+'</option>';
-                        }else{
-                            fmethodCombobox += '<option value="'+value+'">'+value+'</option>';
-                        }
-                    });
-                    $('#pre_FMethod').html(fmethodCombobox);
-
-                    $('#pre_FMethod').multiselect(
-                        {
-                            includeSelectAllOption: true,
-                            numberDisplayed: 1,
-                            onChange: function($option) {
-                                // Check if the filter was used.
-                                var query = $('#pre_FMethod li.multiselect-filter input').val();
-                                if (query) {
-                                    $('#pre_FMethod li.multiselect-filter input').val('').trigger('keydown');
-                                }
-                            }
-                        }
-                    );
-
-                    if(resultData['includeFeatureEngineerings'] !== null) {
-                        $('#pre_FtrSlcon').prop( "checked", true )
-                        $('#pre_FMethod').multiselect('select', resultData['includeFeatureEngineerings']);
-                        $('#pre_FMethod').multiselect('refresh');
-                    }
 
 
                 },
@@ -242,6 +193,9 @@ var $FRONTEND = (function (module) {
                             }
                         }
 
+                        if(resultData['oneHotEncoding']){
+                            $('#pre_1HotEncod').prop( "checked", true );
+                        }
                         // if(resultData['scalerUse']){
                         //     $('#pre_Scaling').prop( "checked", true );
                         //     $('#pre_Sstrategy').val(resultData['scalerStrategy']);
@@ -417,8 +371,8 @@ var $FRONTEND = (function (module) {
 
     _p.targetFormatter = function(value,row){
         var str = "";
-        if (value == true) {type="radio"
-            str = '<div class="wrap_check type_check3 on"><input  id="target_'+row.id+'" name="target" colum_name="'+row.name+'" class="inp_check toggle-disable" onclick="$FRONTEND._p.updateTarget('+row.id+')" checked><label for="target_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
+        if (value == true) {
+            str = '<div class="wrap_check type_check3 on"><input type="radio" id="target_'+row.id+'" name="target" colum_name="'+row.name+'" class="inp_check toggle-disable" onclick="$FRONTEND._p.updateTarget('+row.id+')" checked><label for="target_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
         }else{
             str = '<div class="wrap_check type_check3"><input type="radio" id="target_'+row.id+'" name="target" colum_name="'+row.name+'" class="inp_check toggle-disable" onclick="$FRONTEND._p.updateTarget('+row.id+')"><label for="target_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
         }
@@ -764,28 +718,6 @@ var $FRONTEND = (function (module) {
         }
         data.timeout = timeout*60;
 
-        if  ($('#pre_1HotEncod').is(':checked')) {
-            data.includeOneHotEncoding = true;
-        }else{
-            data.includeOneHotEncoding = false;
-        }
-
-        if  ($('#pre_VarThreshold').is(':checked')) {
-            data.includeVarianceThreshold = true;
-        }else{
-            data.includeVarianceThreshold = false;
-        }
-
-        if  ($('#pre_Scaling').is(':checked')) {
-
-            data.includeScalingMethodsJson = JSON.stringify($('select[id=pre_SMethod]').val());
-        }
-
-        if  ($('#pre_FtrSlcon').is(':checked')) {
-
-            data.includeFeatureEngineeringsJson = JSON.stringify($('select[id=pre_FMethod]').val());
-        }
-
         return $.ajax({
             type: 'patch',
             url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id +'/',
@@ -800,7 +732,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                alert(res.responseText);
+                alert(res.responseJSON.message);
             }
         })
     };
@@ -864,7 +796,10 @@ var $FRONTEND = (function (module) {
         }
 
         // -------------------------- 4. One Hot Encoding -------------------------------
-
+        if  ($('#pre_1HotEncod').is(':checked')) {
+            data.oneHotEncoding = true;
+            console.log('4. one_hot = ',data.oneHotEncoding) ;
+        }
 
         // // ---------------------- 5. Feature Selection - K -------------------------
         // if  (chkItem($('input:checkbox[id=pre_FtrSlcon]').is(":checked"))) {

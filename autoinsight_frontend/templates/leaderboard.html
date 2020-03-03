@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>AutoInsight</title>
+    <title>Autoinsight</title>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,500,700|Noto+Serif+KR:700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
     <!-- static -->
@@ -16,6 +16,7 @@
 {% block script_foot %}
     <script>
 	var g_RESTAPI_HOST_BASE = '{{ BACKEND_RESTAPI_URL }}'; // base.js로 이전예정
+    var runtime_id = '{{ runtime_id }}';
 	</script>
     <script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}" ></script>
     <script type="text/javascript" src="{% static 'autoinsight_frontend/js/bootstrap.min.js' %}"></script>
@@ -47,6 +48,7 @@
                     <img src="{% static 'autoinsight_frontend/img/logo_automl.png' %}" class="img_logo" width="221" height="42" alt="AutoInsight">
                 </h1></a>
             </div>
+            <button id="data_btn" class="btn_m btn_border" style="margin-left: 78%;" type="button" onclick="window.location.href='/experiment'">Back to Experiment</button>
         </header>
         <!-- //header -->
 
@@ -55,13 +57,16 @@
                 <nav>
                     <ul class="list_menu">
                         <li>
-                            <a class="link_menu" href="preprocess">Preprocess</a>
-                        </li>
-                        <li class="active">
-                            <a class="link_menu" href="leaderboard">Leaderboard <div id="leaderboard_loader"></div></a>
+                            <a class="link_menu" href="/dataset/{{ runtime_id }}/">Dataset</a>
                         </li>
                         <li>
-                            <a class="link_menu" href="deploy">Deploy Model</a>
+                            <a class="link_menu" href="/preprocess/{{ runtime_id }}/">Preprocess</a>
+                        </li>
+                        <li class="active">
+                            <a class="link_menu" href="/leaderboard/{{ runtime_id }}/">Leaderboard <div id="leaderboard_loader"></div></a>
+                        </li>
+                        <li>
+                            <a class="link_menu" href="/deploy/{{ runtime_id }}/">Deploy Model</a>
                         </li>
                     </ul>
                 </nav>
@@ -94,7 +99,7 @@
                            data-toggle="table"
                            data-pagination="true"
                            data-side-pagination="server"
-                           data-url="{{ BACKEND_RESTAPI_URL }}runtime/leaderboard/"
+                           data-url="{{ BACKEND_RESTAPI_URL }}runtimes/{{ runtime_id }}/leaderboard/"
                            data-data-field="results"
                            data-total-field="count"
                            class="tbl_g tbl_thead table_leaderboard">
@@ -107,7 +112,7 @@
                         </colgroup>
                         <thead>
                         <tr>
-                            <th data-field="estimator" data-formatter="$FRONTEND._p.modelFormatter" class="txt_l">Model
+                            <th data-field="estimatorName" data-formatter="$FRONTEND._p.modelFormatter" class="txt_l">Model
                                 <button class="btn_sort" type="button"><span class="ico_automl ico_sort">정렬</span></button>
                             </th>
                             <th data-field="score" class="txt_l">Score

@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Autoinsight</title>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,500,700|Noto+Serif+KR:700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
     <!-- static -->
     <link href="{% static 'autoinsight_frontend/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'autoinsight_frontend/css/bootstrap-table.min.css' %}" rel="stylesheet">
@@ -32,7 +31,7 @@
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/heatmap.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/preprocess.js' %}"></script>
+    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/dataset.js' %}"></script>
     <script>
         $(document).ready(function() {
             $FRONTEND._p.init();
@@ -58,10 +57,10 @@
             <div class="container">
                 <nav>
                     <ul class="list_menu">
-                        <li>
+                        <li class="active">
                             <a class="link_menu" href="/dataset/{{ runtime_id }}/">Dataset</a>
                         </li>
-                        <li class="active">
+                        <li>
                             <a class="link_menu" href="/preprocess/{{ runtime_id }}/">Preprocess<div id="preprocess_loader"></div></a>
                         </li>
                         <li>
@@ -76,7 +75,7 @@
 
             <div class="container">
                 <section class="section_content">
-                    <h2 class="screen_out">Preprocess</h2><!-- tab menu 에서 선택된 텍스트가 들어갑니다. -->
+                    <h2 class="screen_out"></h2><!-- tab menu 에서 선택된 텍스트가 들어갑니다. -->
 
                     <div class="area_tit">
                         <h3 id="dataset_name" class="tit_table"></h3>
@@ -101,7 +100,7 @@
                             <button class="btn_search"><span class="ico_automl ico_search">검색</span></button>
                         </div>-->
                     </div>
-                    <table id="column_table"
+                    <!-- <table id="column_table"
                            data-toggle="table"
                            data-pagination="false"
                            data-url = "{{ BACKEND_RESTAPI_URL }}runtimes/{{ runtime_id }}/dataset/columns/"
@@ -158,13 +157,13 @@
                         </div>
                         <div class="wrap_btn">
                             <button class="btn_b btn_setup" type="button" data-toggle="modal" data-target="#modal-setting">
-                                <span class="fas fa-cog"></span>
+                                <span class="ico_automl ico_setup">설정</span>
                             </button>
                             <button class="btn_b btn_confirm toggle-disable" type="button" onclick="$FRONTEND._p.runAutoml()">
                                 Run AutoML <span class="ico_automl ico_arr"></span>
                             </button>
                         </div>
-                    </div>
+                    </div>-->
                 </section>
             </div>
         </main>
@@ -236,10 +235,10 @@
                 </div>
                 <div class="footer_popup">
                     <div class="wrap_btn txt_r">
-                        <button type="button" class="btn_m" data-dismiss="modal">Cancel</button>
                         <button type="button" class="btn_m btn_confirm" onclick="$FRONTEND._p.addDataset()">Add Dataset</button>
+                        <button type="button" class="btn_m" data-dismiss="modal">Cancel</button>
                     </div>
-                    <button type="button" class="btn_close" data-dismiss="modal"><span class="fas fa-times"> </span></button>
+                    <button type="button" class="btn_close" data-dismiss="modal"><span class="ico_automl ico_close">팝업닫기</span></button>
                 </div>
             </div>
         </div>
@@ -339,9 +338,9 @@
                                 <div class="item_dl type_inline">
                                     <dt>                                  <!-- ============= processor Add Dataset Button ============= -->
                                         <div class="wrap_check">        <!-- seems like there is no button except general page Check it...  -->
-                                            <input type="checkbox" name="" id="processor1" class="inp_check modal_check">       <!-- 1st check box NoN -->
-                                            <label for="processor1" class="label_check"><span class="fas fa-check"></span>Drop NaN Columns</label>
-                                            <a href="#none" class="tooltip_model"><span class="fas fa-info-circle"> </span>
+                                            <input type="checkbox" name="" id="pre_DrpNCols" class="inp_check modal_check">       <!-- 1st check box NoN -->
+                                            <label for="processor1" class="label_check"><span class="ico_automl ico_check"></span>Drop NaN Columns</label>
+                                            <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
                                                     Column 내에서 threshold 이상의 결측값 비율이 있을 경우, <br>해당 Column을 삭제합니다.
                                                 </div>
@@ -353,12 +352,13 @@
                                         <input id="na_col_drop_threshold" type="number" name="" value="0.9" min="0" max="1" step="0.05" class="inp_txt">
                                     </dd>
                                 </div>
+
                                 <div class="item_dl type_inline">
                                     <dt>
                                         <div class="wrap_check">
                                             <input type="checkbox" name="" id="pre_OtlrElmntn" class="inp_check modal_check">
-                                            <label for="pre_OtlrElmntn" class="label_check"><span class=" fas fa-check"></span>Outlier Elimination</label>
-                                            <a href="#none" class="tooltip_model"><span class="fas fa-info-circle"> </span>
+                                            <label for="pre_OtlrElmntn" class="label_check"><span class="ico_automl ico_check"></span>Outlier Elimination</label>
+                                            <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
                                                     해당 Column에서 Method와 Threshold에 해당하는 방법으로 <br>이상치가 존재하는 Row를 삭제합니다.
                                                 </div>
@@ -367,7 +367,7 @@
                                     </dt>
                                     <dd>
                                         <label for="processor4_text" class="label_txt">Column</label>
-                                        <a href="#none" class="tooltip_model"><span class="fas fa-info-circle"> </span>
+                                        <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
                                                 Outlier 제거할 column
                                             </div>
@@ -377,7 +377,7 @@
                                     </dd>
                                     <dd>
                                         <label for="processor4_text" class="label_txt">Method</label>
-                                        <a href="#none" class="tooltip_model"><span class="fas fa-info-circle"> </span>
+                                        <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
                                                 Outlier 제거 방법
                                             </div>
@@ -392,7 +392,7 @@
                                     <dd>
                                         <div id="pre_Othreshold_all">
                                             <label for="processor4_text" class="label_txt">Threshold</label>
-                                            <a href="#none" class="tooltip_model"><span class="fas fa-info-circle"> </span>
+                                            <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
                                                     Z-score일 때 사용하는 임계값 (Default 3)
                                                 </div>
@@ -402,13 +402,13 @@
                                     </dd>
                                 </div>
 
-                                <div id="powerTrans_area" class="item_dl">
+                                <div id="powerTrans_area">
                                     <div class="item_dl type_inline">
                                         <dt>
                                             <div class="wrap_check">
                                                 <input type="checkbox" name="" id="pre_PrTrnsfrm" class="inp_check modal_check">
-                                                <label for="pre_PrTrnsfrm" class="label_check"><span class=" fas fa-check"></span>Power Transformation</label>
-                                                <a href="#none" class="tooltip_model"><span class="fas fa-info-circle"> </span>
+                                                <label for="pre_PrTrnsfrm" class="label_check"><span class="ico_automl ico_check"></span>Power Transformation</label>
+                                                <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                     <div class="txt_tooltip">
                                                         선택한 Column을 Strategy에 따라 변환합니다. <br>해당 Column에 음수가 존재할 경우 <br>Yeo-Johnson Transformation을 권장합니다.
                                                     </div>
@@ -417,7 +417,7 @@
                                         </dt>
                                         <dd>
                                             <span class="label_txt">Column</span>
-                                            <a href="#none" class="tooltip_model"><span class="fas fa-info-circle"> </span>
+                                            <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
                                                     Transform 할 column 선택
                                                 </div>
@@ -429,7 +429,7 @@
                                         </dd>
                                         <dd>
                                             <span class="label_txt">Strategy</span>
-                                            <a href="#none" class="tooltip_model"><span class="fas fa-info-circle"> </span>
+                                            <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
                                                     Algorithm Information <br>
                                                     알고리즘 설명
@@ -496,6 +496,7 @@
                                             </a>
                                         </div>
                                     </dt>
+                                    <dd>
                                         <span class="label_txt">Methods</span>
                                         <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
@@ -503,10 +504,10 @@
                                             </div>
                                         </a>
                                         <div class="wrap_select">
-                                            <select id="pre_SMethod" class="form-control" multiple="multiple">
-                                                <!--<option value="Standard" selected>Standardize</option>
+                                            <select name="" id="pre_SMethod" class="form-control">
+                                                <option value="Standard" selected>Standardize</option>
                                                 <option value="MinMax">Minmax</option>
-                                                <option value="MaxAbs">Normalize</option>-->
+                                                <option value="MaxAbs">Normalize</option>
                                             </select>
                                         </div>
                                     </dd>
@@ -532,14 +533,14 @@
                                             </div>
                                         </a>
                                         <div class="wrap_select">
-                                            <select name="" id="pre_FMethod" class="form-control" multiple="multiple">
-                                                <!--<option value="SelectPercentile" selected>SelectPercentile</option>
-                                                <option value="SelectKBest">SelectKBest</option>
-                                                <option value="SelectFwe">SelectFwe</option>
-                                                <option value="FastICA">FastICA</option>
-                                                <option value="FeatureAgglomeration">FeatureAgglomeration</option>
-                                                <option value="PCA">PCA</option>
-                                                <option value="Nystroem">Nystroem</option>-->
+                                            <select name="" id="pre_FMethod" class="form-control">
+                                                <option value="Standard" selected>SelectPercentile</option>
+                                                <option value="MinMax">SelectKBest</option>
+                                                <option value="MaxAbs">SelectFwe</option>
+                                                <option value="MinMax">FastICA</option>
+                                                <option value="MinMax">FeatureAgglomeration</option>
+                                                <option value="MinMax">PCA</option>
+                                                <option value="MinMax">Nystroem</option>
                                             </select>
                                         </div>
                                     </dd>
@@ -549,8 +550,8 @@
                                     <dt>
                                         <div class="wrap_check">
                                             <input type="checkbox" name="" id="pre_DmnsnltyRdctn" class="inp_check modal_check">
-                                            <label for="pre_DmnsnltyRdctn" class="label_check"><span class=" fas fa-check"></span>Dimensionality Reduction</label>
-                                            <a href="#none" class="tooltip_model"><span class="fas fa-info-circle"> </span>
+                                            <label for="pre_DmnsnltyRdctn" class="label_check"><span class="ico_automl ico_check"></span>Dimensionality Reduction</label>
+                                            <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
                                                     Strategy와 n에 맞춰 전체 데이터셋에 대하여 차원 축소를 실시합니다. <br>
                                                     [주의] 데이터를 보다 잘 설명하도록 변환하며 기존 데이터셋의 칼럼은 사라지게 됩니다.
@@ -560,7 +561,7 @@
                                     </dt>
                                     <dd>
                                         <span class="label_txt">Algorithm</span>
-                                        <a href="#none" class="tooltip_model"><span class="fas fa-info-circle"> </span>
+                                        <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
                                                 Algorithm Information <br>
                                                 알고리즘 설명
@@ -578,7 +579,7 @@
 
                                     <dd>
                                         <span class="label_txt">Number of Features</span>
-                                        <a href="#none" class="tooltip_model"><span class="fas fa-info-circle"> </span>
+                                        <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
                                                 몇 개의 feature를 남길 것인지 선택합니다.
                                             </div>
@@ -633,7 +634,7 @@
                                     <div class="tab-pane fade active in" id="TPOT" role="tabpanel" aria-labelledby="TPOT-tab">
                                         <div class="wrap_check">
                                             <input type="checkbox" name="TPOT" id="TPOT1" class="inp_check modal_check">
-                                            <label for="TPOT1" class="label_check"><span class=" fas fa-check"></span>TPOT1</label>
+                                            <label for="TPOT1" class="label_check"><span class="ico_automl ico_check"></span>TPOT1</label>
                                         </div>
                                         <div class="wrap_check">
                                             <label for="TPOT1_text" class="label_txt">Description of TPOT1 Item</label>
@@ -641,7 +642,7 @@
                                         </div>
                                         <div class="wrap_check">
                                             <input type="checkbox" name="TPOT" id="TPOT2" class="inp_check modal_check">
-                                            <label for="TPOT2" class="label_check"><span class=" fas fa-check"></span>TPOT2</label>
+                                            <label for="TPOT2" class="label_check"><span class="ico_automl ico_check"></span>TPOT2</label>
                                         </div>
                                         <div class="wrap_check">
                                             <label for="TPOT2_text" class="label_txt">Description of TPOT2 Item</label>
@@ -651,7 +652,7 @@
                                     <div class="tab-pane fade" id="Auto-scikit" role="tabpanel" aria-labelledby="Auto-scikit-tab">
                                         <div class="wrap_check">
                                             <input type="checkbox" name="Auto-scikit" id="Auto_scikit1" class="inp_check modal_check">
-                                            <label for="Auto_scikit1" class="label_check"><span class=" fas fa-check"></span>Auto-scikit1</label>
+                                            <label for="Auto_scikit1" class="label_check"><span class="ico_automl ico_check"></span>Auto-scikit1</label>
                                         </div>
                                         <div class="wrap_check">
                                             <label for="Auto-scikit1_text" class="label_txt">Description of Auto-scikit1 Item</label>
@@ -660,7 +661,7 @@
 
                                         <div class="wrap_check">
                                             <input type="checkbox" name="TPOT" id="Auto-scikit2" class="inp_check modal_check">
-                                            <label for="Auto-scikit2" class="label_check"><span class=" fas fa-check"></span>Auto-scikit2</label>
+                                            <label for="Auto-scikit2" class="label_check"><span class="ico_automl ico_check"></span>Auto-scikit2</label>
                                         </div>
                                         <div class="wrap_check">
                                             <label for="Auto-scikit2_text" class="label_txt">Description of Auto-scikit2 Item</label>
@@ -670,7 +671,7 @@
                                     <div class="tab-pane fade" id="Custom" role="tabpanel" aria-labelledby="Custom-tab">
                                         <div class="wrap_check">
                                             <input type="checkbox" name="Custom" id="Custom1" class="inp_check modal_check">
-                                            <label for="Custom1" class="label_check"><span class=" fas fa-check"></span>Custom1</label>
+                                            <label for="Custom1" class="label_check"><span class="ico_automl ico_check"></span>Custom1</label>
                                         </div>
                                         <div class="wrap_check">
                                             <label for="Custom1_text" class="label_txt">Description of Custom1 Item</label>
@@ -679,7 +680,7 @@
 
                                         <div class="wrap_check">
                                             <input type="checkbox" name="Custom" id="Custom2" class="inp_check modal_check">
-                                            <label for="Custom2" class="label_check"><span class=" fas fa-check"></span>Custom2</label>
+                                            <label for="Custom2" class="label_check"><span class="ico_automl ico_check"></span>Custom2</label>
                                         </div>
                                         <div class="wrap_check">
                                             <label for="Custom2_text" class="label_txt">Description of Custom2 Item</label>
@@ -695,10 +696,10 @@
                 <div class="footer_popup">
                     <div class="wrap_btn txt_r">
                         <!--<button type="button" class="btn_m btn_custom pull-left" onclick="$FRONTEND._p.reset()">Reset</button>--><!-- pre processor tab일때만 노출 -->
-                        <button type="button" class="btn_m" data-dismiss="modal">Cancel</button>
                         <button type="button" class="btn_m btn_confirm toggle-disable" onclick="$FRONTEND._p.saveGenConf()">Save</button>
+                        <button type="button" class="btn_m" data-dismiss="modal">Cancel</button>
                     </div>
-                    <button type="button" class="btn_close" data-dismiss="modal"><span class="fas fa-times"> </span></button>
+                    <button type="button" class="btn_close" data-dismiss="modal"><span class="ico_automl ico_close">팝업닫기</span></button>
                 </div>
             </div>
         </div>
@@ -718,7 +719,7 @@
                     <!-- //high chart -->
                 </div>
                 <div class="footer_popup">
-                    <button type="button" class="btn_close" data-dismiss="modal"><span class="fas fa-times"> </span></button>
+                    <button type="button" class="btn_close" data-dismiss="modal"><span class="ico_automl ico_close">팝업닫기</span></button>
                 </div>
             </div>
         </div>
@@ -750,10 +751,10 @@
                 </div>
                 <div class="footer_popup">
                     <div class="wrap_btn txt_r">
-                        <button type="button" class="btn_m">Close</button>
                         <button type="button" class="btn_m btn_confirm">Save</button>
+                        <button type="button" class="btn_m">Close</button>
                     </div>
-                    <button type="button" class="btn_close"><span class="fas fa-times"> </span></button>
+                    <button type="button" class="btn_close"><span class="ico_automl ico_close">팝업닫기</span></button>
                 </div>
             </div>
         </div>
@@ -832,11 +833,11 @@
                 </div>
                 <div class="footer_popup">
                     <div class="wrap_btn txt_r">
+                        <button type="button" class="btn_m btn_confirm">Save</button>
                         <button type="button" class="btn_m">Cancel</button>
                         <button type="button" class="btn_m">Back</button>
-                        <button type="button" class="btn_m btn_confirm">Save</button>
                     </div>
-                    <button type="button" class="btn_close"><span class="fas fa-times"> </span></button>
+                    <button type="button" class="btn_close"><span class="ico_automl ico_close">팝업닫기</span></button>
                 </div>
             </div>
         </div>
@@ -863,7 +864,7 @@
                                         <input id="datepicker" data-provide="datepicker" type='text' class="form-control" />
                                     </div>
                                     <!-- https://github.com/uxsolutions/bootstrap-datepicker -->
-                                    <a href="#none" class="tooltip_model"><span class="fas fa-info-circle"> </span>
+                                    <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                         <div class="txt_tooltip">
                                             Algorithm Information <br>
                                             알고리즘 설명
@@ -941,10 +942,10 @@
                 </div>
                 <div class="footer_popup">
                     <div class="wrap_btn txt_r">
-                        <button type="button" class="btn_m" data-dismiss="modal">Cancel</button>
                         <button type="button" class="btn_m btn_confirm" data-dismiss="modal">Save</button>
+                        <button type="button" class="btn_m" data-dismiss="modal">Cancel</button>
                     </div>
-                    <button type="button" class="btn_close" data-dismiss="modal"><span class="fas fa-times"></span></button>
+                    <button type="button" class="btn_close" data-dismiss="modal"><span class="ico_automl ico_close">팝업닫기</span></button>
                 </div>
             </div>
         </div>

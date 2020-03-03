@@ -33,7 +33,7 @@ var $FRONTEND = (function (module) {
     _p.getStatus = function () {
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE + 'runtime/',
+            url: g_RESTAPI_HOST_BASE +'runtimes/'+runtime_id + '/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData.error_msg == null) {
@@ -56,7 +56,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                console.log('Ajax call failure')
+                alert(res.responseJSON.message)
             }
         })
     }
@@ -66,7 +66,7 @@ var $FRONTEND = (function (module) {
         var elapsed
         $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE + 'runtime/',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData.error_msg) {
@@ -77,7 +77,7 @@ var $FRONTEND = (function (module) {
                         $('#leaderboard_loader').removeClass('loader')
                         clearInterval(interval)
                     }
-                    percent = Math.round(resultData.doneSlot / resultData.totalSlot * 100) + '%'
+                    percent = Math.round(resultData.doneSlot / resultData.timeout * 100) + '%'
                     $('#percent').text(percent)
                     $('#progress_bar').css('width', percent)
 
@@ -94,12 +94,12 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                console.log('Ajax call failure')
+                alert(res.responseJSON.message)
             }
         })
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE + 'runtime/score_trend/',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+ runtime_id + '/score_trend/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData.err_msg == null && resultData.length !== 0) {
@@ -128,7 +128,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                console.log('Ajax call failure')
+                alert(res.responseJSON.message)
             }
         })
     }
@@ -136,7 +136,7 @@ var $FRONTEND = (function (module) {
     _p.stopAutoml = function () {
         return $.ajax({
             type: 'post',
-            url: g_RESTAPI_HOST_BASE + 'runtime/stop/',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+ runtime_id + '/stop/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData.err_msg == null) {
@@ -149,7 +149,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                console.log('Ajax call failure')
+                alert(res.responseJSON.message)
             }
         })
     }
@@ -181,12 +181,12 @@ var $FRONTEND = (function (module) {
     }
 
     _p.informationFormatter = function (value, row) {
-        return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-information" onclick="$FRONTEND._p.setInformationModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, row.typ)
+        return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-information" onclick="$FRONTEND._p.setInformationModal('+value+')" type="button" >View</button>'
     }
 
     _p.explanationFormatter = function (value, row) {
-        if (row.tryLimeHtml) {
-            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-explanation" onclick="$FRONTEND._p.setExplanationModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, row.typ)
+        if (row.limeHtmlValid) {
+            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-explanation" onclick="$FRONTEND._p.setExplanationModal('+value+')" type="button" >View</button>'
         } else {
             return '<button class="btn_s btn_border" disabled>-</button>';
         }
@@ -194,15 +194,14 @@ var $FRONTEND = (function (module) {
 
     _p.deployFormatter = function (value, row) {
         if (row.deployed) {
-            return '<button id ="deploy' + value + '" class="btn_deploy" type="button" disabled><span class="ico_automl ico_check">Deploy</span></button>'.format(value, row.typ)
+            return '<button id ="deploy' + value + '" class="btn_deploy" type="button" disabled><span class="ico_automl ico_check">Deploy</span></button>'
         }
-        return '<button id ="deploy' + value + '" class="btn_deploy" type="button" onclick="$FRONTEND._p.deployModel(\'{0}\',\'{1}\')"><span class="ico_automl ico_arr">Deploy</span></button>'.format(value, row.typ)
+        return '<button id ="deploy' + value + '" class="btn_deploy" type="button" onclick="$FRONTEND._p.deployModel('+value+')"><span class="ico_automl ico_arr">Deploy</span></button>'
     }
 
-    _p.deployModel = function (model_pk, model_type) {
+    _p.deployModel = function (model_pk) {
         var data = {}
-        data.model_pk = model_pk
-        data.model_type = model_type
+        data.modelPk = model_pk
 
         $('.ico_check').toggleClass('ico_check', 'ico_arr')
         $('#deploy' + model_pk + 'span').toggleClass('ico_arr', 'ico_check') // .html('<span class="ico_automl ico_check">Deploy</span>')
@@ -215,7 +214,7 @@ var $FRONTEND = (function (module) {
 
         return $.ajax({
             type: 'post',
-            url: g_RESTAPI_HOST_BASE + 'deployment/',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+ runtime_id + '/deployment/',
             data: data,
             dataType: 'json',
             success: function (resultData, textStatus, request) {
@@ -227,7 +226,7 @@ var $FRONTEND = (function (module) {
                     $('#modal-deploy #modal-deploy-loading').hide()
                     $('#modal-deploy #modal-deploy-done').show()
                     $('#modal-deploy #modal-deploy-error').hide()
-                    window.location.replace('/deploy')
+                    window.location.replace('/deploy/'+runtime_id+"/")
                 }
             },
             error: function (res) {
@@ -239,7 +238,7 @@ var $FRONTEND = (function (module) {
     }
 
     // Modal 관련
-    _p.setInformationModal = function (model_pk, model_type) {
+    _p.setInformationModal = function (model_pk) {
         $('#modal-information #modal-information-loading').show()
         $('#modal-information #modal-information-done').hide()
         $('#modal-information #modal-information-error').hide()
@@ -250,6 +249,7 @@ var $FRONTEND = (function (module) {
             $('.classification-info').hide()
             $('.regression-info').show()
         }
+
         if(model_info[model_pk] !== null){
             _p.drawFeature(model_info[model_pk].featureImportancesJson)
             _p.drawRoc(model_info[model_pk].rocCurveJson)
@@ -258,10 +258,9 @@ var $FRONTEND = (function (module) {
             $('#modal-information #modal-information-loading').hide()
             $('#modal-information #modal-information-done').show()
         }else{
-            model_type = model_type+'s'
             return $.ajax({
                 type: 'get',
-                url: g_RESTAPI_HOST_BASE + '{0}/{1}/stats/'.format(model_type, model_pk),
+                url: g_RESTAPI_HOST_BASE + 'runtimes/{0}/models/{1}/stats/'.format(runtime_id, model_pk),
                 dataType: 'json',
                 success: function (resultData, textStatus, request) {
                     if (resultData.error_msg == null) {
@@ -285,7 +284,7 @@ var $FRONTEND = (function (module) {
                     $('#modal-information #modal-information-loading').hide()
                     $('#modal-information #modal-information-done').hide()
                     $('#modal-information #modal-information-error').show()
-                    console.log('Ajax call failure')
+                    alert(res.responseJSON.message)
                 }
             })
         }
@@ -296,10 +295,9 @@ var $FRONTEND = (function (module) {
 
     }
 
-    _p.setExplanationModal = function (model_pk, model_type) {
+    _p.setExplanationModal = function (model_pk) {
 
         var data = {}
-        model_type = model_type + 's'
 
         $('#modal-explanation #modal-explanation-loading').show()
         $('#modal-explanation #modal-explanation-done').hide()
@@ -307,7 +305,7 @@ var $FRONTEND = (function (module) {
 
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE + '{0}/{1}/explanation/'.format(model_type, model_pk),
+            url: g_RESTAPI_HOST_BASE + 'runtimes/{0}/models/{1}/explanation/'.format(runtime_id, model_pk),
             data: data,
             dataType: 'json',
             success: function (resultData, textStatus, request) {
@@ -323,7 +321,7 @@ var $FRONTEND = (function (module) {
             error: function (res) {
                 $('#modal-explanation #modal-explanation-loading').hide()
                 $('#modal-explanation #modal-explanation-error').show()
-                console.log('Ajax call failure')
+                alert(res.responseJSON.message)
             }
         })
     }
