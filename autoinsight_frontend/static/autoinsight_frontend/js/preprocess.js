@@ -6,26 +6,6 @@ var $FRONTEND = (function (module) {
     var targetColumn, columnCombobox, isFirst;
     //초기화면 세팅
     _p.init = function(){
-        // $('#dataset').fileinput({
-        //     uploadUrl: g_RESTAPI_HOST_BASE+"source/workspace_files/",
-        //     browseClass:'btn btn-default ',
-        //     // language: "kr",
-        //     maxFileSize: 2000000,
-        //     msgPlaceholder: "Select a CSV or TSV file",
-        //     elErrorContainer: '#kartik-file-errors5',
-        //     showUpload: false,
-        //     showRemove: false,
-        //     showPreview: false,
-        //     showBrowse: true,
-        //     dropZoneEnabled: false,
-        //     allowedFileExtensions: ["csv","tsv"],
-        //     uploadExtraData: function (previewId, index) {
-        //         var data = {};
-        //         data.dataset_name=_p.dataset_name;
-        //         data.sample_size = $('#sample_size').val();
-        //         return data;
-        //     }
-        // });
 
         $('#saved_dataset_area').hide();
         $('#source_type').change(function() {
@@ -437,8 +417,8 @@ var $FRONTEND = (function (module) {
 
     _p.targetFormatter = function(value,row){
         var str = "";
-        if (value == true) {
-            str = '<div class="wrap_check type_check3 on"><input type="radio" id="target_'+row.id+'" name="target" colum_name="'+row.name+'" class="inp_check toggle-disable" onclick="$FRONTEND._p.updateTarget('+row.id+')" checked><label for="target_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
+        if (value == true) {type="radio"
+            str = '<div class="wrap_check type_check3 on"><input  id="target_'+row.id+'" name="target" colum_name="'+row.name+'" class="inp_check toggle-disable" onclick="$FRONTEND._p.updateTarget('+row.id+')" checked><label for="target_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
         }else{
             str = '<div class="wrap_check type_check3"><input type="radio" id="target_'+row.id+'" name="target" colum_name="'+row.name+'" class="inp_check toggle-disable" onclick="$FRONTEND._p.updateTarget('+row.id+')"><label for="target_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
         }

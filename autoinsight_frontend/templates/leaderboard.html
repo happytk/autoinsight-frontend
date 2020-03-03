@@ -47,17 +47,17 @@
                     <img src="{% static 'autoinsight_frontend/img/logo_automl.png' %}" class="img_logo" width="221" height="42" alt="AutoInsight">
                 </h1></a>
             </div>
+            <button id="data_btn" class="btn_m btn_border" style="margin-left: 78%;" type="button" onclick="window.location.href='/experiment'">Back to Experiment</button>
         </header>
         <!-- //header -->
 
         <main>
             <div class="container">
                 <nav>
-                    <button id="data_btn" class="btn_m btn_border" type="button" onclick="window.location.href='/experiment'">Back to Experiment</button>
                     <ul class="list_menu">
-                        <!--<li>
+                        <li>
                             <a class="link_menu" href="/dataset/{{ runtime_id }}/">Dataset</a>
-                        </li>-->
+                        </li>
                         <li>
                             <a class="link_menu" href="/preprocess/{{ runtime_id }}/">Preprocess</a>
                         </li>

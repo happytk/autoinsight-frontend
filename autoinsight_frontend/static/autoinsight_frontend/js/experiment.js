@@ -37,6 +37,7 @@ var $FRONTEND = (function (module) {
                                           name
                                           targetName
                                           featureNames
+                                          rowCount
                                         }
                                         processes {
                                           id
@@ -59,6 +60,7 @@ var $FRONTEND = (function (module) {
 
     //초기화면 세팅
     _p.init = function(){
+        _p.loadContainerInfo()
         _p.refreshTable()
 
         $('#dataset').fileinput({
@@ -111,6 +113,26 @@ var $FRONTEND = (function (module) {
 
     };
 
+    _p.loadContainerInfo = function (){
+
+        return $.ajax({
+            type: 'get',
+            url: g_RESTAPI_HOST_BASE+'info/docker_containers/',
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                if (resultData['error_msg'] == null ){
+                    $("#active_count").text(resultData['activeCount'])
+                    $("#total_count").text(resultData['totalCount'])
+                } else {
+                    alert(resultData['error_msg']);
+                }
+            },
+            error: function (res) {
+                alert(res);
+            }
+        });
+    };
+
     _p.playInterval = function () {
 
         interval = setInterval(function () { _p.refreshTable() }, 1000)
@@ -134,20 +156,32 @@ var $FRONTEND = (function (module) {
     }
 
     _p.datasetFormatter =  function (value, row) {
-        if(row.status === 'ready') {
-            return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureNames.length+' features)'
-        }else if(row.status === 'creating') {
+        if(row.status === 'creating') {
             hasCreating = true
             _p.playInterval()
             return '-'
-        }else{
-            return '<a  href="/leaderboard/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target:'+value.targetName+', '+value.featureNames.length+'features)'
+        }else {
+            return '<a  href="/dataset/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureNames.length+' features, '+value.rowCount+' rows)'
         }
 
     }
 
-    _p.progressFormatter =  function (value, row) {
-        return Math.round(value / row.timeout * 100) + '%'
+    _p.statusFormatter =  function (value, row) {
+        if(value === 'learning') {
+            return value + '(' + Math.round(row.doneSlot / row.timeout * 100) + '%' +')'
+        }else{
+            return value
+        }
+    }
+
+    _p.modelscoreFormatter =  function (value, row) {
+        if(row.status === 'ready') {
+            return value
+        }else {
+            return '<a  href="/leaderboard/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value+'</a>'
+        }
+
+
     }
 
     _p.estimatorFormatter =  function (value, row) {

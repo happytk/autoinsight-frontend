@@ -58,16 +58,23 @@
                         </div>
                     </div>
 
+                    <div id="container_info" class="area_util">
+                        <ul class="list_count">
+
+                                <span class="ico_automl ico_arr"></span>Active Containers : <span id="active_count" class="txt_emph"></span> / Total Containers  : <span id="total_count" class="txt_emph"></span>
+
+                        </ul>
+                    </div>
+
                     <table id="runtime_table"
                            data-toggle="table"
                            class="tbl_g tbl_preprocess">
                         <colgroup>
                             <col style="width:60px">
                             <col style="width:100%">
+                            <col style="width:120px">
                             <col style="width:90px">
                             <col style="width:90px">
-                            <col style="width:90px">
-                            <col style="width:100px">
                             <!--<col style="width:100%">-->
                             <col style="width:150px">
                             <col style="width:110px">
@@ -81,10 +88,9 @@
                             </th>
                             <th class="txt_l" data-field="dataset" data-formatter="$FRONTEND._p.datasetFormatter">Dataset
                             </th>
-                            <th data-field="status">Status</th>
-                            <th data-field="modelsCnt">Models<br>Count</th>
-                            <th data-field="bestScore">Best<br>Score</th>
-                            <th data-field="doneSlot" data-formatter="$FRONTEND._p.progressFormatter">Progress</th>
+                            <th data-field="status" data-formatter="$FRONTEND._p.statusFormatter">Status</th>
+                            <th data-field="modelsCnt" data-formatter="$FRONTEND._p.modelscoreFormatter">Models<br>Count</th>
+                            <th data-field="bestScore" data-formatter="$FRONTEND._p.modelscoreFormatter">Best<br>Score</th>
                             <!--<th data-field="createdAt">Created At</th>-->
                             <th data-field="estimatorType" data-formatter="$FRONTEND._p.estimatorFormatter">Estimator<br>Type</th>
                             <th data-field="metric" data-formatter="$FRONTEND._p.metricFormatter">metric</th>
@@ -140,7 +146,7 @@
                                         <div class="area_file">
                                             <div class="wrap_select">
                                                 <select id="source_type" class="form-control">
-                                                    <option value ="sklearn">From SKLearn</option>
+                                                    <option value ="sklearn">From sklearn</option>
                                                     <option value ="local" selected>Local</option>
                                                     <option value ="icos">ICOS</option>
                                                     <option value ="hdfs">HDFS</option>
@@ -192,7 +198,7 @@
                                     </th>
                                     <th class="txt_l" data-field="filename">Name
                                     </th>
-                                    <th data-field="parsed">isParsed</th>
+                                    <th data-field="filesize">File Size(.KB)</th>
 
                                 </tr>
                                 </thead>

@@ -28,7 +28,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                alert(res.responseJSON.message)
+                console.log(res.responseJSON.message)
             }
         })
     }
@@ -56,7 +56,7 @@ var $FRONTEND = (function (module) {
             },
             error: function (res) {
                 $('#not_deployed').show()
-                alert(res.responseJSON.message)
+                console.log(res.responseJSON.message)
             }
         })
     }
@@ -82,7 +82,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                alert(res.responseJSON.message)
+                console.log(res.responseJSON.message)
             }
         })
     }
