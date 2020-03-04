@@ -321,7 +321,7 @@ var $FRONTEND = (function (module) {
             error: function (res) {
                 $('#modal-explanation #modal-explanation-loading').hide()
                 $('#modal-explanation #modal-explanation-error').show()
-                alert(res.responseJSON.message)
+                console.log(res)
             }
         })
     }
