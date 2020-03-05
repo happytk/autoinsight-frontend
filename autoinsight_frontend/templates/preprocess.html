@@ -57,9 +57,9 @@
         <div class="container">
             <nav>
                 <ul class="list_menu">
-                    <!--<li>
+                    <li>
                         <a class="link_menu" href="/dataset/{{ runtime_id }}/">Dataset</a>
-                    </li>-->
+                    </li>
                     <li class="active">
                         <a class="link_menu" href="/preprocess/{{ runtime_id }}/">Preprocess<div id="preprocess_loader"></div></a>
                     </li>
@@ -271,7 +271,7 @@
                                 <dt>Scoring Metric</dt>
                                 <dd>
                                     <div class="wrap_select">
-                                        <select name="" id="metric" class="form-control">
+                                        <select name="" id="metric" class="form-control conf">
                                         </select>
                                     </div>
                                 </dd>
@@ -281,7 +281,7 @@
                                     <dt>Evaluation</dt>
                                     <dd>
                                         <div class="wrap_select">
-                                            <select name="" id="resampling_strategy" class="form-control">
+                                            <select name="" id="resampling_strategy" class="form-control conf">
                                                 <option value="holdout">Holdout</option>
                                                 <!--<option value="holdout-iterative-fit">Holdout-Iterative-Fit</option>-->
                                                 <option value="cv">CV</option>
@@ -294,7 +294,7 @@
                                 <div id="train_split_area">
                                     <dt>Train Split</dt>
                                     <dd>
-                                        <input id="split_testdata_rate" class="inp_txt" type="number" step="0.01" value="0.67">
+                                        <input id="split_testdata_rate" class="inp_txt conf" type="number" step="0.01" value="0.67">
                                     </dd>
                                     <!--<button type="button" class="btn btn_custom" data-toggle="modal" data-target="#modal-customize">Customize</button>-->
                                 </div>
@@ -302,7 +302,7 @@
                                 <div id="k_folds_area">
                                     <dt>K-folds</dt>
                                     <dd>
-                                        <input type="number" name="" id="resampling_strategy_cv_folds" class="inp_txt inp_timeout" min="1" max="10" value="5">
+                                        <input type="number" name="" id="resampling_strategy_cv_folds" class="inp_txt inp_timeout conf" min="1" max="10" value="5">
                                     </dd>
                                 </div>
                             </div>
@@ -324,7 +324,7 @@
                             <div class="item_dl type_inline">
                                 <dt>Time Out (.min)</dt>
                                 <dd>
-                                    <input type="number" name="" id="gen_time_out" class="inp_txt inp_timeout" min="1" max="180" value="60">
+                                    <input type="number" name="" id="gen_time_out" class="inp_txt inp_timeout conf" min="1" max="180" value="60">
                                 </dd>
                             </div>
                         </dl>
@@ -338,7 +338,7 @@
                             <div class="item_dl type_inline">
                                 <dt>                                  <!-- ============= processor Add Dataset Button ============= -->
                                     <div class="wrap_check">        <!-- seems like there is no button except general page Check it...  -->
-                                        <input type="checkbox" name="" id="pre_DrpNCols" class="inp_check modal_check">       <!-- 1st check box NoN -->
+                                        <input type="checkbox" name="" id="pre_DrpNCols" class="inp_check modal_check conf">       <!-- 1st check box NoN -->
                                         <label for="processor1" class="label_check"><span class="ico_automl ico_check"></span>Drop NaN Columns</label>
                                         <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
@@ -349,14 +349,14 @@
                                 </dt>
                                 <dd>
                                     <label for="na_col_drop_threshold" class="label_txt">Threshold(%)</label>
-                                    <input id="na_col_drop_threshold" type="number" name="" value="0.9" min="0" max="1" step="0.05" class="inp_txt">
+                                    <input id="na_col_drop_threshold" type="number" name="" value="0.9" min="0" max="1" step="0.05" class="inp_txt conf">
                                 </dd>
                             </div>
 
                             <div class="item_dl type_inline">
                                 <dt>
                                     <div class="wrap_check">
-                                        <input type="checkbox" name="" id="pre_OtlrElmntn" class="inp_check modal_check">
+                                        <input type="checkbox" name="" id="pre_OtlrElmntn" class="inp_check modal_check conf">
                                         <label for="pre_OtlrElmntn" class="label_check"><span class="ico_automl ico_check"></span>Outlier Elimination</label>
                                         <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
@@ -372,7 +372,7 @@
                                             Outlier 제거할 column
                                         </div>
                                     </a>
-                                    <select name="" id="pre_Ocolumn" class="form-control columns" multiple="multiple">
+                                    <select name="" id="pre_Ocolumn" class="form-control columns conf" multiple="multiple">
                                     </select>
                                 </dd>
                                 <dd>
@@ -383,7 +383,7 @@
                                         </div>
                                     </a>
                                     <div class="wrap_select">
-                                        <select name="" id="pre_Omethod" class="form-control">
+                                        <select name="" id="pre_Omethod" class="form-control conf">
                                             <option value="BoxPlotRule">Box Plot Rule</option>
                                             <option value="Zscore" selected>Z-score</option>
                                         </select>
@@ -397,7 +397,7 @@
                                                 Z-score일 때 사용하는 임계값 (Default 3)
                                             </div>
                                         </a>
-                                        <input type="number" name="" id="pre_Othreshold" class="inp_txt" value="3">
+                                        <input type="number" name="" id="pre_Othreshold" class="inp_txt conf" value="3">
                                     </div>
                                 </dd>
                             </div>
@@ -406,7 +406,7 @@
                                 <div class="item_dl type_inline">
                                     <dt>
                                         <div class="wrap_check">
-                                            <input type="checkbox" name="" id="pre_PrTrnsfrm" class="inp_check modal_check">
+                                            <input type="checkbox" name="" id="pre_PrTrnsfrm" class="inp_check modal_check conf">
                                             <label for="pre_PrTrnsfrm" class="label_check"><span class="ico_automl ico_check"></span>Power Transformation</label>
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
@@ -423,7 +423,7 @@
                                             </div>
                                         </a>
                                         <div class="wrap_select">
-                                            <select id="pre_Pcolumn_0" class="pre_Pcolumns form-control columns">
+                                            <select id="pre_Pcolumn_0" class="pre_Pcolumns form-control columns conf">
                                             </select>
                                         </div>
                                     </dd>
@@ -436,12 +436,12 @@
                                             </div>
                                         </a>
                                         <div class="wrap_select">
-                                            <select id="pre_Pstrategy_0" class="pre_Pstrategies form-control">
+                                            <select id="pre_Pstrategy_0" class="pre_Pstrategies form-control conf">
                                                 <option value="Log" selected>Log</option>
                                                 <option value="SquaredRoot">Squared Root</option>
                                                 <option value="Square">Square</option>
                                                 <option value="BoxCoxTransformation">Box-Cox Transformation</option>
-                                                <option value="YeoJohnsonTransformation" selected>Yeo-Johnson Transformation</option>
+                                                <option value="YeoJohnsonTransformation">Yeo-Johnson Transformation</option>
                                             </select>
                                         </div>
                                     </dd>
@@ -456,7 +456,7 @@
                             <div class="item_dl type_inline">
                                 <dt>
                                     <div class="wrap_check">
-                                        <input type="checkbox" name="" id="pre_1HotEncod" class="inp_check modal_check">
+                                        <input type="checkbox" name="" id="pre_1HotEncod" class="inp_check modal_check conf">
                                         <label for="pre_1HotEncod" class="label_check"><span class="ico_automl ico_check"></span>One Hot Encoding</label>
                                         <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
@@ -471,7 +471,7 @@
                             <div class="item_dl type_inline">
                                 <dt>
                                     <div class="wrap_check">
-                                        <input type="checkbox" name="" id="pre_VarThreshold" class="inp_check modal_check">
+                                        <input type="checkbox" name="" id="pre_VarThreshold" class="inp_check modal_check conf">
                                         <label for="pre_VarThreshold" class="label_check"><span class="ico_automl ico_check"></span>Variance Threshold</label>
                                         <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
@@ -487,7 +487,7 @@
                             <div class="item_dl type_inline item_scaling">
                                 <dt>
                                     <div class="wrap_check">
-                                        <input type="checkbox" name="" id="pre_Scaling" class="inp_check modal_check">
+                                        <input type="checkbox" name="" id="pre_Scaling" class="inp_check modal_check conf">
                                         <label for="pre_Scaling" class="label_check"><span class="ico_automl ico_check"></span>Scaling</label>
                                         <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
@@ -504,7 +504,7 @@
                                         </div>
                                     </a>
                                     <div class="wrap_select">
-                                        <select id="pre_SMethod" class="form-control" multiple="multiple">
+                                        <select id="pre_SMethod" class="form-control conf" multiple="multiple">
                                             <!--<option value="Standard" selected>Standardize</option>
                                             <option value="MinMax">Minmax</option>
                                             <option value="MaxAbs">Normalize</option>-->
@@ -516,7 +516,7 @@
                             <div class="item_dl type_inline">
                                 <dt>
                                     <div class="wrap_check">
-                                        <input type="checkbox" name="" id="pre_FtrSlcon" class="inp_check modal_check">
+                                        <input type="checkbox" name="" id="pre_FtrSlcon" class="inp_check modal_check conf">
                                         <label for="pre_FtrSlcon" class="label_check"><span class="ico_automl ico_check"></span>Feature Engineering</label>
                                         <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
@@ -533,7 +533,7 @@
                                         </div>
                                     </a>
                                     <div class="wrap_select">
-                                        <select name="" id="pre_FMethod" class="form-control" multiple="multiple">
+                                        <select name="" id="pre_FMethod" class="form-control conf" multiple="multiple">
                                             <!--<option value="SelectPercentile" selected>SelectPercentile</option>
                                             <option value="SelectKBest">SelectKBest</option>
                                             <option value="SelectFwe">SelectFwe</option>
@@ -691,8 +691,7 @@
             <div class="footer_popup">
                 <div class="wrap_btn txt_r">
                     <!--<button type="button" class="btn_m btn_custom pull-left" onclick="$FRONTEND._p.reset()">Reset</button>--><!-- pre processor tab일때만 노출 -->
-                    <button type="button" class="btn_m btn_confirm toggle-disable" onclick="$FRONTEND._p.saveGenConf()">Save</button>
-                    <button type="button" class="btn_m" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn_m btn_confirm toggle-disable" data-dismiss="modal">Confirm</button>
                 </div>
                 <button type="button" class="btn_close" data-dismiss="modal"><span class="ico_automl ico_close">팝업닫기</span></button>
             </div>

@@ -106,6 +106,10 @@ var $FRONTEND = (function (module) {
                 }
             });
 
+            $('.conf').change(function() {
+                _p.saveGenConf()
+            });
+
 
 
 
@@ -228,7 +232,7 @@ var $FRONTEND = (function (module) {
                             $('#pre_Ocolumn').multiselect('select', resultData['outlierColumns']);
                             $('#pre_Ocolumn').multiselect('refresh');
 
-                            $('#outlier_strategy').val(resultData['outlierStrategy']);
+                            $('#pre_Omethod').val(resultData['outlierStrategy']);
                             $('#pre_Othreshold').val(resultData['outlierThreshold']);
                         }
                         if(resultData['colTransUse']){
@@ -704,11 +708,11 @@ var $FRONTEND = (function (module) {
     _p.addPowerTrans = function(i){
         i  = parseInt(i);
         var appendHtml = '<div id="appended_'+i+'"><div class="item_dl type_inline"><dt></dt><dd>' +
-            '<div class="wrap_select"><select id="pre_Pcolumn_'+i+'" class="pre_Pcolumns form-control">'+
+            '<div class="wrap_select"><select id="pre_Pcolumn_'+i+'" class="pre_Pcolumns form-control conf">'+
             columnCombobox+
             '</select>' +
             '</div></dd><dd><div class="wrap_select">'+
-            '<select id="pre_Pstrategy_'+i+'" class="pre_Pstrategies form-control">' +
+            '<select id="pre_Pstrategy_'+i+'" class="pre_Pstrategies form-control conf">' +
             '<option value="Log" selected>Log</option>' +
             '<option value="SquaredRoot">Squared Root</option>' +
             '<option value="Square">Square</option>' +
@@ -900,7 +904,7 @@ var $FRONTEND = (function (module) {
             contentType: 'application/json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
-                    $('#modal-setting').modal('hide');
+                    //$('#modal-setting').modal('hide');
                 } else {
                     alert(resultData['error_msg']);
                 }

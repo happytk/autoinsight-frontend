@@ -249,8 +249,7 @@ var $FRONTEND = (function (module) {
             $('.classification-info').hide()
             $('.regression-info').show()
         }
-
-        if(model_info[model_pk] !== null){
+        if(model_info[model_pk].featureImportancesJson !== null){
             _p.drawFeature(model_info[model_pk].featureImportancesJson)
             _p.drawRoc(model_info[model_pk].rocCurveJson)
             _p.drawMatrix(model_info[model_pk].confusionMatrixJson)

@@ -161,7 +161,7 @@ var $FRONTEND = (function (module) {
             _p.playInterval()
             return '-'
         }else {
-            return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureNames.length+' features, '+value.rowCount+' rows)'
+            return '<a  href="/dataset/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureNames.length+' features, '+value.rowCount+' rows)'
         }
 
     }
@@ -206,6 +206,7 @@ var $FRONTEND = (function (module) {
 
     _p.metricFormatter =  function (value, row) {
         var available_metrics = row.availableMetrics
+        value = value.toLowerCase()
         var selectBox ='<div class="wrap_select"><select id="metric_' + row.id + '" class="form-control" data-style="btn-info"'
         if(row.status === 'ready') {
             selectBox += 'onchange="$FRONTEND._p.updateRuntime(' + row.id + ')">'
@@ -323,7 +324,7 @@ var $FRONTEND = (function (module) {
                 $('#preprocess_loader').removeClass("loader")
             },
             error: function (res) {
-                alert(res.responseJSON.message);
+                console.log(res);
                 $('.toggle-disable').prop('disabled', false)
                 $('#preprocess_loader').removeClass("loader")
             }
