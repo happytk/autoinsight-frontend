@@ -110,155 +110,8 @@ var $FRONTEND = (function (module) {
                 _p.saveGenConf()
             });
 
-
-
-
-            $.ajax({
-                type: 'get',
-                url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id,
-                dataType: 'json',
-                success: function (resultData, textStatus, request) {
-                    metricCombobox ="";
-                    $.each(resultData['availableMetrics'], function( index, value ) {
-                        if(value === resultData['metric']){
-                            metricCombobox += '<option value="'+value+'" selected>'+value+'</option>';
-                        }else{
-                            metricCombobox += '<option value="'+value+'">'+value+'</option>';
-                        }
-                    });
-                    $('#metric').html(metricCombobox);
-
-                    $('#resampling_strategy').val(resultData['resamplingStrategy']);
-                    if (resultData['resamplingStrategy']=== 'holdout' || resultData['resamplingStrategy'] === 'holdout-iterative-fit') {
-                        $('#k_folds_area').hide();
-                        $('#train_split_area').show();
-                        $('#split_testdata_rate').val(resultData['resamplingStrategyHoldoutTrainSize']);
-                    }else{
-                        $('#train_split_area').hide();
-                        $('#k_folds_area').show();
-                        $('#resampling_strategy_cv_folds').val(resultData['resamplingStrategyCvFolds']);
-                    }
-
-                    var tmp = resultData['timeout']/60;
-                    $('#gen_time_out').val(tmp);
-
-                    if(resultData['includeOneHotEncoding']){
-                        $('#pre_1HotEncod').prop( "checked", true );
-                    }
-
-                    if(resultData['includeVarianceThreshold']){
-                        $('#pre_VarThreshold').prop( "checked", true );
-                    }
-
-
-                    smethodCombobox ="";
-                    $.each(resultData['availableScalingMethods'], function( index, value ) {
-                        smethodCombobox += '<option value="'+value+'">'+value+'</option>';
-                    });
-
-                    $('#pre_SMethod').html(smethodCombobox);
-
-                    $('#pre_SMethod').multiselect(
-                        {
-                            includeSelectAllOption: true,
-                            numberDisplayed: 1,
-                            onChange: function($option) {
-                                // Check if the filter was used.
-                                var query = $('#pre_SMethod li.multiselect-filter input').val();
-                                if (query) {
-                                    $('#pre_SMethod li.multiselect-filter input').val('').trigger('keydown');
-                                }
-                            }
-                        }
-                    );
-                    if(resultData['includeScalingMethods'] !== null) {
-                        $('#pre_Scaling').prop( "checked", true )
-                        $('#pre_SMethod').multiselect('select', resultData['includeScalingMethods']);
-                        $('#pre_SMethod').multiselect('refresh');
-                    }
-
-                    fmethodCombobox ="";
-                    $.each(resultData['availableFeatureEngineerings'], function( index, value ) {
-                        if(value === resultData['availableFeatureEngineerings']){
-                            fmethodCombobox += '<option value="'+value+'" selected>'+value+'</option>';
-                        }else{
-                            fmethodCombobox += '<option value="'+value+'">'+value+'</option>';
-                        }
-                    });
-                    $('#pre_FMethod').html(fmethodCombobox);
-
-                    $('#pre_FMethod').multiselect(
-                        {
-                            includeSelectAllOption: true,
-                            numberDisplayed: 1,
-                            onChange: function($option) {
-                                // Check if the filter was used.
-                                var query = $('#pre_FMethod li.multiselect-filter input').val();
-                                if (query) {
-                                    $('#pre_FMethod li.multiselect-filter input').val('').trigger('keydown');
-                                }
-                            }
-                        }
-                    );
-
-                    if(resultData['includeFeatureEngineerings'] !== null) {
-                        $('#pre_FtrSlcon').prop( "checked", true )
-                        $('#pre_FMethod').multiselect('select', resultData['includeFeatureEngineerings']);
-                        $('#pre_FMethod').multiselect('refresh');
-                    }
-
-
-                },
-                error: function (res) {
-                    alert(res.responseJSON.message);
-                }
-            });
-
-            return $.ajax({
-                type: 'get',
-                url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/dataset/',
-                dataType: 'json',
-                success: function (resultData, textStatus, request) {
-                    if (resultData['error_msg'] == null ){
-                        //Modal 세팅
-                        _p.reset();
-                        if(resultData['naColDropUse']){
-                            $('#pre_DrpNCols').prop( "checked", true );
-                            $('#na_col_drop_threshold').val(resultData['naColDropThreshold']);
-                        }
-
-                        if(resultData['outlierUse']){
-                            $('#pre_OtlrElmntn').prop( "checked", true );
-                            $('#pre_Ocolumn').multiselect('select', resultData['outlierColumns']);
-                            $('#pre_Ocolumn').multiselect('refresh');
-
-                            $('#pre_Omethod').val(resultData['outlierStrategy']);
-                            $('#pre_Othreshold').val(resultData['outlierThreshold']);
-                        }
-                        if(resultData['colTransUse']){
-                            $('#pre_PrTrnsfrm').prop( "checked", true );
-                            $('#pre_Pcolumn_0').val(resultData['colTransColumns'][0]);
-                            $('#pre_Pstrategy_0').val(resultData['colTransStrategies'][0]);
-                            for(var i = 1; i < resultData['colTransColumns'].length; i++) {
-                                _p.addPowerTrans(i);
-                                $('#pre_Pcolumn_'+i).val(resultData['colTransColumns'][i]);
-                                $('#pre_Pstrategy_'+i).val(resultData['colTransStrategies'][i]);
-                            }
-                        }
-
-                        // if(resultData['scalerUse']){
-                        //     $('#pre_Scaling').prop( "checked", true );
-                        //     $('#pre_Sstrategy').val(resultData['scalerStrategy']);
-                        // }
-
-                    } else {
-                        alert(resultData['error_msg']);
-                    }
-                },
-                error: function (res) {
-                    alert(res.responseJSON.message);
-                }
-            });
+            _p.loadGenConf()
+            return _p.loadPreConf()
         });
 
         // $('#modal-customize').on('shown.bs.modal', function (e) {
@@ -273,49 +126,7 @@ var $FRONTEND = (function (module) {
 
     };
 
-    //파일 업로드 관련
-    // _p.addDataset = function() {
-    //     $('.toggle-disable').prop('disabled', true)
-    //     $('#preprocess_loader').addClass("loader")
-    //     if($('#source_type').val()=="saved"){
-    //         var data = {};
-    //         data.dataset_name = $('#saved_dataset').val();
-    //         if($('#sample_size').val() > 0) data.sample_size = $('#sample_size').val();
-    //
-    //
-    //         return $.ajax({
-    //             type: 'post',
-    //             url: g_RESTAPI_HOST_BASE+"source/from_sklearn_dataset/",
-    //             data: data,
-    //             dataType: 'json',
-    //             success: function (resultData, textStatus, request) {
-    //                 if (resultData['error_msg'] == null ){
-    //                     alert("저장된 데이터를 불러옵니다.");
-    //                     $('.modal').modal('hide');
-    //                     _p.loadStatus();
-    //                     isFirst = true;
-    //                     $('#column_table').bootstrapTable('refresh')
-    //                 } else {
-    //                     alert(resultData['error_msg']);
-    //                     $('.toggle-disable').prop('disabled', false)
-    //                     $('#preprocess_loader').removeClass("loader")
-    //                 }
-    //             },
-    //             error: function (res) {
-    //                 alert(res.responseJSON.message);
-    //                 $('.toggle-disable').prop('disabled', false)
-    //                 $('#preprocess_loader').removeClass("loader")
-    //             }
-    //         })
-    //     }else {
-    //         _p.dataset_name = $('#dataset_name_input').val();
-    //         if (_p.dataset_name == "") {
-    //             alert("Dataset 이름을 입력해 주세요.");
-    //             return false;
-    //         }
-    //         $("#dataset").fileinput("upload");
-    //     }
-    // };
+
 
     _p.loadStatus = function (){
         var status =""
@@ -705,6 +516,170 @@ var $FRONTEND = (function (module) {
 
     };
 
+    _p.loadPreConf = function() {
+        return $.ajax({
+            type: 'get',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/dataset/',
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                if (resultData['error_msg'] == null ){
+                    //Modal 세팅
+                    _p.reset();
+                    if(resultData['naColDropUse']){
+                        $('#pre_DrpNCols').prop( "checked", true );
+                        $('#na_col_drop_threshold').val(resultData['naColDropThreshold']);
+                    }
+
+                    if(resultData['outlierUse']){
+                        $('#pre_OtlrElmntn').prop( "checked", true );
+                        $('#pre_Ocolumn').multiselect('select', resultData['outlierColumns']);
+                        $('#pre_Ocolumn').multiselect('refresh');
+
+                        $('#pre_Omethod').val(resultData['outlierStrategy']);
+                        $('#pre_Othreshold').val(resultData['outlierThreshold']);
+                    }
+                    if(resultData['colTransUse']){
+                        $('#pre_PrTrnsfrm').prop( "checked", true );
+                        $('#pre_Pcolumn_0').val(resultData['colTransColumns'][0]);
+                        $('#pre_Pstrategy_0').val(resultData['colTransStrategies'][0]);
+                        for(var i = 1; i < resultData['colTransColumns'].length; i++) {
+                            _p.addPowerTrans(i);
+                            $('#pre_Pcolumn_'+i).val(resultData['colTransColumns'][i]);
+                            $('#pre_Pstrategy_'+i).val(resultData['colTransStrategies'][i]);
+                        }
+                    }
+
+                } else {
+                    alert(resultData['error_msg']);
+                }
+            },
+            error: function (res) {
+                alert(res.responseJSON.message);
+            }
+        });
+    }
+
+    _p.loadGenConf = function() {
+        return $.ajax({
+                type: 'get',
+                url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id,
+                dataType: 'json',
+                success: function (resultData, textStatus, request) {
+                    metricCombobox ="";
+                    $.each(resultData['availableMetrics'], function( index, value ) {
+                        if(value === resultData['metric']){
+                            metricCombobox += '<option value="'+value+'" selected>'+value+'</option>';
+                        }else{
+                            metricCombobox += '<option value="'+value+'">'+value+'</option>';
+                        }
+                    });
+                    $('#metric').html(metricCombobox);
+
+                    $('#resampling_strategy').val(resultData['resamplingStrategy']);
+                    if (resultData['resamplingStrategy']=== 'holdout' || resultData['resamplingStrategy'] === 'holdout-iterative-fit') {
+                        $('#k_folds_area').hide();
+                        $('#train_split_area').show();
+                        $('#split_testdata_rate').val(resultData['resamplingStrategyHoldoutTrainSize']);
+                    }else{
+                        $('#train_split_area').hide();
+                        $('#k_folds_area').show();
+                        $('#resampling_strategy_cv_folds').val(resultData['resamplingStrategyCvFolds']);
+                    }
+
+                    var tmp = resultData['timeout']/60;
+                    $('#gen_time_out').val(tmp);
+
+                    if(resultData['includeOneHotEncoding']){
+                        $('#pre_1HotEncod').prop( "checked", true );
+                    }
+
+                    if(resultData['includeVarianceThreshold']){
+                        $('#pre_VarThreshold').prop( "checked", true );
+                    }
+
+
+                    smethodCombobox ="";
+                    $.each(resultData['availableScalingMethods'], function( index, value ) {
+                        smethodCombobox += '<option value="'+value+'">'+value+'</option>';
+                    });
+
+                    $('#pre_SMethod').html(smethodCombobox);
+
+                    $('#pre_SMethod').multiselect(
+                        {
+                            includeSelectAllOption: true,
+                            numberDisplayed: 1,
+                            onChange: function($option) {
+                                // Check if the filter was used.
+                                var query = $('#pre_SMethod li.multiselect-filter input').val();
+                                if (query) {
+                                    $('#pre_SMethod li.multiselect-filter input').val('').trigger('keydown');
+                                }
+                            }
+                        }
+                    );
+                    if(resultData['includeScalingMethods'] !== null) {
+                        $('#pre_Scaling').prop( "checked", true )
+                        $('#pre_SMethod').multiselect('select', resultData['includeScalingMethods']);
+                        $('#pre_SMethod').multiselect('refresh');
+                    }
+
+                    fmethodCombobox ="";
+                    $.each(resultData['availableFeatureEngineerings'], function( index, value ) {
+                        if(value === resultData['availableFeatureEngineerings']){
+                            fmethodCombobox += '<option value="'+value+'" selected>'+value+'</option>';
+                        }else{
+                            fmethodCombobox += '<option value="'+value+'">'+value+'</option>';
+                        }
+                    });
+                    $('#pre_FMethod').html(fmethodCombobox);
+
+                    $('#pre_FMethod').multiselect(
+                        {
+                            includeSelectAllOption: true,
+                            numberDisplayed: 1,
+                            onChange: function($option) {
+                                // Check if the filter was used.
+                                var query = $('#pre_FMethod li.multiselect-filter input').val();
+                                if (query) {
+                                    $('#pre_FMethod li.multiselect-filter input').val('').trigger('keydown');
+                                }
+                            }
+                        }
+                    );
+
+                    if(resultData['includeFeatureEngineerings'] !== null) {
+                        $('#pre_FtrSlcon').prop( "checked", true )
+                        $('#pre_FMethod').multiselect('select', resultData['includeFeatureEngineerings']);
+                        $('#pre_FMethod').multiselect('refresh');
+                    }
+
+
+                },
+                error: function (res) {
+                    alert(res.responseJSON.message);
+                }
+            });
+    }
+
+    _p.autoConf = function(){
+        return $.ajax({
+            type: 'get',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id +'/dataset/config_recommend/',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (resultData, textStatus, request) {
+                _p.loadPreConf()
+                _p.loadGenConf()
+                $('#column_table').bootstrapTable('refresh',{silent: true})
+            },
+            error: function (res) {
+                alert(res.responseText);
+            }
+        })
+
+    };
+
     _p.addPowerTrans = function(i){
         i  = parseInt(i);
         var appendHtml = '<div id="appended_'+i+'"><div class="item_dl type_inline"><dt></dt><dd>' +
@@ -916,24 +891,24 @@ var $FRONTEND = (function (module) {
 
     };
 
-    // _p.preprocess = function(){
-    //
-    //     return $.ajax({
-    //         type: 'post',
-    //         url: g_RESTAPI_HOST_BASE + 'dataset/preprocess/',
-    //         dataType: 'json',
-    //         success: function (resultData, textStatus, request) {
-    //             if (resultData['error_msg'] == null ){
-    //                 _p.runAutoml();
-    //             } else {
-    //                 alert(resultData['error_msg']);
-    //             }
-    //         },
-    //         error: function (res) {
-    //             alert(res.responseText);
-    //         }
-    //     })
-    // };
+    _p.preprocess = function(){
+
+        return $.ajax({
+            type: 'post',
+            url: g_RESTAPI_HOST_BASE + 'dataset/preprocess/',
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                if (resultData['error_msg'] == null ){
+                    // _p.runAutoml();
+                } else {
+                    alert(resultData['error_msg']);
+                }
+            },
+            error: function (res) {
+                alert(res.responseText);
+            }
+        })
+    };
 
     _p.runAutoml = function(){
         return $.ajax({

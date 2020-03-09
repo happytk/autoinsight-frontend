@@ -79,6 +79,24 @@
 
                 <div class="area_tit">
                     <h3 id="dataset_name" class="tit_table"></h3>
+                    <div class="area_util2">
+                    <strong class="tit_select">AutoML Type</strong>
+                    <div class="wrap_select">
+                        <select id="estimator_type" class="form-control toggle-disable">
+                            <option value = "classifier" selected>
+                                <a class="link_option" href="#none">Classification</a>
+                            </option>
+                            <option value = "regressor">
+                                <a class="link_option" href="#none">Regression</a>
+                            </option>
+                        </select>
+                    </div>
+                    <div class="wrap_btn">
+                        <button class="btn_b btn_confirm toggle-disable" type="button" onclick="$FRONTEND._p.runAutoml()">
+                            Run AutoML <span class="ico_automl ico_arr"></span>
+                        </button>
+                    </div>
+                </div>
                     <!--<div class="wrap_btn">
                         <button id="data_btn" class="btn_m btn_border toggle-disable" type="button" data-toggle="modal" data-target="#modal-dataset">Data Load</button>
                         <button class="btn_m btn_border toggle-disable" type="button" onclick="$FRONTEND._p.clearAll();">All Clear</button>
@@ -144,24 +162,12 @@
 
 
                 <div class="area_util2">
-                    <strong class="tit_select">AutoML Type</strong>
-                    <div class="wrap_select">
-                        <select id="estimator_type" class="form-control toggle-disable">
-                            <option value = "classifier" selected>
-                                <a class="link_option" href="#none">Classification</a>
-                            </option>
-                            <option value = "regressor">
-                                <a class="link_option" href="#none">Regression</a>
-                            </option>
-                        </select>
-                    </div>
                     <div class="wrap_btn">
-                        <button class="btn_b btn_setup" type="button" data-toggle="modal" data-target="#modal-setting">
+                        <button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.autoConf()">Auto Configure</button>
+                        <button class="btn_m btn_setup" type="button" data-toggle="modal" data-target="#modal-setting">
                             <span class="ico_automl ico_setup">설정</span>
                         </button>
-                        <button class="btn_b btn_confirm toggle-disable" type="button" onclick="$FRONTEND._p.runAutoml()">
-                            Run AutoML <span class="ico_automl ico_arr"></span>
-                        </button>
+                        <button class="btn_m btn_confirm toggle-disable" type="button" onclick="$FRONTEND._p.preprocess()">Preprocess</button>
                     </div>
                 </div>
             </section>
@@ -333,7 +339,7 @@
 
                     <!-- Preprocessor -->
                     <div class="tab-pane fade" id="processor" role="tabpanel" aria-labelledby="processor-tab">
-                        <button class="btn_m btn_border" type="button">Auto Configure</button>
+                        <button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.autoConf()">Auto Configure</button>
                         <dl class="list_processor">
                             <div class="item_dl type_inline">
                                 <dt>                                  <!-- ============= processor Add Dataset Button ============= -->
@@ -450,8 +456,8 @@
                                 <dd><div class="txt_next">
                                     <button type="button" class="btn_cal" onclick="$FRONTEND._p.addPowerTrans('1')">+</button>
                                 </div></dd>
-                                <hr>
                             </div>
+                            <hr>
 
                             <div class="item_dl type_inline">
                                 <dt>
