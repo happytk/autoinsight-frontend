@@ -3,7 +3,7 @@ var $FRONTEND = (function (module) {
 
 
     _p.dataset_name ="";
-    var hasCreating, interval
+    var hasPending, interval
     var REFRESH_RUNTIMES_QUERY = `
                                     query {
                                       runtimes {
@@ -100,9 +100,8 @@ var $FRONTEND = (function (module) {
             _p.createRuntime(params.response.id)
         });
 
-        if(hasCreating){
-            // console.log("@@@@@")
-            hasCreating = false
+        if(hasPending){
+            hasPending = false
             _p.playInterval()
         }else{
             clearInterval(interval)
@@ -135,7 +134,7 @@ var $FRONTEND = (function (module) {
 
     _p.playInterval = function () {
 
-        interval = setInterval(function () { _p.refreshTable() }, 1000)
+        interval = setInterval(function () { _p.refreshTable() }, 3000)
         // return false
     }
     _p.refreshTable = function () {
@@ -157,12 +156,16 @@ var $FRONTEND = (function (module) {
 
     _p.datasetFormatter =  function (value, row) {
         if(row.status === 'creating') {
-            hasCreating = true
+            hasPending = true
             _p.playInterval()
             return '-'
-        }else {
-            return '<a  href="/dataset/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureNames.length+' features, '+value.rowCount+' rows)'
+        }else if(row.status === 'learning'){
+            hasPending = true
+            _p.playInterval()
+
         }
+        return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureNames.length+' features, '+value.rowCount+' rows)'
+
 
     }
 
@@ -265,41 +268,41 @@ var $FRONTEND = (function (module) {
         var active_tab = $("ul.nav-tabs li.active a")[0].getAttribute('name');
         if(active_tab==="newdata"){
             if($('#source_type').val()=="sklearn"){
-            var data = {};
-            data.dataset_name = $('#saved_dataset').val();
-            if($('#sample_size').val() > 0) data.sample_size = $('#sample_size').val();
+                var data = {};
+                data.dataset_name = $('#saved_dataset').val();
+                if($('#sample_size').val() > 0) data.sample_size = $('#sample_size').val();
 
 
-            return $.ajax({
-                type: 'post',
-                url: g_RESTAPI_HOST_BASE+"sources/from_sklearn_dataset/",
-                data: data,
-                dataType: 'json',
-                success: function (resultData, textStatus, request) {
-                    if (resultData['error_msg'] == null ){
-                        _p.createRuntime(resultData.id)
+                return $.ajax({
+                    type: 'post',
+                    url: g_RESTAPI_HOST_BASE+"sources/from_sklearn_dataset/",
+                    data: data,
+                    dataType: 'json',
+                    success: function (resultData, textStatus, request) {
+                        if (resultData['error_msg'] == null ){
+                            _p.createRuntime(resultData.id)
 
-                        // $('#runtime_table').bootstrapTable('refresh')
-                    } else {
-                        alert(resultData['error_msg']);
+                            // $('#runtime_table').bootstrapTable('refresh')
+                        } else {
+                            alert(resultData['error_msg']);
+                        }
+                        $('.toggle-disable').prop('disabled', false)
+                        $('#preprocess_loader').removeClass("loader")
+                    },
+                    error: function (res) {
+                        alert(res.responseJSON.message);
+                        $('.toggle-disable').prop('disabled', false)
+                        $('#preprocess_loader').removeClass("loader")
                     }
-                    $('.toggle-disable').prop('disabled', false)
-                    $('#preprocess_loader').removeClass("loader")
-                },
-                error: function (res) {
-                    alert(res.responseJSON.message);
-                    $('.toggle-disable').prop('disabled', false)
-                    $('#preprocess_loader').removeClass("loader")
+                })
+            }else {
+                _p.dataset_name = $('#dataset_name_input').val();
+                if (_p.dataset_name == "") {
+                    alert("Dataset 이름을 입력해 주세요.");
+                    return false;
                 }
-            })
-        }else {
-            _p.dataset_name = $('#dataset_name_input').val();
-            if (_p.dataset_name == "") {
-                alert("Dataset 이름을 입력해 주세요.");
-                return false;
+                $("#dataset").fileinput("upload");
             }
-            $("#dataset").fileinput("upload");
-        }
         }else{
             source_id = $("input[name='source_id']:checked").val();
             _p.createRuntime(source_id)
