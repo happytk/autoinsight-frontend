@@ -119,6 +119,11 @@ table {
     background:url(../img/ico_automl.png);
     background-size: 120px 120px;
 }
+.disabled{
+    pointer-events:none;
+    opacity:0.4;
+}
+
 /* button */
 button {
     padding:0 20px;

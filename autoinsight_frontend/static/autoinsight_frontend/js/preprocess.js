@@ -22,6 +22,10 @@ var $FRONTEND = (function (module) {
 
         var status = _p.loadStatus();
         isFirst = true;
+
+        _p.refreshOrigTable()
+
+
         $('#dataset').on('fileuploaded', function (objectEvent, params){
             alert("파일이 저장되었습니다.");
             $('.modal').modal('hide');
@@ -170,6 +174,12 @@ var $FRONTEND = (function (module) {
                         }
                     }
                     _p.drawCorrelation(corr);
+                    if(resultData['isProcessed']===false){
+                        $('#preprocessed_link').addClass('disabled');
+                    }else{
+                        $('#preprocessed_link').removeClass('disabled');
+
+                    }
                 } else {
                     alert(resultData['error_msg']);
                 }
@@ -561,105 +571,105 @@ var $FRONTEND = (function (module) {
 
     _p.loadGenConf = function() {
         return $.ajax({
-                type: 'get',
-                url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id,
-                dataType: 'json',
-                success: function (resultData, textStatus, request) {
-                    metricCombobox ="";
-                    $.each(resultData['availableMetrics'], function( index, value ) {
-                        if(value === resultData['metric']){
-                            metricCombobox += '<option value="'+value+'" selected>'+value+'</option>';
-                        }else{
-                            metricCombobox += '<option value="'+value+'">'+value+'</option>';
-                        }
-                    });
-                    $('#metric').html(metricCombobox);
-
-                    $('#resampling_strategy').val(resultData['resamplingStrategy']);
-                    if (resultData['resamplingStrategy']=== 'holdout' || resultData['resamplingStrategy'] === 'holdout-iterative-fit') {
-                        $('#k_folds_area').hide();
-                        $('#train_split_area').show();
-                        $('#split_testdata_rate').val(resultData['resamplingStrategyHoldoutTrainSize']);
+            type: 'get',
+            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id,
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                metricCombobox ="";
+                $.each(resultData['availableMetrics'], function( index, value ) {
+                    if(value === resultData['metric']){
+                        metricCombobox += '<option value="'+value+'" selected>'+value+'</option>';
                     }else{
-                        $('#train_split_area').hide();
-                        $('#k_folds_area').show();
-                        $('#resampling_strategy_cv_folds').val(resultData['resamplingStrategyCvFolds']);
+                        metricCombobox += '<option value="'+value+'">'+value+'</option>';
                     }
+                });
+                $('#metric').html(metricCombobox);
 
-                    var tmp = resultData['timeout']/60;
-                    $('#gen_time_out').val(tmp);
-
-                    if(resultData['includeOneHotEncoding']){
-                        $('#pre_1HotEncod').prop( "checked", true );
-                    }
-
-                    if(resultData['includeVarianceThreshold']){
-                        $('#pre_VarThreshold').prop( "checked", true );
-                    }
-
-
-                    smethodCombobox ="";
-                    $.each(resultData['availableScalingMethods'], function( index, value ) {
-                        smethodCombobox += '<option value="'+value+'">'+value+'</option>';
-                    });
-
-                    $('#pre_SMethod').html(smethodCombobox);
-
-                    $('#pre_SMethod').multiselect(
-                        {
-                            includeSelectAllOption: true,
-                            numberDisplayed: 1,
-                            onChange: function($option) {
-                                // Check if the filter was used.
-                                var query = $('#pre_SMethod li.multiselect-filter input').val();
-                                if (query) {
-                                    $('#pre_SMethod li.multiselect-filter input').val('').trigger('keydown');
-                                }
-                            }
-                        }
-                    );
-                    if(resultData['includeScalingMethods'] !== null) {
-                        $('#pre_Scaling').prop( "checked", true )
-                        $('#pre_SMethod').multiselect('select', resultData['includeScalingMethods']);
-                        $('#pre_SMethod').multiselect('refresh');
-                    }
-
-                    fmethodCombobox ="";
-                    $.each(resultData['availableFeatureEngineerings'], function( index, value ) {
-                        if(value === resultData['availableFeatureEngineerings']){
-                            fmethodCombobox += '<option value="'+value+'" selected>'+value+'</option>';
-                        }else{
-                            fmethodCombobox += '<option value="'+value+'">'+value+'</option>';
-                        }
-                    });
-                    $('#pre_FMethod').html(fmethodCombobox);
-
-                    $('#pre_FMethod').multiselect(
-                        {
-                            includeSelectAllOption: true,
-                            numberDisplayed: 1,
-                            onChange: function($option) {
-                                // Check if the filter was used.
-                                var query = $('#pre_FMethod li.multiselect-filter input').val();
-                                if (query) {
-                                    $('#pre_FMethod li.multiselect-filter input').val('').trigger('keydown');
-                                }
-                            }
-                        }
-                    );
-
-                    if(resultData['includeFeatureEngineerings'] !== null) {
-                        $('#pre_FtrSlcon').prop( "checked", true )
-                        $('#pre_FMethod').multiselect('select', resultData['includeFeatureEngineerings']);
-                        $('#pre_FMethod').multiselect('refresh');
-                    }
-
-
-                },
-                error: function (res) {
-                    alert(res.responseJSON.message);
+                $('#resampling_strategy').val(resultData['resamplingStrategy']);
+                if (resultData['resamplingStrategy']=== 'holdout' || resultData['resamplingStrategy'] === 'holdout-iterative-fit') {
+                    $('#k_folds_area').hide();
+                    $('#train_split_area').show();
+                    $('#split_testdata_rate').val(resultData['resamplingStrategyHoldoutTrainSize']);
+                }else{
+                    $('#train_split_area').hide();
+                    $('#k_folds_area').show();
+                    $('#resampling_strategy_cv_folds').val(resultData['resamplingStrategyCvFolds']);
                 }
-            });
+
+                var tmp = resultData['timeout']/60;
+                $('#gen_time_out').val(tmp);
+
+                if(resultData['includeOneHotEncoding']){
+                    $('#pre_1HotEncod').prop( "checked", true );
+                }
+
+                if(resultData['includeVarianceThreshold']){
+                    $('#pre_VarThreshold').prop( "checked", true );
+                }
+
+
+                smethodCombobox ="";
+                $.each(resultData['availableScalingMethods'], function( index, value ) {
+                    smethodCombobox += '<option value="'+value+'">'+value+'</option>';
+                });
+
+                $('#pre_SMethod').html(smethodCombobox);
+
+                $('#pre_SMethod').multiselect(
+                    {
+                        includeSelectAllOption: true,
+                        numberDisplayed: 1,
+                        onChange: function($option) {
+                            // Check if the filter was used.
+                            var query = $('#pre_SMethod li.multiselect-filter input').val();
+                            if (query) {
+                                $('#pre_SMethod li.multiselect-filter input').val('').trigger('keydown');
+                            }
+                        }
+                    }
+                );
+                if(resultData['includeScalingMethods'] !== null) {
+                    $('#pre_Scaling').prop( "checked", true )
+                    $('#pre_SMethod').multiselect('select', resultData['includeScalingMethods']);
+                    $('#pre_SMethod').multiselect('refresh');
+                }
+
+                fmethodCombobox ="";
+                $.each(resultData['availableFeatureEngineerings'], function( index, value ) {
+                    if(value === resultData['availableFeatureEngineerings']){
+                        fmethodCombobox += '<option value="'+value+'" selected>'+value+'</option>';
+                    }else{
+                        fmethodCombobox += '<option value="'+value+'">'+value+'</option>';
+                    }
+                });
+                $('#pre_FMethod').html(fmethodCombobox);
+
+                $('#pre_FMethod').multiselect(
+                    {
+                        includeSelectAllOption: true,
+                        numberDisplayed: 1,
+                        onChange: function($option) {
+                            // Check if the filter was used.
+                            var query = $('#pre_FMethod li.multiselect-filter input').val();
+                            if (query) {
+                                $('#pre_FMethod li.multiselect-filter input').val('').trigger('keydown');
+                            }
+                        }
+                    }
+                );
+
+                if(resultData['includeFeatureEngineerings'] !== null) {
+                    $('#pre_FtrSlcon').prop( "checked", true )
+                    $('#pre_FMethod').multiselect('select', resultData['includeFeatureEngineerings']);
+                    $('#pre_FMethod').multiselect('refresh');
+                }
+
+
+            },
+            error: function (res) {
+                alert(res.responseJSON.message);
+            }
+        });
     }
 
     _p.autoConf = function(){
@@ -895,11 +905,12 @@ var $FRONTEND = (function (module) {
 
         return $.ajax({
             type: 'post',
-            url: g_RESTAPI_HOST_BASE + 'dataset/preprocess/',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/dataset/preprocess/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
-                    // _p.runAutoml();
+                    _p.loadStatus()
+                    alert("Preprocess 완료되었습니다.");
                 } else {
                     alert(resultData['error_msg']);
                 }
@@ -929,6 +940,114 @@ var $FRONTEND = (function (module) {
             }
         })
     };
+
+    //Preview 관련
+    _p.refreshOrigTable = function () {
+        return $.ajax({
+            type: 'get',
+            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/source_X/',
+            contentType: "application/json",
+            success: function (resultData, textStatus, request) {
+                var columns =[]
+                $.each(resultData[0], function(key, value){
+                    columns.push({
+                        title: key,
+                        field: key
+                    })
+                });
+
+                var table_data = resultData
+
+                $.ajax({
+                    type: 'get',
+                    url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/source_y/',
+                    contentType: "application/json",
+                    success: function (resultData, textStatus, request) {
+
+                        $.each(resultData[0], function(key, value){
+                            columns.push({
+                                title: key,
+                                field: key
+                            })
+                        });
+                        $('#original_table').bootstrapTable({
+                            columns: columns
+                        })
+                        $.each(resultData, function(index, value){
+                            $.each(value, function(key, value){
+                                table_data[index][key] = value
+                            });
+                        })
+
+
+                        $('#original_table').bootstrapTable('load',{rows: table_data})
+
+                    },
+                    error: function (res) {
+                        console.log(res);
+                    }
+                });
+
+            },
+            error: function (res) {
+                console.log(res);
+            }
+        });
+
+
+    }
+
+    _p.loadPreprocessed = function () {
+        return $.ajax({
+            type: 'get',
+            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/preprocessed_X/',
+            contentType: "application/json",
+            success: function (resultData, textStatus, request) {
+                columns =[]
+                $.each(resultData[0], function(key, value){
+                    columns.push({
+                        title: key,
+                        field: key
+                    })
+                });
+
+                table_data = resultData
+
+                $.ajax({
+                    type: 'get',
+                    url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/preprocessed_y/',
+                    contentType: "application/json",
+                    success: function (resultData, textStatus, request) {
+
+                        $.each(resultData[0], function(key, value){
+                            columns.push({
+                                title: key,
+                                field: key
+                            })
+                        });
+                        $('#preprocessed_table').bootstrapTable({
+                            columns: columns
+                        })
+                        $.each(resultData, function(index, value){
+                            $.each(value, function(key, value){
+                                table_data[index][key] = value
+                            });
+                        })
+
+                        $('#preprocessed_table').bootstrapTable('load',{rows: table_data})
+
+                    },
+                    error: function (res) {
+                        console.log(res);
+                    }
+                });
+
+            },
+            error: function (res) {
+                console.log(res);
+            }
+        });
+    }
 
     return module;
 }($FRONTEND || {}));
