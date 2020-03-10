@@ -675,7 +675,7 @@ var $FRONTEND = (function (module) {
     _p.autoConf = function(){
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id +'/dataset/config_recommend/',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id +'/dataset/config_recommend/',//recommend_config
             dataType: 'json',
             contentType: 'application/json',
             success: function (resultData, textStatus, request) {

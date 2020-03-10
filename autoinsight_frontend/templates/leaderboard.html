@@ -115,9 +115,9 @@
                             <th data-field="score" class="txt_l">Score
                                 <button class="btn_sort" type="button"><span class="ico_automl ico_sort">정렬</span></button>
                             </th>
-                            <th data-field="pk" data-formatter="$FRONTEND._p.informationFormatter">Information</th>
-                            <th data-field="pk" data-formatter="$FRONTEND._p.explanationFormatter">Explanation</th>
-                            <th data-field="pk" data-formatter="$FRONTEND._p.deployFormatter">Deploy</th>
+                            <th data-field="id" data-formatter="$FRONTEND._p.informationFormatter">Information</th>
+                            <th data-field="id" data-formatter="$FRONTEND._p.explanationFormatter">Explanation</th>
+                            <th data-field="id" data-formatter="$FRONTEND._p.deployFormatter">Deploy</th>
                         </tr>
                         </thead>
                     </table>
@@ -143,23 +143,23 @@
                 </div>
                 <div class="body_popup" id="modal-information-done">
                     <ul class="nav nav-tabs list_menu" id="myTab"  role="tablist">
-                        <li class="active">
+                        <li id ="featureChart_tab" class="active" style="display: none;">
                             <a class="link_menu" data-toggle="tab" href="#feature" role="tab" aria-controls="feature" aria-selected="false">Feature Importance</a>
                         </li>
-                        <li>
-                            <a class="link_menu classification-info" data-toggle="tab" href="#roc" role="tab" aria-controls="roc" aria-selected="false">ROC Curve</a>
+                        <li id ="rocChart_tab" style="display: none;">
+                            <a class="link_menu" data-toggle="tab" href="#roc" role="tab" aria-controls="roc" aria-selected="false">ROC Curve</a>
                         </li>
                         <!--<li class="active">
                             <a class="link_menu" data-toggle="tab" href="#classification" role="tab" aria-controls="classification" aria-selected="true">Classification</a>
                         </li>-->
-                        <li>
-                            <a class="link_menu classification-info" data-toggle="tab" href="#matrix" role="tab" aria-controls="matrix" aria-selected="false">Confusion Matrix</a>
+                        <li id ="conf_matrix_tab" style="display: none;">
+                            <a class="link_menu" data-toggle="tab" href="#matrix" role="tab" aria-controls="matrix" aria-selected="false">Confusion Matrix</a>
                         </li>
-                        <li>
-                            <a class="link_menu classification-info" data-toggle="tab" href="#balance" role="tab" aria-controls="balance" aria-selected="false">Class Balance</a>
+                        <li id ="balanceChart_tab" style="display: none;">
+                            <a class="link_menu" data-toggle="tab" href="#balance" role="tab" aria-controls="balance" aria-selected="false">Class Balance</a>
                         </li>
-                        <li>
-                            <a class="link_menu regression-info" data-toggle="tab" href="#residuals" role="tab" aria-controls="residuals" aria-selected="false">Residuals</a>
+                        <li id ="residualsChart_tab" style="display: none;">
+                            <a class="link_menu" data-toggle="tab" href="#residuals" role="tab" aria-controls="residuals" aria-selected="false">Residuals</a>
                         </li>
                     </ul>
                     <div id="myTabContent" class="tab-content box_content">

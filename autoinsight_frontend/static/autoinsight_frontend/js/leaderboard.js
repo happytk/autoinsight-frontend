@@ -4,24 +4,15 @@ var $FRONTEND = (function (module) {
     var _p = module._p = module._p || {}
     // 초기화면 세팅
 
-    var estimator_type
-    var model_info
     var interval
     var scores = []
     var labels = []
 
     _p.init = function () {
-        model_info ={}
         _p.playInterval()
         _p.getStatus()
-        // _p.drawScoreTrend([])
         $('#stopButton').attr('disabled', true)
 
-        $('#learderboard_table').on('load-success.bs.table', function (data, jqXHR) {
-            $(jqXHR.results).each(function(index, value) {
-                model_info[value.pk] = value.evaluationStat
-            })
-        })
     }
 
     _p.playInterval = function () {
@@ -49,8 +40,6 @@ var $FRONTEND = (function (module) {
                     s -= m * 60
                     var timeout = h + ':' + (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s)
                     $('#timeout').text(timeout)
-
-                    estimator_type = resultData.estimatorType
                 } else {
                     console.log(resultData.error_msg)
                 }
@@ -181,14 +170,26 @@ var $FRONTEND = (function (module) {
     }
 
     _p.informationFormatter = function (value, row) {
-        return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-information" onclick="$FRONTEND._p.setInformationModal('+value+')" type="button" >View</button>'
+        if(row.evaluationStatStatus =="INIT"){
+            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-information" onclick="$FRONTEND._p.setInformationModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'post')
+        }else if(row.evaluationStatStatus =="PROCESSING"){
+            return '<button class="btn_s btn_border" disabled>Processing</button>';
+        }else if(row.evaluationStatStatus =="DONE"){
+            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-information" onclick="$FRONTEND._p.setInformationModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'get')
+        }else{
+            return '<button class="btn_s btn_border" disabled>Error</button>';
+        }
     }
 
     _p.explanationFormatter = function (value, row) {
-        if (row.limeHtmlValid) {
-            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-explanation" onclick="$FRONTEND._p.setExplanationModal('+value+')" type="button" >View</button>'
-        } else {
-            return '<button class="btn_s btn_border" disabled>-</button>';
+        if(row.limeHtmlStatus =="INIT"){
+            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-explanation" onclick="$FRONTEND._p.setExplanationModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'post')
+        }else if(row.limeHtmlStatus =="PROCESSING"){
+            return '<button class="btn_s btn_border" disabled>Processing</button>';
+        }else if(row.limeHtmlStatus =="DONE"){
+            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-explanation" onclick="$FRONTEND._p.setExplanationModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'get')
+        }else{
+            return '<button class="btn_s btn_border" disabled>Error</button>';
         }
     }
 
@@ -196,32 +197,37 @@ var $FRONTEND = (function (module) {
         if (row.deployed) {
             return '<button id ="deploy' + value + '" class="btn_deploy" type="button" disabled><span class="ico_automl ico_check">Deploy</span></button>'
         }
-        return '<button id ="deploy' + value + '" class="btn_deploy" type="button" onclick="$FRONTEND._p.deployModel('+value+')"><span class="ico_automl ico_arr">Deploy</span></button>'
+        return '<button id ="deploy' + value + '" class="btn_deploy" type="button" onclick="$FRONTEND._p.deployModel(\'{0}\',\'{1}\')"><span class="ico_automl ico_arr">Deploy</span></button>'.format(value, 'post')
     }
 
-    _p.deployModel = function (model_pk) {
+    _p.deployModel = function (model_pk, method) {
         var data = {}
-        data.modelPk = model_pk
+        if(method==='post'){
+            data.modelPk = model_pk
+            $('.ico_check').toggleClass('ico_check', 'ico_arr')
+            $('#deploy' + model_pk + 'span').toggleClass('ico_arr', 'ico_check') // .html('<span class="ico_automl ico_check">Deploy</span>')
+            $('.btn_deploy').attr('disabled', true)
 
-        $('.ico_check').toggleClass('ico_check', 'ico_arr')
-        $('#deploy' + model_pk + 'span').toggleClass('ico_arr', 'ico_check') // .html('<span class="ico_automl ico_check">Deploy</span>')
-        $('.btn_deploy').attr('disabled', true)
-
-        $('#modal-deploy').modal('show')
-        $('#modal-deploy #modal-deploy-loading').show()
-        $('#modal-deploy #modal-deploy-done').hide()
-        $('#modal-deploy #modal-deploy-error').hide()
-
+            $('#modal-deploy').modal('show')
+            $('#modal-deploy #modal-deploy-loading').show()
+            $('#modal-deploy #modal-deploy-done').hide()
+            $('#modal-deploy #modal-deploy-error').hide()
+        }
         return $.ajax({
-            type: 'post',
+            type: method,
             url: g_RESTAPI_HOST_BASE + 'runtimes/'+ runtime_id + '/deployment/',
             data: data,
             dataType: 'json',
             success: function (resultData, textStatus, request) {
-                if (resultData.err_msg) {
+                if(resultData.status==="INIT" || resultData.status==="REQUEST" || resultData.status==="DEPLOYING"){
+                    _p.deployModel(model_pk, 'get')
+                    return false
+                }
+                else if(resultData.status==="ERROR"){
                     $('#modal-deploy #modal-deploy-loading').hide()
                     $('#modal-deploy #modal-deploy-done').hide()
                     $('#modal-deploy #modal-deploy-error').show()
+
                 } else {
                     $('#modal-deploy #modal-deploy-loading').hide()
                     $('#modal-deploy #modal-deploy-done').show()
@@ -237,92 +243,99 @@ var $FRONTEND = (function (module) {
         })
     }
 
+
     // Modal 관련
-    _p.setInformationModal = function (model_pk) {
-        $('#modal-information #modal-information-loading').show()
-        $('#modal-information #modal-information-done').hide()
-        $('#modal-information #modal-information-error').hide()
-        if (estimator_type === 'classifier') {
-            $('.regression-info').hide()
-            $('.classification-info').show()
-        }else{
-            $('.classification-info').hide()
-            $('.regression-info').show()
+    _p.setInformationModal = function (model_pk, method) {
+        if(method==='post') {
+            $('#modal-information #modal-information-loading').show()
+            $('#modal-information #modal-information-done').hide()
+            $('#modal-information #modal-information-error').hide()
         }
-        if(model_info[model_pk].featureImportancesJson !== null){
-            _p.drawFeature(model_info[model_pk].featureImportancesJson)
-            _p.drawRoc(model_info[model_pk].rocCurveJson)
-            _p.drawMatrix(model_info[model_pk].confusionMatrixJson)
-            _p.drawBalance(model_info[model_pk].classBalanceJson)
-            $('#modal-information #modal-information-loading').hide()
-            $('#modal-information #modal-information-done').show()
-        }else{
-            return $.ajax({
-                type: 'get',
-                url: g_RESTAPI_HOST_BASE + 'runtimes/{0}/models/{1}/stats/'.format(runtime_id, model_pk),
-                dataType: 'json',
-                success: function (resultData, textStatus, request) {
-                    if (resultData.error_msg == null) {
-                        $('#modal-information #modal-information-loading').hide()
-                        $('#modal-information #modal-information-done').show()
-                        _p.drawFeature(resultData.featureImportancesJson)
-                        if (estimator_type === 'classifier') {
-                            _p.drawRoc(resultData.rocCurveJson)
-                            _p.drawMatrix(resultData.confusionMatrixJson)
-                            _p.drawBalance(resultData.classBalanceJson)
-                        } else {
-                            _p.drawResiduals(resultData.predErrorJson)
-                        }
-                    } else {
-                        $('#modal-information #modal-information-loading').hide()
-                        $('#modal-information #modal-information-done').hide()
-                        $('#modal-information #modal-information-error').show()
-                    }
-                },
-                error: function (res) {
+
+        return $.ajax({
+            type: method,
+            url: g_RESTAPI_HOST_BASE + 'runtimes/{0}/models/{1}/stats/'.format(runtime_id, model_pk),
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                console.log(resultData)
+                if(resultData.status==="INIT" || resultData.status==="PROCESSING"){
+                    _p.setInformationModal(model_pk, 'get')
+                    return false
+                }else if(resultData.status ==="ERROR"){
                     $('#modal-information #modal-information-loading').hide()
                     $('#modal-information #modal-information-done').hide()
                     $('#modal-information #modal-information-error').show()
-                    alert(res.responseJSON.message)
+                }else {
+                    $('#modal-information #modal-information-loading').hide()
+                    $('#modal-information #modal-information-error').hide()
+                    $('#modal-information #modal-information-done').show()
+                    if(resultData.featureImportancesJson !== null){
+                        _p.drawFeature(resultData.featureImportancesJson)
+                        $('#featureChart_tab').show()
+                    }
+                    if(resultData.rocCurveJson !== null){
+                        _p.drawRoc(resultData.rocCurveJson)
+                        $('#rocChart_tab').show()
+                    }
+                    if(resultData.confusionMatrixJson !== null){
+                        _p.drawMatrix(resultData.confusionMatrixJson)
+                        $('#conf_matrix_tab').show()
+                    }
+                    if(resultData.classBalanceJson !== null){
+                        _p.drawBalance(resultData.classBalanceJson)
+                        $('#balanceChart_tab').show()
+                    }
+                    if(resultData.predErrorJson !== null){
+                        _p.drawResiduals(resultData.predErrorJson)
+                        $('#residualsChart_tab').show()
+                    }
                 }
-            })
+
+            },
+            error: function (res) {
+                $('#modal-information #modal-information-loading').hide()
+                $('#modal-information #modal-information-done').hide()
+                $('#modal-information #modal-information-error').show()
+                alert(res.responseJSON.message)
+            }
+        })
+    }
+
+    _p.setExplanationModal = function (model_pk, method) {
+
+        var data = {}
+        if(method==='post') {
+            $('#modal-explanation #modal-explanation-loading').show()
+            $('#modal-explanation #modal-explanation-done').hide()
+            $('#modal-explanation #modal-explanation-error').hide()
         }
 
 
 
-
-
-    }
-
-    _p.setExplanationModal = function (model_pk) {
-
-        var data = {}
-
-        $('#modal-explanation #modal-explanation-loading').show()
-        $('#modal-explanation #modal-explanation-done').hide()
-        $('#modal-explanation #modal-explanation-error').hide()
-
         return $.ajax({
-            type: 'get',
+            type: method,
             url: g_RESTAPI_HOST_BASE + 'runtimes/{0}/models/{1}/explanation/'.format(runtime_id, model_pk),
             data: data,
             dataType: 'json',
             success: function (resultData, textStatus, request) {
-                $('#modal-explanation #modal-explanation-loading').hide()
-                if (resultData.error_msg) {
+                console.log(resultData)
+                if(resultData.status==="INIT" || resultData.status==="PROCESSING"){
+                    _p.setExplanationModal(model_pk, 'get')
+                    return false
+                }else if(resultData.status ==="ERROR"){
+                    $('#modal-explanation #modal-explanation-loading').hide()
                     $('#modal-explanation #modal-explanation-error').show()
-                    console.log(resultData.error_msg)
-                } else {
-                    $('#modal-explanation #modal-explanation-done').show()
-                    $('#modal-explanation #modal-explanation-done iframe').attr('srcdoc', resultData.limeHtml)
-                }
-            },
+                }else {
+                        $('#modal-explanation #modal-explanation-loading').hide()
+                        $('#modal-explanation #modal-explanation-done').show()
+                        $('#modal-explanation #modal-explanation-done iframe').attr('srcdoc', resultData.limeHtml)
+                    }
+                },
             error: function (res) {
                 $('#modal-explanation #modal-explanation-loading').hide()
                 $('#modal-explanation #modal-explanation-error').show()
-                console.log(res)
             }
-        })
+            })
     }
 
     // 차트관련
