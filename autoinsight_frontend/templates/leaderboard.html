@@ -15,9 +15,9 @@
 
 {% block script_foot %}
     <script>
-	var g_RESTAPI_HOST_BASE = '{{ BACKEND_RESTAPI_URL }}'; // base.js로 이전예정
-    var runtime_id = '{{ runtime_id }}';
-	</script>
+        var g_RESTAPI_HOST_BASE = '{{ BACKEND_RESTAPI_URL }}'; // base.js로 이전예정
+        var runtime_id = '{{ runtime_id }}';
+    </script>
     <script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}" ></script>
     <script type="text/javascript" src="{% static 'autoinsight_frontend/js/bootstrap.min.js' %}"></script>
     <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
@@ -44,9 +44,9 @@
         <header>
             <div class="container">
                 <a href="/">
-                <h1>
-                    <img src="{% static 'autoinsight_frontend/img/logo_automl.png' %}" class="img_logo" width="221" height="42" alt="AutoInsight">
-                </h1></a>
+                    <h1>
+                        <img src="{% static 'autoinsight_frontend/img/logo_automl.png' %}" class="img_logo" width="221" height="42" alt="AutoInsight">
+                    </h1></a>
             </div>
             <button id="data_btn" class="btn_m btn_border" style="margin-left: 78%;" type="button" onclick="window.location.href='/experiment'">Back to Experiment</button>
         </header>
@@ -103,8 +103,9 @@
                         <colgroup>
                             <col style="width:371px">
                             <col style="width:225px">
-                            <col style="width:231px">
-                            <col style="width:221px">
+                            <col style="width:150px">
+                            <col style="width:150px">
+                            <col style="width:150px">
                             <col>
                         </colgroup>
                         <thead>
@@ -117,6 +118,7 @@
                             </th>
                             <th data-field="id" data-formatter="$FRONTEND._p.informationFormatter">Information</th>
                             <th data-field="id" data-formatter="$FRONTEND._p.explanationFormatter">Explanation</th>
+                            <th data-field="id" data-formatter="$FRONTEND._p.metricFormatter">Metrics</th>
                             <th data-field="id" data-formatter="$FRONTEND._p.deployFormatter">Deploy</th>
                         </tr>
                         </thead>
@@ -217,6 +219,43 @@
         </div>
     </div>
     <!-- //Model Explanation -->
+
+    <!-- Model Metric -->
+    <div class="modal fade popup_info" id="modal-metric" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="header_popup">
+                    <strong class="tit_popup">Model Information</strong>
+                </div>
+                <div class="body_popup" id="modal-metric-loading">
+                    불러오는중, 시간이 걸릴 수 있습니다.
+                </div>
+                <div class="body_popup" id="modal-metric-error">
+                    죄송합니다. 이 모델은 metric을 불러올 수 없습니다.
+                </div>
+                <div class="body_popup" id="modal-metric-done">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Value</th>
+                        </tr>
+                        </thead>
+                        <tbody id="metric_tbody">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="footer_popup">
+                    <div class="wrap_btn txt_r">
+                        <button type="button" class="btn_m" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn_m btn_confirm" data-dismiss="modal">Confirm</button>
+                    </div>
+                    <button type="button" class="btn_close" data-dismiss="modal"><span class="fas fa-times"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //Model Metric -->
 
     <!-- Model Deploy -->
     <div class="modal fade" id="modal-deploy" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"  aria-hidden="true">

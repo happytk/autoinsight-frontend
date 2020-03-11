@@ -4,7 +4,7 @@ var $FRONTEND = (function (module) {
     var _p = module._p = module._p || {}
     // 초기화면 세팅
 
-    var interval
+    var interval, status
     var scores = []
     var labels = []
 
@@ -16,6 +16,7 @@ var $FRONTEND = (function (module) {
     }
 
     _p.playInterval = function () {
+        status ="learning"
         interval = setInterval(function () { _p.getProgress() }, 2000)
         // return false
     }
@@ -60,11 +61,13 @@ var $FRONTEND = (function (module) {
             success: function (resultData, textStatus, request) {
                 if (resultData.error_msg) {
                     clearInterval(interval)
+                    status ="finished"
                     console.log('stopped', resultData.error_msg)
                 } else {
                     if (resultData.status !== "learning") {
                         $('#leaderboard_loader').removeClass('loader')
                         clearInterval(interval)
+                        status ="finished"
                     }
                     percent = Math.round(resultData.doneSlot / resultData.timeout * 100) + '%'
                     $('#percent').text(percent)
@@ -193,6 +196,18 @@ var $FRONTEND = (function (module) {
         }
     }
 
+    _p.metricFormatter = function (value, row) {
+        if(row.allMetricsStatus =="INIT"){
+            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-metric" onclick="$FRONTEND._p.setMetricModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'post')
+        }else if(row.allMetricsStatus =="PROCESSING"){
+            return '<button class="btn_s btn_border" disabled>Processing</button>';
+        }else if(row.allMetricsStatus =="DONE"){
+            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-metric" onclick="$FRONTEND._p.setMetricModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'get')
+        }else{
+            return '<button class="btn_s btn_border" disabled>Error</button>';
+        }
+    }
+
     _p.deployFormatter = function (value, row) {
         if (row.deployed) {
             return '<button id ="deploy' + value + '" class="btn_deploy" type="button" disabled><span class="ico_automl ico_check">Deploy</span></button>'
@@ -257,9 +272,11 @@ var $FRONTEND = (function (module) {
             url: g_RESTAPI_HOST_BASE + 'runtimes/{0}/models/{1}/stats/'.format(runtime_id, model_pk),
             dataType: 'json',
             success: function (resultData, textStatus, request) {
-                console.log(resultData)
                 if(resultData.status==="INIT" || resultData.status==="PROCESSING"){
-                    _p.setInformationModal(model_pk, 'get')
+                    setTimeout(function(){
+                        _p.setInformationModal(model_pk, 'get');
+                        if(status ==="finished") $('#learderboard_table').bootstrapTable('refresh', { silent: true })
+                    }, 1000)
                     return false
                 }else if(resultData.status ==="ERROR"){
                     $('#modal-information #modal-information-loading').hide()
@@ -310,33 +327,78 @@ var $FRONTEND = (function (module) {
             $('#modal-explanation #modal-explanation-error').hide()
         }
 
-
-
         return $.ajax({
             type: method,
             url: g_RESTAPI_HOST_BASE + 'runtimes/{0}/models/{1}/explanation/'.format(runtime_id, model_pk),
             data: data,
             dataType: 'json',
             success: function (resultData, textStatus, request) {
-                console.log(resultData)
                 if(resultData.status==="INIT" || resultData.status==="PROCESSING"){
-                    _p.setExplanationModal(model_pk, 'get')
+                    setTimeout(function(){
+                         _p.setExplanationModal(model_pk, 'get')
+                        if(status ==="finished") $('#learderboard_table').bootstrapTable('refresh', { silent: true })
+                    }, 1000)
                     return false
                 }else if(resultData.status ==="ERROR"){
                     $('#modal-explanation #modal-explanation-loading').hide()
                     $('#modal-explanation #modal-explanation-error').show()
                 }else {
-                        $('#modal-explanation #modal-explanation-loading').hide()
-                        $('#modal-explanation #modal-explanation-done').show()
-                        $('#modal-explanation #modal-explanation-done iframe').attr('srcdoc', resultData.limeHtml)
-                    }
-                },
+                    $('#modal-explanation #modal-explanation-loading').hide()
+                    $('#modal-explanation #modal-explanation-done').show()
+                    $('#modal-explanation #modal-explanation-done iframe').attr('srcdoc', resultData.limeHtml)
+                }
+            },
             error: function (res) {
                 $('#modal-explanation #modal-explanation-loading').hide()
                 $('#modal-explanation #modal-explanation-error').show()
             }
-            })
+        })
     }
+
+    _p.setMetricModal = function (model_pk, method) {
+        if(method==='post') {
+            $('#modal-metric #modal-metric-loading').show()
+            $('#modal-metric #modal-metric-done').hide()
+            $('#modal-metric #modal-metric-error').hide()
+        }
+
+        return $.ajax({
+            type: method,
+            url: g_RESTAPI_HOST_BASE + 'runtimes/{0}/models/{1}/metrics/'.format(runtime_id, model_pk),
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                if(resultData.status==="INIT" || resultData.status==="PROCESSING"){
+                    setTimeout(function(){
+                        _p.setMetricModal(model_pk, 'get');
+                        if(status ==="finished") $('#learderboard_table').bootstrapTable('refresh', { silent: true })
+                    }, 1000)
+                    return false
+                }else if(resultData.status ==="ERROR"){
+                    $('#modal-metric #modal-metric-loading').hide()
+                    $('#modal-metric #modal-metric-done').hide()
+                    $('#modal-metric #modal-metric-error').show()
+                }else {
+                    $('#modal-metric #modal-metric-loading').hide()
+                    $('#modal-metric #modal-metric-error').hide()
+
+                    var tablehtml = ""
+                    $.each( resultData.allMetricsJson, function( key, value ) {
+                        tablehtml += '<tr><td>'+key+'</td><td>'+value+'</td></tr>'
+                    })
+                    $('#metric_tbody').html(tablehtml)
+                    $('#modal-metric #modal-metric-done').show()
+                }
+
+            },
+            error: function (res) {
+                $('#modal-metric #modal-metric-loading').hide()
+                $('#modal-metric #modal-metric-done').hide()
+                $('#modal-metric #modal-metric-error').show()
+                console.log(res)
+            }
+        })
+    }
+
 
     // 차트관련
     _p.drawScoreTrend = function (data, labels) {
