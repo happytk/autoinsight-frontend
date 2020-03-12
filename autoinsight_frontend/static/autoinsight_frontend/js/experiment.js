@@ -3,9 +3,14 @@ var $FRONTEND = (function (module) {
 
 
     _p.dataset_name ="";
-    var hasPending, interval
+    var hasPending
+    var thread = 0
     var REFRESH_RUNTIMES_QUERY = `
                                     query {
+                                      env {
+                                        activeContainerCount
+                                        totalContainerCount
+                                      }
                                       runtimes {
                                         id
                                         metric
@@ -60,7 +65,6 @@ var $FRONTEND = (function (module) {
 
     //초기화면 세팅
     _p.init = function(){
-        _p.loadContainerInfo()
         _p.refreshTable()
 
         $('#dataset').fileinput({
@@ -100,44 +104,20 @@ var $FRONTEND = (function (module) {
             _p.createRuntime(params.response.id)
         });
 
-        if(hasPending){
-            hasPending = false
-            _p.playInterval()
-        }else{
-            clearInterval(interval)
-        }
+        $('#runtime_table').on('load-success.bs.table', function (data, jqXHR) {
+            console.log("@@@@@@")
+
+
+        })
 
 
 
 
     };
 
-    _p.loadContainerInfo = function (){
 
-        return $.ajax({
-            type: 'get',
-            url: g_RESTAPI_HOST_BASE+'info/docker_containers/',
-            dataType: 'json',
-            success: function (resultData, textStatus, request) {
-                if (resultData['error_msg'] == null ){
-                    $("#active_count").text(resultData['activeCount'])
-                    $("#total_count").text(resultData['totalCount'])
-                } else {
-                    alert(resultData['error_msg']);
-                }
-            },
-            error: function (res) {
-                alert(res);
-            }
-        });
-    };
 
-    _p.playInterval = function () {
-
-        interval = setInterval(function () { _p.refreshTable() }, 3000)
-        // return false
-    }
-    _p.refreshTable = function () {
+    _p.refreshTable = function (next) {
         $.ajax({
             type: 'post',
             url: g_RESTAPI_HOST_BASE+'graphql',
@@ -146,6 +126,20 @@ var $FRONTEND = (function (module) {
             success: function (resultData, textStatus, request) {
                 //feature 개수, target column 추가
                 $('#runtime_table').bootstrapTable('load',{rows: resultData.data.runtimes})
+                $("#active_count").text(resultData.data.env['activeContainerCount'])
+                $("#total_count").text(resultData.data.env['totalContainerCount'])
+                console.log(thread)
+                if((thread === 0 || next=== true) && hasPending === true){
+                    hasPending = false
+                    thread =1
+                    setTimeout(function(){
+                        _p.refreshTable(true)
+                    }, 5000)
+                    return false
+                }
+                if(next=== true && hasPending === false){
+                    thread = 0
+                }
 
             },
             error: function (res) {
@@ -157,11 +151,9 @@ var $FRONTEND = (function (module) {
     _p.datasetFormatter =  function (value, row) {
         if(row.status === 'creating') {
             hasPending = true
-            _p.playInterval()
             return '-'
         }else if(row.status === 'learning'){
             hasPending = true
-            _p.playInterval()
 
         }
         return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureNames.length+' features, '+value.rowCount+' rows)'
