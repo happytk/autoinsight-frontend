@@ -228,27 +228,27 @@ var $FRONTEND = (function (module) {
 
     }
 
-    _p.workerscaleFormatter =  function (value, row) {
-        var worker_scales = [1, 2, 3, 4]
-        var selectBox ='<div class="wrap_select"><select id="workerscale_' + row.id + '" class="form-control" data-style="btn-info"'
-        if(row.status === 'ready') {
-            selectBox += 'onchange="$FRONTEND._p.updateRuntime(' + row.id + ')">'
-        }else{
-            selectBox += 'disabled>'
-        }
-        for (var i = 0; i < worker_scales.length; i++) {
-            if (value === worker_scales[i]) {
-                selectBox += '<option value="'+worker_scales[i]+'" selected>'+worker_scales[i]+'</option>'
-            } else {
-                selectBox += '<option value="'+worker_scales[i]+'">'+worker_scales[i]+'</option>'
-            }
-        }
-        selectBox += '</select></div>';
-        return selectBox
-    }
+    // _p.workerscaleFormatter =  function (value, row) {
+    //     var worker_scales = [1, 2, 3, 4]
+    //     var selectBox ='<div class="wrap_select"><select id="workerscale_' + row.id + '" class="form-control" data-style="btn-info"'
+    //     if(row.status === 'ready') {
+    //         selectBox += 'onchange="$FRONTEND._p.updateRuntime(' + row.id + ')">'
+    //     }else{
+    //         selectBox += 'disabled>'
+    //     }
+    //     for (var i = 0; i < worker_scales.length; i++) {
+    //         if (value === worker_scales[i]) {
+    //             selectBox += '<option value="'+worker_scales[i]+'" selected>'+worker_scales[i]+'</option>'
+    //         } else {
+    //             selectBox += '<option value="'+worker_scales[i]+'">'+worker_scales[i]+'</option>'
+    //         }
+    //     }
+    //     selectBox += '</select></div>';
+    //     return selectBox
+    // }
 
     _p.actionFormatter = function(value, row){
-        btnString='<button class="btn_m btn_setup" type="button" data-toggle="modal" data-target="#modal-setting" onclick="$FRONTEND._p.setModal('+value+');"><span class="ico_automl ico_setup" >설정</span></button>'
+        btnString=''//'<button class="btn_m btn_setup" type="button" data-toggle="modal" data-target="#modal-setting" onclick="$FRONTEND._p.setModal('+value+');"><span class="ico_automl ico_setup" >설정</span></button>'
         if(row.status === 'ready'){
             btnString += '<button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.startRuntime('+value+');">Start</button>'
             btnString += '<button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.deleteRuntime('+value+');">Delete</button>'

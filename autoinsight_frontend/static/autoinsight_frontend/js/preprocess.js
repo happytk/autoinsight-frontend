@@ -22,8 +22,8 @@ var $FRONTEND = (function (module) {
 
         var status = _p.loadStatus();
         isFirst = true;
-        _p.loadGenConf()
-        _p.loadPreConf()
+        // _p.loadGenConf()
+        // _p.loadPreConf()
 
         _p.refreshOrigTable()
 
