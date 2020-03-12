@@ -509,8 +509,7 @@
                                             <label for="pre_VarThreshold" class="label_check"><span class="ico_automl ico_check"></span>Variance Threshold</label>
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
-                                                    설 <br> 명
-
+                                                    분산이 일정 수준 이하(현재 0)로 예측력이 적은 Column들을 제거합니다.
                                                 </div>
                                             </a>
                                         </div>
@@ -534,7 +533,7 @@
                                         <span class="label_txt">Methods</span>
                                         <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
-                                                설명
+                                                각 Method 설명은 sklearn.preprocessing 문서를 참조
                                             </div>
                                         </a>
                                         <div class="wrap_select">
@@ -554,7 +553,9 @@
                                             <label for="pre_FtrSlcon" class="label_check"><span class="ico_automl ico_check"></span>Feature Engineering</label>
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
-                                                    F값을 기준으로 K가 정수일 경우 K개의 Feature를, <br>K가 0과 1 사이의 소수일 경우 <br>전체 Feature 개수 중 K 비율의 Feature만 추출합니다.
+                                                    모델 성능 개선을 위하여 Feature Selection, Dimension Reduction 등 <br>
+                                                    데이터를 가공하는 Feature Engineering을 실시합니다. <br>
+                                                    [주의] 특정 방법의 경우 변수 형태가 변할 수 있습니다.
                                                 </div>
                                             </a>
                                         </div>
@@ -563,7 +564,7 @@
                                         <span class="label_txt">Methods</span>
                                         <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
-                                                Scaling Strategy
+                                                선택된 Feature Engineering 방법 중 최적의 성능을 보이는 방법을 택일하여 사용합니다.
                                             </div>
                                         </a>
                                         <div class="wrap_select">
