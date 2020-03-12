@@ -3,7 +3,7 @@ var $FRONTEND = (function (module) {
 
 
     _p.dataset_name ="";
-    var targetColumn, isFirst;
+    var targetColumn, isFirst, showOutlier, showPowerTrans;
     //초기화면 세팅
     _p.init = function(){
 
@@ -266,31 +266,40 @@ var $FRONTEND = (function (module) {
         return selectBox;
     };
     _p.powerTransFormatter = function(value, row){
-        var strategies = ['None','Log','SquaredRoot','Square','BoxCoxTransformation','YeoJohnsonTransformation'];
-        var selectBox = '<div class="wrap_select"><select id="powertrans_'+row.id+'" class="form-control toggle-disable" data-style="btn-info" onchange="$FRONTEND._p.updateColumn('+row.id+')">';
-        for(var i = 0; i < strategies.length; i++){
-            if (value == strategies[i]){
-                selectBox += '<option value="'+strategies[i]+'" selected>'+strategies[i]+'</option>';
-            } else {
-                selectBox += '<option value="'+strategies[i]+'">'+strategies[i]+'</option>';
+        if(showPowerTrans) {
+            var strategies = ['None', 'Log', 'SquaredRoot', 'Square', 'BoxCoxTransformation', 'YeoJohnsonTransformation'];
+            var selectBox = '<div class="wrap_select"><select id="powertrans_' + row.id + '" class="form-control toggle-disable" data-style="btn-info" onchange="$FRONTEND._p.updateColumn(' + row.id + ')">';
+            for (var i = 0; i < strategies.length; i++) {
+                if (value == strategies[i]) {
+                    selectBox += '<option value="' + strategies[i] + '" selected>' + strategies[i] + '</option>';
+                } else {
+                    selectBox += '<option value="' + strategies[i] + '">' + strategies[i] + '</option>';
+                }
             }
+            selectBox += '</select></div>';
+            return selectBox;
+        }else{
+            return null
         }
-        selectBox += '</select></div>';
-        return selectBox;
     };
 
     _p.outlierEliFormatter = function(value,row){
-        var methods = ['None','BoxPlotRule','Zscore'];
-        var selectBox = '<div class="wrap_select"><select id="outlier_'+row.id+'" class="form-control toggle-disable" data-style="btn-info" onchange="$FRONTEND._p.updateColumn('+row.id+')">';
-        for(var i = 0; i < methods.length; i++){
-            if (value == methods[i]){
-                selectBox += '<option value="'+methods[i]+'" selected>'+methods[i]+'</option>';
-            } else {
-                selectBox += '<option value="'+methods[i]+'">'+methods[i]+'</option>';
+        if(showOutlier){
+            var methods = ['None','BoxPlotRule','Zscore'];
+            var selectBox = '<div class="wrap_select"><select id="outlier_'+row.id+'" class="form-control toggle-disable" data-style="btn-info" onchange="$FRONTEND._p.updateColumn('+row.id+')">';
+            for(var i = 0; i < methods.length; i++){
+                if (value == methods[i]){
+                    selectBox += '<option value="'+methods[i]+'" selected>'+methods[i]+'</option>';
+                } else {
+                    selectBox += '<option value="'+methods[i]+'">'+methods[i]+'</option>';
+                }
             }
+            selectBox += '</select></div>';
+            return selectBox
+        }else{
+            return null
         }
-        selectBox += '</select></div>';
-        return selectBox;
+
     };
 
     _p.featureFormatter = function(value,row){
@@ -561,7 +570,7 @@ var $FRONTEND = (function (module) {
                         $('#pre_DrpNCols').prop( "checked", true );
                         $('#na_col_drop_threshold').val(resultData['naColDropThreshold']);
                     }
-
+                    showOutlier = false
                     if(resultData['outlierUse']){
                         $('#pre_OtlrElmntn').prop( "checked", true );
                         // $('#pre_Ocolumn').multiselect('select', resultData['outlierColumns']);
@@ -569,13 +578,16 @@ var $FRONTEND = (function (module) {
 
                         $('#pre_Omethod').val(resultData['outlierStrategy']);
                         $('#pre_Othreshold').val(resultData['outlierThreshold']);
+                        showOutlier = true
                         $('#outlier_col').css("width", "150px")
-                        // $('#column_table').bootstrapTable('showColumn', 'outlierMethod')
+                        $('#column_table').bootstrapTable('refresh')
                     }
+                    showPowerTrans = false
                     if(resultData['colTransUse']){
                         $('#pre_PrTrnsfrm').prop( "checked", true );
+                        showPowerTrans = true
                         $('#powerTrans_col').css("width", "150px")
-                        // $('#column_table').bootstrapTable('showColumn', 'transformationStrategy')
+                        $('#column_table').bootstrapTable('refresh')
 
                         // $('#pre_Pcolumn_0').val(resultData['colTransColumns'][0]);
                         // $('#pre_Pstrategy_0').val(resultData['colTransStrategies'][0]);

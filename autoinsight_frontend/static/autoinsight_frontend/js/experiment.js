@@ -6,6 +6,10 @@ var $FRONTEND = (function (module) {
     var hasPending, interval
     var REFRESH_RUNTIMES_QUERY = `
                                     query {
+                                      env {
+                                        activeContainerCount
+                                        totalContainerCount
+                                      }
                                       runtimes {
                                         id
                                         metric
@@ -134,7 +138,7 @@ var $FRONTEND = (function (module) {
 
     _p.playInterval = function () {
 
-        interval = setInterval(function () { _p.refreshTable() }, 3000)
+        interval = setInterval(function () { _p.refreshTable() }, 5000)
         // return false
     }
     _p.refreshTable = function () {
