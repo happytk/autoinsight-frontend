@@ -547,7 +547,7 @@ var $FRONTEND = (function (module) {
         // $('#gen_over_sampling').val("None");
         // $('#gen_time_out').val(60);
         $('.modal_check:checkbox:checked').prop( "checked", false );
-        $('#na_col_drop_threshold').val(0.9);
+        // $('#na_col_drop_threshold').val(0.9);
         // $('#pre_Ocolumn').multiselect('destroy');
         $('#pre_Omethod').val("Zscore");
         $('#pre_Othreshold_all').show();
@@ -566,10 +566,10 @@ var $FRONTEND = (function (module) {
                 if (resultData['error_msg'] == null ){
                     //Modal 세팅
                     _p.reset();
-                    if(resultData['naColDropUse']){
-                        $('#pre_DrpNCols').prop( "checked", true );
-                        $('#na_col_drop_threshold').val(resultData['naColDropThreshold']);
-                    }
+                    // if(resultData['naColDropUse']){
+                    //     $('#pre_DrpNCols').prop( "checked", true );
+                    //     $('#na_col_drop_threshold').val(resultData['naColDropThreshold']);
+                    // }
                     showOutlier = false
                     if(resultData['outlierUse']){
                         $('#pre_OtlrElmntn').prop( "checked", true );
@@ -838,16 +838,16 @@ var $FRONTEND = (function (module) {
         var data = {};
 
         //-------------------------- 1. Drop NaN Columns --------------------------
-        if  ($('#pre_DrpNCols').is(':checked')) {
-            data.naColDropUse = true;
-            if  ($('#na_col_drop_threshold').val()!="") {
-                data.naColDropThreshold = $('#na_col_drop_threshold').val();      		// "Else" unnecessary
-            }else{
-                alert("Threshold 값을 확인해 주세요.")
-                return false;
-            }
-            console.log('1. na_col_drop_threshold = ',data.naColDropThreshold ) ;
-        }
+        // if  ($('#pre_DrpNCols').is(':checked')) {
+        //     data.naColDropUse = true;
+        //     if  ($('#na_col_drop_threshold').val()!="") {
+        //         data.naColDropThreshold = $('#na_col_drop_threshold').val();      		// "Else" unnecessary
+        //     }else{
+        //         alert("Threshold 값을 확인해 주세요.")
+        //         return false;
+        //     }
+        //     console.log('1. na_col_drop_threshold = ',data.naColDropThreshold ) ;
+        // }
 
 
         // ---------------- 2. Outlier Elimination - Loop Impossible -------------------------
