@@ -22,10 +22,8 @@ var $FRONTEND = (function (module) {
 
         var status = _p.loadStatus();
         isFirst = true;
-        // _p.loadGenConf()
-        // _p.loadPreConf()
 
-        _p.refreshOrigTable()
+        // _p.refreshOrigTable()
 
 
 
@@ -81,10 +79,22 @@ var $FRONTEND = (function (module) {
 
         $('#modal-setting').on('shown.bs.modal', function (e) {
             $('.conf').change(function() {
-                _p.saveGenConf(this)
+                _p.saveGenConf()
             });
+            $('#gen_max_eval_time').change(function() {
+                var max_eval_time = $(this).val()
+                var tmp = Math.floor($('#gen_time_out').val()/10)
+
+                if (max_eval_time < 1 ||max_eval_time > tmp) {
+                    alert("Max Evaluation Time은 최소 1에서 최대 "+tmp+"사이의 값으로 입력해 주세요");
+                    $(this).val(tmp)
+                    return false;
+                }
+                _p.saveGenConf()
+            });
+
             $('#resampling_strategy').change(function() {
-                if ($(this).val() === 'holdout' || $(this).val() === 'holdout-iterative-fit') {
+                if ($(this).val() === 'holdout') {
                     $('#k_folds_area').hide();
                     $('#train_split_area').show();
                 }else{
@@ -115,6 +125,10 @@ var $FRONTEND = (function (module) {
                     $('#pre_Othreshold_all').show();
                 }
             });
+            _p.loadGenConf()
+            _p.loadPreConf()
+            return false
+
 
         });
 
@@ -625,7 +639,7 @@ var $FRONTEND = (function (module) {
                 $('#metric').html(metricCombobox);
 
                 $('#resampling_strategy').val(resultData['resamplingStrategy']);
-                if (resultData['resamplingStrategy']=== 'holdout' || resultData['resamplingStrategy'] === 'holdout-iterative-fit') {
+                if (resultData['resamplingStrategy']=== 'holdout') {
                     $('#k_folds_area').hide();
                     $('#train_split_area').show();
                     $('#split_testdata_rate').val(resultData['resamplingStrategyHoldoutTrainSize']);
@@ -637,6 +651,10 @@ var $FRONTEND = (function (module) {
 
                 var tmp = resultData['timeout']/60;
                 $('#gen_time_out').val(tmp);
+
+
+                tmp = resultData['maxEvalTime']/60;
+                $('#gen_max_eval_time').val(tmp);
 
                 if(resultData['includeOneHotEncoding']){
                     $('#pre_1HotEncod').prop( "checked", true );
@@ -778,20 +796,23 @@ var $FRONTEND = (function (module) {
     }
 
 
-    _p.saveGenConf = function(object) {
-        console.log(object)
+    _p.saveGenConf = function() {
         var data = {};
         data.metric = $('#metric option:selected').val();
         data.resamplingStrategy = $('#resampling_strategy option:selected').val();
         data.resamplingStrategyHoldoutTrainSize = $('#split_testdata_rate').val();
         data.resamplingStrategyCvFolds = $('#resampling_strategy_cv_folds').val();
         data.overSampling = $('#gen_over_sampling option:selected').val();
+
         var timeout = $('#gen_time_out').val();
         if (timeout < 1 ||timeout > 180) {
             alert("Timeout은 1~180 사이의 값으로 입력해 주세요");
             return false;
         }
         data.timeout = timeout*60;
+
+        var max_eval_time = $('#gen_max_eval_time').val();
+        data.maxEvalTime = max_eval_time*60;
 
         if  ($('#pre_1HotEncod').is(':checked')) {
             data.includeOneHotEncoding = true;
@@ -981,112 +1002,112 @@ var $FRONTEND = (function (module) {
     };
 
     //Preview 관련
-    _p.refreshOrigTable = function () {
-        return $.ajax({
-            type: 'get',
-            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/source_X/',
-            contentType: "application/json",
-            success: function (resultData, textStatus, request) {
-                var columns =[]
-                $.each(resultData[0], function(key, value){
-                    columns.push({
-                        title: key,
-                        field: key
-                    })
-                });
-
-                var table_data = resultData
-
-                $.ajax({
-                    type: 'get',
-                    url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/source_y/',
-                    contentType: "application/json",
-                    success: function (resultData, textStatus, request) {
-
-                        $.each(resultData[0], function(key, value){
-                            columns.push({
-                                title: key,
-                                field: key
-                            })
-                        });
-                        $('#original_table').bootstrapTable({
-                            columns: columns
-                        })
-                        $.each(resultData, function(index, value){
-                            $.each(value, function(key, value){
-                                table_data[index][key] = value
-                            });
-                        })
-
-
-                        $('#original_table').bootstrapTable('load',{rows: table_data})
-
-                    },
-                    error: function (res) {
-                        console.log(res);
-                    }
-                });
-
-            },
-            error: function (res) {
-                console.log(res);
-            }
-        });
-
-
-    }
-
-    _p.loadPreprocessed = function () {
-        return $.ajax({
-            type: 'get',
-            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/preprocessed_X/',
-            contentType: "application/json",
-            success: function (resultData, textStatus, request) {
-                columns =[]
-                $.each(resultData[0], function(key, value){
-                    columns.push({
-                        title: key,
-                        field: key
-                    })
-                });
-
-                table_data = resultData
-
-                $.ajax({
-                    type: 'get',
-                    url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/preprocessed_y/',
-                    contentType: "application/json",
-                    success: function (resultData, textStatus, request) {
-
-                        $.each(resultData[0], function(key, value){
-                            columns.push({
-                                title: key,
-                                field: key
-                            })
-                        });
-                        $('#preprocessed_table').bootstrapTable({
-                            columns: columns
-                        })
-                        $.each(resultData, function(index, value){
-                            $.each(value, function(key, value){
-                                table_data[index][key] = value
-                            });
-                        })
-
-                        $('#preprocessed_table').bootstrapTable('load',{rows: table_data})
-
-                    },
-                    error: function (res) {
-                        console.log(res);
-                    }
-                });
-
-            },
-            error: function (res) {
-                console.log(res);
-            }
-        });
-    }
+    // _p.refreshOrigTable = function () {
+    //     return $.ajax({
+    //         type: 'get',
+    //         url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/source_X/',
+    //         contentType: "application/json",
+    //         success: function (resultData, textStatus, request) {
+    //             var columns =[]
+    //             $.each(resultData[0], function(key, value){
+    //                 columns.push({
+    //                     title: key,
+    //                     field: key
+    //                 })
+    //             });
+    //
+    //             var table_data = resultData
+    //
+    //             $.ajax({
+    //                 type: 'get',
+    //                 url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/source_y/',
+    //                 contentType: "application/json",
+    //                 success: function (resultData, textStatus, request) {
+    //
+    //                     $.each(resultData[0], function(key, value){
+    //                         columns.push({
+    //                             title: key,
+    //                             field: key
+    //                         })
+    //                     });
+    //                     $('#original_table').bootstrapTable({
+    //                         columns: columns
+    //                     })
+    //                     $.each(resultData, function(index, value){
+    //                         $.each(value, function(key, value){
+    //                             table_data[index][key] = value
+    //                         });
+    //                     })
+    //
+    //
+    //                     $('#original_table').bootstrapTable('load',{rows: table_data})
+    //
+    //                 },
+    //                 error: function (res) {
+    //                     console.log(res);
+    //                 }
+    //             });
+    //
+    //         },
+    //         error: function (res) {
+    //             console.log(res);
+    //         }
+    //     });
+    //
+    //
+    // }
+    //
+    // _p.loadPreprocessed = function () {
+    //     return $.ajax({
+    //         type: 'get',
+    //         url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/preprocessed_X/',
+    //         contentType: "application/json",
+    //         success: function (resultData, textStatus, request) {
+    //             columns =[]
+    //             $.each(resultData[0], function(key, value){
+    //                 columns.push({
+    //                     title: key,
+    //                     field: key
+    //                 })
+    //             });
+    //
+    //             table_data = resultData
+    //
+    //             $.ajax({
+    //                 type: 'get',
+    //                 url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/preprocessed_y/',
+    //                 contentType: "application/json",
+    //                 success: function (resultData, textStatus, request) {
+    //
+    //                     $.each(resultData[0], function(key, value){
+    //                         columns.push({
+    //                             title: key,
+    //                             field: key
+    //                         })
+    //                     });
+    //                     $('#preprocessed_table').bootstrapTable({
+    //                         columns: columns
+    //                     })
+    //                     $.each(resultData, function(index, value){
+    //                         $.each(value, function(key, value){
+    //                             table_data[index][key] = value
+    //                         });
+    //                     })
+    //
+    //                     $('#preprocessed_table').bootstrapTable('load',{rows: table_data})
+    //
+    //                 },
+    //                 error: function (res) {
+    //                     console.log(res);
+    //                 }
+    //             });
+    //
+    //         },
+    //         error: function (res) {
+    //             console.log(res);
+    //         }
+    //     });
+    // }
 
     return module;
 }($FRONTEND || {}));

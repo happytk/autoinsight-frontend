@@ -18,46 +18,16 @@ var $FRONTEND = (function (module) {
                                         modelsCnt
                                         doneSlot
                                         timeout
-                                        randomState
-                                        useTpot
-                                        useAutosklearn
-                                        useOptuna
                                         bestScore
                                         status
                                         scaleUnit
-                                        workerScale
-                                        createdAt
                                         availableMetrics
-                                        containers {
-                                          id
-                                          containerId
-                                          podName
-                                          createdAt
-                                          uuid
-                                          exited
-                                          status
-                                        }
                                         dataset {
                                           id
                                           name
                                           targetName
                                           featureNames
                                           rowCount
-                                        }
-                                        processes {
-                                          id
-                                          runtimeType
-                                          createdAt
-                                          startedAt
-                                          finishedAt
-                                          stoppedAt
-                                          containerUuid
-                                          host
-                                          pid
-                                          killed
-                                          stopRequest
-                                          error
-                                          errorMessage
                                         }
                                       }
                                     }
@@ -104,14 +74,6 @@ var $FRONTEND = (function (module) {
             _p.createRuntime(params.response.id)
         });
 
-        $('#runtime_table').on('load-success.bs.table', function (data, jqXHR) {
-            console.log("@@@@@@")
-
-
-        })
-
-
-
 
     };
 
@@ -126,9 +88,9 @@ var $FRONTEND = (function (module) {
             success: function (resultData, textStatus, request) {
                 //feature 개수, target column 추가
                 $('#runtime_table').bootstrapTable('load',{rows: resultData.data.runtimes})
-                $("#active_count").text(resultData.data.env['activeContainerCount'])
-                $("#total_count").text(resultData.data.env['totalContainerCount'])
-                console.log(thread)
+                $("#available_count").text(
+                    (resultData.data.env['totalContainerCount'] || 0) - (resultData.data.env['activeContainerCount'] || 0)
+                )
                 if((thread === 0 || next=== true) && hasPending === true){
                     hasPending = false
                     thread =1
@@ -163,20 +125,20 @@ var $FRONTEND = (function (module) {
 
     _p.statusFormatter =  function (value, row) {
         if(value === 'learning') {
-            return value + '(' + Math.round(row.doneSlot / row.timeout * 100) + '%' +')'
+            return value + '<br/>(' + Math.round(row.doneSlot / row.timeout * 100) + '%' +')'
         }else{
             return value
         }
     }
 
     _p.modelscoreFormatter =  function (value, row) {
-        if(row.status === 'ready') {
-            return value
-        }else {
-            return '<a  href="/leaderboard/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value+'</a>'
+        const cValue = (value === null ? '' : value)
+        if (row.status === 'ready' || row.status === 'creating') {
+            // return value;
+            return '-';
+        } else {
+            return '<a href="/leaderboard/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+cValue+'</a>'
         }
-
-
     }
 
     _p.estimatorFormatter =  function (value, row) {
