@@ -128,7 +128,6 @@ var $FRONTEND = (function (module) {
                 $('#runtime_table').bootstrapTable('load',{rows: resultData.data.runtimes})
                 $("#active_count").text(resultData.data.env['activeContainerCount'])
                 $("#total_count").text(resultData.data.env['totalContainerCount'])
-                console.log(thread)
                 if((thread === 0 || next=== true) && hasPending === true){
                     hasPending = false
                     thread =1
