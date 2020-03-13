@@ -52,11 +52,16 @@ var $FRONTEND = (function (module) {
             allowedFileExtensions: ["csv","tsv"],
             uploadExtraData: function (previewId, index) {
                 var data = {};
-                data.dataset_name=$('#dataset_name_input').val()
-                data.sample_size = $('#sample_size').val()
+                data.datasetName=$('#dataset_name_input').val()
+                if($('#samplingType').val() === 'ratio') data.samplingRatio = $('#sample_ratio').val();
+                if($('#samplingType').val() === 'count') data.samplingSize = $('#sample_count').val();
                 return data;
             }
         });
+        $('#dataset').change(function(e) {
+            $('#dataset_name_input').val(e.target.files[0].name)
+        })
+
         $('#saved_dataset_area').hide();
         $('#source_type').change(function() {
             if ($(this).val() === 'sklearn') {
@@ -67,6 +72,21 @@ var $FRONTEND = (function (module) {
                 $('#dataset_name_input').show();
                 $('#saved_dataset_area').hide();
                 $('#dataset').fileinput('enable');
+            }
+        });
+        $('#sampling_type_area').hide();
+        $('#samplingType').change(function() {
+            if ($(this).val() === '') {
+                $('#sampling_type_area').hide();
+            }else{
+                $('#sampling_type_area').show();
+                if ($(this).val() === 'ratio') {
+                    $('#sample_count').hide();
+                    $('#sample_ratio').show();
+                }else{
+                    $('#sample_ratio').hide();
+                    $('#sample_count').show();
+                }
             }
         });
 
@@ -223,8 +243,10 @@ var $FRONTEND = (function (module) {
         if(active_tab==="newdata"){
             if($('#source_type').val()=="sklearn"){
                 var data = {};
-                data.dataset_name = $('#saved_dataset').val();
-                if($('#sample_size').val() > 0) data.sample_size = $('#sample_size').val();
+                data.datasetName = $('#saved_dataset').val();
+                if($('#samplingType').val() === 'ratio') data.samplingRatio = $('#sample_ratio').val();
+                if($('#samplingType').val() === 'count') data.samplingSize = $('#sample_count').val();
+
 
 
                 return $.ajax({

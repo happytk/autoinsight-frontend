@@ -61,7 +61,7 @@
                     <div id="container_info" class="area_util">
                         <ul class="list_count">
 
-                                <span class="ico_automl ico_arr"></span>Available Containers : <span id="available_count" class="txt_emph"></span>
+                            <span class="ico_automl ico_arr"></span>Available Containers : <span id="available_count" class="txt_emph"></span>
 
                         </ul>
                     </div>
@@ -133,7 +133,7 @@
                                     <dt>Name</dt>
                                     <dd>
                                         <label for="name" class="screen_out">Name</label>
-                                        <input type="text" name="" id="dataset_name_input" class="inp_txt">
+                                        <input type="text" name="" id="dataset_name_input" class="inp_txt" readonly>
                                         <div id="saved_dataset_area" class="wrap_select">
                                             <select id="saved_dataset" class="form-control">
                                                 <option value ="iris" selected>Iris</option>
@@ -173,10 +173,29 @@
                                     </dd>
                                 </div>-->
                                 <div class="item_dl type_inline">
-                                    <dt>Random Sampling count</dt>
+                                    <dt>Random Sampling</dt>
                                     <dd>
-                                        <label for="count" class="screen_out">Random Sampling count</label>
-                                        <input type="number" name="" id="sample_size" class="inp_txt" style="width:140px">
+                                        <div class="wrap_select">
+                                            <select id="samplingType" class="form-control">
+                                                <option value ="">None</option>
+                                                <option value ="ratio">By Ratio</option>
+                                                <option value ="count">By Count</option>
+                                            </select>
+                                        </div>
+                                        <div id="sampling_type_area" class="wrap_select">
+                                            <select id="sample_ratio" class="form-control">
+                                                <option value ="0.2">20%</option>
+                                                <option value ="0.4">40%</option>
+                                                <option value ="0.6">60%</option>
+                                                <option value ="0.8">80%</option>
+                                            </select>
+                                            <select id="sample_count" class="form-control">
+                                                <option value ="100">100</option>
+                                                <option value ="1000">1000</option>
+                                                <option value ="10000">10000</option>
+                                                <option value ="100000">100000</option>
+                                            </select>
+                                        </div>
                                     </dd>
                                 </div>
                             </dl>
