@@ -155,7 +155,7 @@ var $FRONTEND = (function (module) {
         }else{
             str += value
         }
-        str += '<a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span><div class="txt_tooltip">알고리즘 설명</div></a>'
+        // str += '<a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span><div class="txt_tooltip">알고리즘 설명</div></a>'
         if (row.addition > 0) {
             str += '<a href="#none" class="tooltip_model"><span class="num_info">+' + row.addition + '</span><div class="txt_tooltip"> ' + value.slice(1,value.length) + '</div></a>'
         }

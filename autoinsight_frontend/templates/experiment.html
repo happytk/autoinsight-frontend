@@ -61,7 +61,7 @@
                     <div id="container_info" class="area_util">
                         <ul class="list_count">
 
-                                <span class="ico_automl ico_arr"></span>Active Containers : <span id="active_count" class="txt_emph"></span> / Total Containers  : <span id="total_count" class="txt_emph"></span>
+                                <span class="ico_automl ico_arr"></span>Available Containers : <span id="available_count" class="txt_emph"></span>
 
                         </ul>
                     </div>
@@ -147,8 +147,8 @@
                                                 <select id="source_type" class="form-control">
                                                     <option value ="sklearn">From sklearn</option>
                                                     <option value ="local" selected>Local</option>
-                                                    <option value ="icos">ICOS</option>
-                                                    <option value ="hdfs">HDFS</option>
+                                                    <!-- <option value ="icos">ICOS</option>
+                                                    <option value ="hdfs">HDFS</option> -->
                                                 </select>
                                             </div>
 
@@ -197,7 +197,7 @@
                                     </th>
                                     <th class="txt_l" data-field="filename">Name
                                     </th>
-                                    <th data-field="filesize">File Size(.KB)</th>
+                                    <th data-field="filesize">File Size(.B)</th>
 
                                 </tr>
                                 </thead>

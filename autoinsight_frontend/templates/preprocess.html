@@ -76,7 +76,7 @@
 
                     <div class="area_tit">
                         <h3 id="dataset_name" class="tit_table"></h3>
-                        <div class="area_util2">
+                        <!--<div class="area_util2">
                             <strong class="tit_select">AutoML Type</strong>
                             <div class="wrap_select">
                                 <select id="estimator_type" class="form-control toggle-disable">
@@ -93,7 +93,7 @@
                                     Run AutoML <span class="ico_automl ico_arr"></span>
                                 </button>
                             </div>
-                        </div>
+                        </div>-->
                         <!--<div class="wrap_btn">
                             <button id="data_btn" class="btn_m btn_border toggle-disable" type="button" data-toggle="modal" data-target="#modal-dataset">Data Load</button>
                             <button class="btn_m btn_border toggle-disable" type="button" onclick="$FRONTEND._p.clearAll();">All Clear</button>
@@ -144,7 +144,7 @@
                             <th data-field="datatype" data-formatter="$FRONTEND._p.datatypeFormatter">Datatype</th>
                             <th data-field="missing">Missing</th>
                             <th data-field="imputation" data-formatter="$FRONTEND._p.imputationFormatter">Imputation
-                                <button class="btn_interpolation" type="button"><span class="ico_automl ico_interpolation">설정</span></button>
+                                <!--<button class="btn_interpolation" type="button"><span class="ico_automl ico_interpolation">설정</span></button>-->
                             </th>
                             <th data-field="unique">Unique</th>
                             <th data-field="mean">Mean</th>
@@ -154,10 +154,10 @@
                             <th data-field="isFeature" data-formatter="$FRONTEND._p.featureFormatter">Features</th>
                             <th data-field="isTarget" data-formatter="$FRONTEND._p.targetFormatter">Target</th>
                             <th data-field="transformationStrategy" data-formatter="$FRONTEND._p.powerTransFormatter">Power<br>Transformation
-                                <button class="btn_interpolation" type="button"><span class="ico_automl ico_interpolation">설정</span></button>
+                                <!--<button class="btn_interpolation" type="button"><span class="ico_automl ico_interpolation">설정</span></button>-->
                             </th>
                             <th data-field="outlierMethod" data-formatter="$FRONTEND._p.outlierEliFormatter">Outlier<br>Elimination
-                                <button class="btn_interpolation" type="button"><span class="ico_automl ico_interpolation">설정</span></button>
+                                <!--<button class="btn_interpolation" type="button"><span class="ico_automl ico_interpolation">설정</span></button>-->
                             </th>
                             <th data-field="taskType" data-visible="false">Task Type</th>
                         </tr>
@@ -166,15 +166,34 @@
 
 
                     <div class="area_util2">
+                        <strong class="tit_select">AutoML Type</strong>
+                        <div class="wrap_select">
+                            <select id="estimator_type" class="form-control toggle-disable">
+                                <option value = "classifier" selected>
+                                    <a class="link_option" href="#none">Classification</a>
+                                </option>
+                                <option value = "regressor">
+                                    <a class="link_option" href="#none">Regression</a>
+                                </option>
+                            </select>
+                        </div>
                         <div class="wrap_btn">
+                            <button class="btn_b btn_setup" type="button" data-toggle="modal" data-target="#modal-setting">
+                                <span class="ico_automl ico_setup">설정</span>
+                            </button>
+                            <button class="btn_b btn_confirm toggle-disable" type="button" onclick="$FRONTEND._p.runAutoml()">
+                                Run AutoML <span class="ico_automl ico_arr"></span>
+                            </button>
+                        </div>
+                        <!--<div class="wrap_btn">
                             <button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.autoConf()">Auto Configure</button>
                             <button class="btn_m btn_setup" type="button" data-toggle="modal" data-target="#modal-setting">
                                 <span class="ico_automl ico_setup">설정</span>
                             </button>
                             <button class="btn_m btn_confirm toggle-disable" type="button" onclick="$FRONTEND._p.preprocess()">Preprocess</button>
-                        </div>
+                        </div>-->
                     </div>
-                    <h3 class="tit_table">Preview</h3>
+                    <!--<h3 class="tit_table">Preview</h3>
                     <nav>
                         <ul class="nav nav-tabs list_menu" id="previewTab"  role="tablist">
                             <li class="nav-item active">
@@ -196,7 +215,7 @@
                                    class="tbl_g tbl_preprocess">
                             </table>
                         </div>
-                    </div>
+                    </div>-->
                 </section>
             </div>
         </main>
@@ -232,8 +251,8 @@
                                         <select id="source_type" class="form-control">
                                             <option value ="saved">Saved</option>
                                             <option value ="local" selected>Local</option>
-                                            <option value ="icos">ICOS</option>
-                                            <option value ="hdfs">HDFS</option>
+                                            <!-- <option value ="icos">ICOS</option>
+                                            <option value ="hdfs">HDFS</option> -->
                                         </select>
                                     </div>
 
@@ -257,6 +276,7 @@
                                 </div>
                             </dd>
                         </div>-->
+
                         <div class="item_dl type_inline">
                             <dt>Random Sampling count</dt>
                             <dd>
@@ -360,13 +380,20 @@
                                         <input type="number" name="" id="gen_time_out" class="inp_txt inp_timeout conf" min="1" max="180" value="60">
                                     </dd>
                                 </div>
+
+                                <div class="item_dl type_inline">
+                                    <dt>Max Evaluation Time (.min)</dt>
+                                    <dd>
+                                        <input type="number" name="" id="gen_max_eval_time" class="inp_txt inp_timeout" min="1" value="3">
+                                    </dd>
+                                </div>
                             </dl>
                         </div>
                         <!-- //General -->
 
                         <!-- Preprocessor -->
                         <div class="tab-pane fade" id="processor" role="tabpanel" aria-labelledby="processor-tab">
-                            <button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.autoConf()">Auto Configure</button>
+                            <!--<button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.autoConf()">Auto Configure</button>-->
                             <dl class="list_processor">
                                 <!-- <div class="item_dl type_inline">
                                     <dt>                                  ============= processor Add Dataset Button =============
