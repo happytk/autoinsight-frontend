@@ -1,311 +1,308 @@
 {% load static %}
 {% block style_head %}
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>Autoinsight</title>
-<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,500,700|Noto+Serif+KR:700&display=swap"
-      rel="stylesheet">
-<!-- static -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
-<link href="{% static 'autoinsight_frontend/css/bootstrap.min.css' %}" rel="stylesheet">
-<link href="{% static 'autoinsight_frontend/css/bootstrap-table.min.css' %}" rel="stylesheet">
-<link href="{% static 'autoinsight_frontend/css/fileinput.css' %}" rel="stylesheet">
-<link href="{% static 'autoinsight_frontend/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
-<link href="{% static 'autoinsight_frontend/css/style.css' %}" rel="stylesheet">
-<link href="{% static 'autoinsight_frontend/css/bootstrap-multiselect.css' %}" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Autoinsight</title>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,500,700|Noto+Serif+KR:700&display=swap" rel="stylesheet">
+    <!-- static -->
+    <link href="{% static 'autoinsight_frontend/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'autoinsight_frontend/css/bootstrap-table.min.css' %}" rel="stylesheet">
+    <link href="{% static 'autoinsight_frontend/css/fileinput.css' %}" rel="stylesheet">
+    <link href="{% static 'autoinsight_frontend/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+    <link href="{% static 'autoinsight_frontend/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'autoinsight_frontend/css/bootstrap-multiselect.css' %}" rel="stylesheet">
 
-<link rel="shortcut icon" href="{% static 'autoinsight_frontend/img/favicon.ico' %}">
+    <link rel="shortcut icon" href="{% static 'autoinsight_frontend/img/favicon.ico' %}">
 {% endblock %}
 
 {% block script_foot %}
-<script>
-  var g_RESTAPI_HOST_BASE = '{{ BACKEND_RESTAPI_URL }}'; // base.js로 이전예정
-</script>
-<script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'autoinsight_frontend/js/bootstrap.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'autoinsight_frontend/js/bootstrap-table.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'autoinsight_frontend/js/fileinput.js' %}"></script>
-<script type="text/javascript" src="{% static 'autoinsight_frontend/js/experiment.js' %}"></script>
-<script>
-  $(document).ready(function () {
-    $FRONTEND._p.init();
-  });
+    <script>
+        var g_RESTAPI_HOST_BASE = '{{ BACKEND_RESTAPI_URL }}'; // base.js로 이전예정
+    </script>
+    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}" ></script>
+    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/bootstrap-table.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/fileinput.js' %}"></script>
+    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/experiment.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $FRONTEND._p.init();
+        });
 
-</script>
+    </script>
 
 {% endblock %}
 
 {% block page_content %}
-<div class="wrapper">
-    <header>
-        <div class="container">
-            <a href="/"><h1>
-                <img src="{% static 'autoinsight_frontend/img/logo_automl.png' %}" class="img_logo" width="221"
-                     height="42" alt="AutoInsight">
-            </h1></a>
-        </div>
-    </header>
-    <!-- //header -->
+    <div class="wrapper">
+        <header>
+            <div class="container">
+                <a href="/"><h1>
+                    <img src="{% static 'autoinsight_frontend/img/logo_automl.png' %}" class="img_logo" width="221" height="42" alt="AutoInsight">
+                </h1></a>
+            </div>
+        </header>
+        <!-- //header -->
 
-    <main>
+        <main>
 
 
-        <div class="container">
-            <section class="section_content">
+            <div class="container">
+                <section class="section_content">
 
-                <div class="area_tit">
-                    <h3 id="dataset_name" class="tit_table">Experiments</h3>
-                    <div class="wrap_btn">
-                        <button class="btn_m btn_border" type="button" data-toggle="modal" data-target="#modal-dataset">
-                            Create New
-                        </button>
+                    <div class="area_tit">
+                        <h3 id="dataset_name" class="tit_table">Experiments</h3>
+                        <div class="wrap_btn">
+                            <button class="btn_m btn_border" type="button" data-toggle="modal" data-target="#modal-dataset">Create New</button>
+                        </div>
                     </div>
+
+                    <div id="container_info" class="area_util">
+                        <ul class="list_count">
+
+                            <span class="ico_automl ico_arr"></span>Available Containers : <span id="available_count" class="txt_emph"></span>
+
+                        </ul>
+                    </div>
+
+                    <table id="runtime_table"
+                           data-toggle="table"
+                           class="tbl_g tbl_preprocess">
+                        <colgroup>
+                            <col style="width:60px">
+                            <col style="width:100%">
+                            <col style="width:120px">
+                            <col style="width:90px">
+                            <col style="width:90px">
+                            <!--<col style="width:100%">-->
+                            <col style="width:150px">
+                            <col style="width:150px">
+                            <!--<col style="width:90px">-->
+                            <col style="width:130px">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th class="txt_l" data-field="id">ID
+                            </th>
+                            <th class="txt_l" data-field="dataset" data-formatter="$FRONTEND._p.datasetFormatter">Dataset
+                            </th>
+                            <th data-field="status" data-formatter="$FRONTEND._p.statusFormatter">Status</th>
+                            <th data-field="modelsCnt" data-formatter="$FRONTEND._p.modelscoreFormatter">Models<br>Count</th>
+                            <th data-field="bestScore" data-formatter="$FRONTEND._p.modelscoreFormatter">Best<br>Score</th>
+                            <!--<th data-field="createdAt">Created At</th>-->
+                            <th data-field="estimatorType" data-formatter="$FRONTEND._p.estimatorFormatter">Estimator<br>Type</th>
+                            <th data-field="metric" data-formatter="$FRONTEND._p.metricFormatter">metric</th>
+                            <!--<th data-field="workerScale" data-formatter="$FRONTEND._p.workerscaleFormatter">Worker<br>Scale</th>-->
+                            <th data-field="id" data-formatter="$FRONTEND._p.actionFormatter">Action</th>
+                        </tr>
+                        </thead>
+                    </table>
+
+                </section>
+            </div>
+        </main>
+        <!-- //main -->
+
+    </div>
+
+    <!-- Add New Dataset -->
+    <div class="modal fade popup_dataset" id="modal-dataset" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="header_popup">
+
+                    <strong class="tit_popup">New Experiment</strong>
                 </div>
-
-                <div id="container_info" class="area_util">
-                    <ul class="list_count">
-
-                        <span class="ico_automl ico_arr"></span>Active Containers : <span id="active_count"
-                                                                                          class="txt_emph"></span> /
-                        Total Containers : <span id="total_count" class="txt_emph"></span>
+                <div class="body_popup">
+                    <ul class="nav nav-tabs list_menu" id="myTab"  role="tablist">
+                        <li class="nav-item active">
+                            <a class="nav-link link_menu" data-toggle="tab" name="newdata" href="#newdata" role="tab" aria-controls="newdata" aria-selected="true">New Source</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link link_menu" data-toggle="tab" name="extdata" href="#extdata" role="tab" aria-controls="extdata" aria-selected="false">Existing Source</a>
+                        </li>
 
                     </ul>
-                </div>
+                    <div class="tab-content box_content" id="myTabContent"><!-- 알고리즘 선택시 content_algorithm 클래스 추가 -->
+                        <!-- General -->
+                        <div class="tab-pane fade active in" id="newdata" role="tabpanel" aria-labelledby="general-tab">
 
-                <table id="runtime_table"
-                       data-toggle="table"
-                       class="tbl_g tbl_preprocess">
-                    <colgroup>
-                        <col style="width:60px">
-                        <col style="width:100%">
-                        <col style="width:120px">
-                        <col style="width:90px">
-                        <col style="width:90px">
-                        <!--<col style="width:100%">-->
-                        <col style="width:150px">
-                        <col style="width:110px">
-                        <col style="width:90px">
-                        <col style="width:130px">
-                        <col>
-                    </colgroup>
-                    <thead>
-                    <tr>
-                        <th class="txt_l" data-field="id">ID
-                        </th>
-                        <th class="txt_l" data-field="dataset" data-formatter="$FRONTEND._p.datasetFormatter">Dataset
-                        </th>
-                        <th data-field="status" data-formatter="$FRONTEND._p.statusFormatter">Status</th>
-                        <th data-field="modelsCnt" data-formatter="$FRONTEND._p.modelscoreFormatter">Models<br>Count
-                        </th>
-                        <th data-field="bestScore" data-formatter="$FRONTEND._p.modelscoreFormatter">Best<br>Score</th>
-                        <!--<th data-field="createdAt">Created At</th>-->
-                        <th data-field="estimatorType" data-formatter="$FRONTEND._p.estimatorFormatter">Estimator<br>Type
-                        </th>
-                        <th data-field="metric" data-formatter="$FRONTEND._p.metricFormatter">metric</th>
-                        <th data-field="workerScale" data-formatter="$FRONTEND._p.workerscaleFormatter">Worker<br>Scale
-                        </th>
-                        <th data-field="id" data-formatter="$FRONTEND._p.actionFormatter">Action</th>
-                    </tr>
-                    </thead>
-                </table>
-
-            </section>
-        </div>
-    </main>
-    <!-- //main -->
-
-</div>
-
-<!-- Add New Dataset -->
-<div class="modal fade popup_dataset" id="modal-dataset" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="header_popup">
-
-                <strong class="tit_popup">New Experiment</strong>
-            </div>
-            <div class="body_popup">
-                <ul class="nav nav-tabs list_menu" id="myTab" role="tablist">
-                    <li class="nav-item active">
-                        <a class="nav-link link_menu" data-toggle="tab" name="newdata" href="#newdata" role="tab"
-                           aria-controls="newdata" aria-selected="true">New Source</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link link_menu" data-toggle="tab" name="extdata" href="#extdata" role="tab"
-                           aria-controls="extdata" aria-selected="false">Existing Source</a>
-                    </li>
-
-                </ul>
-                <div class="tab-content box_content" id="myTabContent"><!-- 알고리즘 선택시 content_algorithm 클래스 추가 -->
-                    <!-- General -->
-                    <div class="tab-pane fade active in" id="newdata" role="tabpanel" aria-labelledby="general-tab">
-
-                        <dl>
-                            <div class="item_dl">
-                                <dt>Name</dt>
-                                <dd>
-                                    <label for="name" class="screen_out">Name</label>
-                                    <input type="text" name="" id="dataset_name_input" class="inp_txt">
-                                    <div id="saved_dataset_area" class="wrap_select">
-                                        <select id="saved_dataset" class="form-control">
-                                            <option value="iris" selected>Iris</option>
-                                            <option value="diabetes">Diabetes</option>
-                                            <option value="boston">Boston</option>
-                                            <option value="wine">Wine</option>
-                                        </select>
-                                    </div>
-                                    <div class="area_file">
-                                        <div class="wrap_select">
-                                            <select id="source_type" class="form-control">
-                                                <option value="sklearn">From sklearn</option>
-                                                <option value="local" selected>Local</option>
-                                                <option value="icos">ICOS</option>
-                                                <option value="hdfs">HDFS</option>
+                            <dl>
+                                <div class="item_dl">
+                                    <dt>Name</dt>
+                                    <dd>
+                                        <label for="name" class="screen_out">Name</label>
+                                        <input type="text" name="" id="dataset_name_input" class="inp_txt" readonly>
+                                        <div id="saved_dataset_area" class="wrap_select">
+                                            <select id="saved_dataset" class="form-control">
+                                                <option value ="iris" selected>Iris</option>
+                                                <option value ="diabetes" >Diabetes</option>
+                                                <option value ="boston">Boston</option>
+                                                <option value ="wine">Wine</option>
                                             </select>
                                         </div>
+                                        <div class="area_file">
+                                            <div class="wrap_select">
+                                                <select id="source_type" class="form-control">
+                                                    <option value ="sklearn">From sklearn</option>
+                                                    <option value ="local" selected>Local</option>
+                                                    <!-- <option value ="icos">ICOS</option>
+                                                    <option value ="hdfs">HDFS</option> -->
+                                                </select>
+                                            </div>
 
-                                        <input id="dataset" type="file" class="inp_file">
+                                            <input id="dataset" type="file" class="inp_file">
 
+                                        </div>
+                                    </dd>
+                                </div>
+                                <!--<div class="item_dl type_inline">
+                                    <dt>Seperator</dt>
+                                    <dd>
+                                        <div class="wrap_radio">
+                                            <div class="item_radio">
+                                                <input type="radio" name="seperator" id="seperator1" class="inp_radio" checked>
+                                                <label for="seperator1" class="label_radio"><span class="ico_automl ico_radio"></span>CSV</label>
+                                            </div>
+                                            <div class="item_radio">
+                                                <input type="radio" name="seperator" id="seperator2" class="inp_radio">
+                                                <label for="seperator2" class="label_radio"><span class="ico_automl ico_radio"></span>TSV</label>
+                                            </div>
+                                        </div>
+                                    </dd>
+                                </div>-->
+                                <div class="item_dl type_inline">
+                                    <dt>Random Sampling</dt>
+                                    <dd>
+                                        <div class="wrap_select">
+                                            <select id="samplingType" class="form-control">
+                                                <option value ="">None</option>
+                                                <option value ="ratio">By Ratio</option>
+                                                <option value ="count">By Count</option>
+                                            </select>
+                                        </div>
+                                        <div id="sampling_type_area" class="wrap_select">
+                                            <select id="sample_ratio" class="form-control">
+                                                <option value ="0.2">20%</option>
+                                                <option value ="0.4">40%</option>
+                                                <option value ="0.6">60%</option>
+                                                <option value ="0.8">80%</option>
+                                            </select>
+                                            <select id="sample_count" class="form-control">
+                                                <option value ="100">100</option>
+                                                <option value ="1000">1000</option>
+                                                <option value ="10000">10000</option>
+                                                <option value ="100000">100000</option>
+                                            </select>
+                                        </div>
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
+                        <div class="tab-pane fade" id="extdata" role="tabpanel" aria-labelledby="extdata-tab">
+                            <table id="dataset_table"
+                                   data-toggle="table"
+                                   data-url = "{{ BACKEND_RESTAPI_URL }}sources/"
+                                   class="tbl_g tbl_preprocess">
+                                <colgroup>
+                                    <col style="width:60px">
+                                    <col style="width:100%">
+                                    <col style="width:150px">
+                                </colgroup>
+                                <thead>
+                                <tr>
+                                    <th class="txt_l" data-field="id" data-formatter="$FRONTEND._p.sourceIdFormatter">
+                                    </th>
+                                    <th class="txt_l" data-field="filename">Name
+                                    </th>
+                                    <th data-field="filesize">File Size(.B)</th>
+
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="footer_popup">
+                        <div class="wrap_btn txt_r">
+                            <button type="button" class="btn_m btn_confirm" onclick="$FRONTEND._p.addDataset()">Add Experiment</button>
+                            <button type="button" class="btn_m" data-dismiss="modal">Cancel</button>
+                        </div>
+                        <button type="button" class="btn_close" data-dismiss="modal"><span class="ico_automl ico_close">팝업닫기</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- //Add New Dataset -->
+
+        <div class="modal fade popup_parameter" id="modal-setting" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"  aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="header_popup">
+                        <strong class="tit_popup">Runtime Setting</strong>
+                    </div>
+                    <div class="body_popup">
+                        <!-- General -->
+                        <dl class="list_general">
+                            <div class="item_dl type_inline">
+                                <dt>Scoring Metric</dt>
+                                <dd>
+                                    <div class="wrap_select">
+                                        <select name="" id="metric" class="form-control toggle-disable">
+                                        </select>
                                     </div>
                                 </dd>
                             </div>
-                            <!--<div class="item_dl type_inline">
-                                <dt>Seperator</dt>
-                                <dd>
-                                    <div class="wrap_radio">
-                                        <div class="item_radio">
-                                            <input type="radio" name="seperator" id="seperator1" class="inp_radio" checked>
-                                            <label for="seperator1" class="label_radio"><span class="ico_automl ico_radio"></span>CSV</label>
+                            <div class="item_dl item_evaluation type_inline">
+                                <div>
+                                    <dt>Evaluation</dt>
+                                    <dd>
+                                        <div class="wrap_select">
+                                            <select name="" id="resampling_strategy" class="form-control toggle-disable">
+                                                <option value="holdout">Holdout</option>
+                                                <!--<option value="holdout-iterative-fit">Holdout-Iterative-Fit</option>-->
+                                                <option value="cv">CV</option>
+                                                <!--<option value="partial-cv">Partial-CV</option>-->
+                                            </select>
                                         </div>
-                                        <div class="item_radio">
-                                            <input type="radio" name="seperator" id="seperator2" class="inp_radio">
-                                            <label for="seperator2" class="label_radio"><span class="ico_automl ico_radio"></span>TSV</label>
-                                        </div>
-                                    </div>
-                                </dd>
-                            </div>-->
+                                    </dd>
+                                </div>
+
+                                <div id="train_split_area">
+                                    <dt>Train Split</dt>
+                                    <dd>
+                                        <input id="split_testdata_rate" class="inp_txt toggle-disable" type="number" step="0.01" value="0.67">
+                                    </dd>
+                                    <!--<button type="button" class="btn btn_custom" data-toggle="modal" data-target="#modal-customize">Customize</button>-->
+                                </div>
+
+                                <div id="k_folds_area">
+                                    <dt>K-folds</dt>
+                                    <dd>
+                                        <input type="number" name="" id="resampling_strategy_cv_folds" class="inp_txt inp_timeout toggle-disable" min="1" max="10" value="5">
+                                    </dd>
+                                </div>
+                            </div>
+
                             <div class="item_dl type_inline">
-                                <dt>Random Sampling count</dt>
+                                <dt>Time Out (.min)</dt>
                                 <dd>
-                                    <label for="count" class="screen_out">Random Sampling count</label>
-                                    <input type="number" name="" id="sample_size" class="inp_txt" style="width:140px">
+                                    <input type="number" name="" id="gen_time_out" class="inp_txt inp_timeout toggle-disable" min="1" max="180" value="60">
                                 </dd>
                             </div>
                         </dl>
+                        <!-- //General -->
                     </div>
-                    <div class="tab-pane fade" id="extdata" role="tabpanel" aria-labelledby="extdata-tab">
-                        <table id="dataset_table"
-                               data-toggle="table"
-                               data-url="{{ BACKEND_RESTAPI_URL }}sources/"
-                               class="tbl_g tbl_preprocess">
-                            <colgroup>
-                                <col style="width:60px">
-                                <col style="width:100%">
-                                <col style="width:150px">
-                            </colgroup>
-                            <thead>
-                            <tr>
-                                <th class="txt_l" data-field="id" data-formatter="$FRONTEND._p.sourceIdFormatter">
-                                </th>
-                                <th class="txt_l" data-field="filename">Name
-                                </th>
-                                <th data-field="filesize">File Size(.KB)</th>
-
-                            </tr>
-                            </thead>
-                        </table>
+                    <div class="footer_popup">
+                        <div class="wrap_btn txt_r">
+                            <input type="number" name="" id="runtime_id" style="display: none;">
+                            <button type="button" class="btn_m btn_confirm toggle-disable" onclick="$FRONTEND._p.saveGenConf()"  data-dismiss="modal">Save</button>
+                            <button type="button" class="btn_m" data-dismiss="modal">Cancel</button>
+                        </div>
+                        <button type="button" class="btn_close" data-dismiss="modal"><span class="ico_automl ico_close">팝업닫기</span></button>
                     </div>
-                </div>
-                <div class="footer_popup">
-                    <div class="wrap_btn txt_r">
-                        <button type="button" class="btn_m btn_confirm" onclick="$FRONTEND._p.addDataset()">Add
-                            Experiment
-                        </button>
-                        <button type="button" class="btn_m" data-dismiss="modal">Cancel</button>
-                    </div>
-                    <button type="button" class="btn_close" data-dismiss="modal"><span class="fas fa-times"></span></button>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- //Add New Dataset -->
-</div>
-<div class="modal fade popup_parameter" id="modal-setting" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="header_popup">
-                <strong class="tit_popup">Runtime Setting</strong>
-            </div>
-            <div class="body_popup">
-                <!-- General -->
-                <dl class="list_general">
-                    <div class="item_dl type_inline">
-                        <dt>Scoring Metric</dt>
-                        <dd>
-                            <div class="wrap_select">
-                                <select name="" id="metric" class="form-control toggle-disable">
-                                </select>
-                            </div>
-                        </dd>
-                    </div>
-                    <div class="item_dl item_evaluation type_inline">
-                        <div>
-                            <dt>Evaluation</dt>
-                            <dd>
-                                <div class="wrap_select">
-                                    <select name="" id="resampling_strategy" class="form-control toggle-disable">
-                                        <option value="holdout">Holdout</option>
-                                        <!--<option value="holdout-iterative-fit">Holdout-Iterative-Fit</option>-->
-                                        <option value="cv">CV</option>
-                                        <!--<option value="partial-cv">Partial-CV</option>-->
-                                    </select>
-                                </div>
-                            </dd>
-                        </div>
-
-                        <div id="train_split_area">
-                            <dt>Train Split</dt>
-                            <dd>
-                                <input id="split_testdata_rate" class="inp_txt toggle-disable" type="number"
-                                       step="0.01" value="0.67">
-                            </dd>
-                            <!--<button type="button" class="btn btn_custom" data-toggle="modal" data-target="#modal-customize">Customize</button>-->
-                        </div>
-
-                        <div id="k_folds_area">
-                            <dt>K-folds</dt>
-                            <dd>
-                                <input type="number" name="" id="resampling_strategy_cv_folds"
-                                       class="inp_txt inp_timeout toggle-disable" min="1" max="10" value="5">
-                            </dd>
-                        </div>
-                    </div>
-
-                    <div class="item_dl type_inline">
-                        <dt>Time Out (.min)</dt>
-                        <dd>
-                            <input type="number" name="" id="gen_time_out"
-                                   class="inp_txt inp_timeout toggle-disable" min="1" max="180" value="60">
-                        </dd>
-                    </div>
-                </dl>
-                <!-- //General -->
-            </div>
-            <div class="footer_popup">
-                <div class="wrap_btn txt_r">
-                    <input type="number" name="" id="runtime_id" style="display: none;">
-                    <button type="button" class="btn_m btn_confirm toggle-disable"
-                            onclick="$FRONTEND._p.saveGenConf()" data-dismiss="modal">Save
-                    </button>
-                    <button type="button" class="btn_m" data-dismiss="modal">Cancel</button>
-                </div>
-                <button type="button" class="btn_close" data-dismiss="modal"><span class="fas fa-times"></span></button>
-            </div>
-        </div>
-    </div>
-</div>
 
 {% endblock %}

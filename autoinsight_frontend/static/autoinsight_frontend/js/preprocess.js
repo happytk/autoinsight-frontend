@@ -3,7 +3,7 @@ var $FRONTEND = (function (module) {
 
 
     _p.dataset_name ="";
-    var targetColumn, columnCombobox, isFirst;
+    var targetColumn, isFirst, showOutlier, showPowerTrans;
     //초기화면 세팅
     _p.init = function(){
 
@@ -22,6 +22,11 @@ var $FRONTEND = (function (module) {
 
         var status = _p.loadStatus();
         isFirst = true;
+
+        // _p.refreshOrigTable()
+
+
+
         $('#dataset').on('fileuploaded', function (objectEvent, params){
             alert("파일이 저장되었습니다.");
             $('.modal').modal('hide');
@@ -34,10 +39,10 @@ var $FRONTEND = (function (module) {
 
 
             targetColumn={};
-            columnCombobox ="";
+            // columnCombobox ="";
             $(jqXHR).each(function(index, column) {
                 _p.drawDistribution(column.id, column.freqIdxJson, column.freqJson);
-                columnCombobox += '<option value="'+column.name+'">'+column.name+'</option>';
+                // columnCombobox += '<option value="'+column.name+'">'+column.name+'</option>';
                 if(column.isTarget){
                     $('#feature_'+column['id']).attr("disabled", true);
                     if(isFirst === true){
@@ -57,9 +62,9 @@ var $FRONTEND = (function (module) {
             });
 
 
-            $( ".columns" ).each(function( index ) {
-                $(this).html(columnCombobox);
-            });
+            // $( ".columns" ).each(function( index ) {
+            //     $(this).html(columnCombobox);
+            // });
 
 
             $('.toggle-disable').prop('disabled', false)
@@ -73,8 +78,23 @@ var $FRONTEND = (function (module) {
 
 
         $('#modal-setting').on('shown.bs.modal', function (e) {
+            $('.conf').change(function() {
+                _p.saveGenConf()
+            });
+            $('#gen_max_eval_time').change(function() {
+                var max_eval_time = $(this).val()
+                var tmp = Math.floor($('#gen_time_out').val()/10)
+
+                if (max_eval_time < 1 ||max_eval_time > tmp) {
+                    alert("Max Evaluation Time은 최소 1에서 최대 "+tmp+"사이의 값으로 입력해 주세요");
+                    $(this).val(tmp)
+                    return false;
+                }
+                _p.saveGenConf()
+            });
+
             $('#resampling_strategy').change(function() {
-                if ($(this).val() === 'holdout' || $(this).val() === 'holdout-iterative-fit') {
+                if ($(this).val() === 'holdout') {
                     $('#k_folds_area').hide();
                     $('#train_split_area').show();
                 }else{
@@ -84,19 +104,19 @@ var $FRONTEND = (function (module) {
             });
 
 
-            $('#pre_Ocolumn').multiselect(
-                {
-                    includeSelectAllOption: true,
-                    numberDisplayed: 1,
-                    onChange: function($option) {
-                        // Check if the filter was used.
-                        var query = $('#pre_Ocolumn li.multiselect-filter input').val();
-                        if (query) {
-                            $('#pre_Ocolumn li.multiselect-filter input').val('').trigger('keydown');
-                        }
-                    }
-                }
-            );
+            // $('#pre_Ocolumn').multiselect(
+            //     {
+            //         includeSelectAllOption: true,
+            //         numberDisplayed: 1,
+            //         onChange: function($option) {
+            //             // Check if the filter was used.
+            //             var query = $('#pre_Ocolumn li.multiselect-filter input').val();
+            //             if (query) {
+            //                 $('#pre_Ocolumn li.multiselect-filter input').val('').trigger('keydown');
+            //             }
+            //         }
+            //     }
+            // );
 
             $('#pre_Omethod').change(function() {
                 if ($(this).val() === 'BoxPlotRule') {
@@ -105,213 +125,16 @@ var $FRONTEND = (function (module) {
                     $('#pre_Othreshold_all').show();
                 }
             });
+            _p.loadGenConf()
+            _p.loadPreConf()
+            return false
 
 
-
-
-            $.ajax({
-                type: 'get',
-                url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id,
-                dataType: 'json',
-                success: function (resultData, textStatus, request) {
-                    metricCombobox ="";
-                    $.each(resultData['availableMetrics'], function( index, value ) {
-                        if(value === resultData['metric']){
-                            metricCombobox += '<option value="'+value+'" selected>'+value+'</option>';
-                        }else{
-                            metricCombobox += '<option value="'+value+'">'+value+'</option>';
-                        }
-                    });
-                    $('#metric').html(metricCombobox);
-
-                    $('#resampling_strategy').val(resultData['resamplingStrategy']);
-                    if (resultData['resamplingStrategy']=== 'holdout' || resultData['resamplingStrategy'] === 'holdout-iterative-fit') {
-                        $('#k_folds_area').hide();
-                        $('#train_split_area').show();
-                        $('#split_testdata_rate').val(resultData['resamplingStrategyHoldoutTrainSize']);
-                    }else{
-                        $('#train_split_area').hide();
-                        $('#k_folds_area').show();
-                        $('#resampling_strategy_cv_folds').val(resultData['resamplingStrategyCvFolds']);
-                    }
-
-                    var tmp = resultData['timeout']/60;
-                    $('#gen_time_out').val(tmp);
-
-                    if(resultData['includeOneHotEncoding']){
-                        $('#pre_1HotEncod').prop( "checked", true );
-                    }
-
-                    if(resultData['includeVarianceThreshold']){
-                        $('#pre_VarThreshold').prop( "checked", true );
-                    }
-
-
-                    smethodCombobox ="";
-                    $.each(resultData['availableScalingMethods'], function( index, value ) {
-                        smethodCombobox += '<option value="'+value+'">'+value+'</option>';
-                    });
-
-                    $('#pre_SMethod').html(smethodCombobox);
-
-                    $('#pre_SMethod').multiselect(
-                        {
-                            includeSelectAllOption: true,
-                            numberDisplayed: 1,
-                            onChange: function($option) {
-                                // Check if the filter was used.
-                                var query = $('#pre_SMethod li.multiselect-filter input').val();
-                                if (query) {
-                                    $('#pre_SMethod li.multiselect-filter input').val('').trigger('keydown');
-                                }
-                            }
-                        }
-                    );
-                    if(resultData['includeScalingMethods'] !== null) {
-                        $('#pre_Scaling').prop( "checked", true )
-                        $('#pre_SMethod').multiselect('select', resultData['includeScalingMethods']);
-                        $('#pre_SMethod').multiselect('refresh');
-                    }
-
-                    fmethodCombobox ="";
-                    $.each(resultData['availableFeatureEngineerings'], function( index, value ) {
-                        if(value === resultData['availableFeatureEngineerings']){
-                            fmethodCombobox += '<option value="'+value+'" selected>'+value+'</option>';
-                        }else{
-                            fmethodCombobox += '<option value="'+value+'">'+value+'</option>';
-                        }
-                    });
-                    $('#pre_FMethod').html(fmethodCombobox);
-
-                    $('#pre_FMethod').multiselect(
-                        {
-                            includeSelectAllOption: true,
-                            numberDisplayed: 1,
-                            onChange: function($option) {
-                                // Check if the filter was used.
-                                var query = $('#pre_FMethod li.multiselect-filter input').val();
-                                if (query) {
-                                    $('#pre_FMethod li.multiselect-filter input').val('').trigger('keydown');
-                                }
-                            }
-                        }
-                    );
-
-                    if(resultData['includeFeatureEngineerings'] !== null) {
-                        $('#pre_FtrSlcon').prop( "checked", true )
-                        $('#pre_FMethod').multiselect('select', resultData['includeFeatureEngineerings']);
-                        $('#pre_FMethod').multiselect('refresh');
-                    }
-
-
-                },
-                error: function (res) {
-                    alert(res.responseJSON.message);
-                }
-            });
-
-            return $.ajax({
-                type: 'get',
-                url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/dataset/',
-                dataType: 'json',
-                success: function (resultData, textStatus, request) {
-                    if (resultData['error_msg'] == null ){
-                        //Modal 세팅
-                        _p.reset();
-                        if(resultData['naColDropUse']){
-                            $('#pre_DrpNCols').prop( "checked", true );
-                            $('#na_col_drop_threshold').val(resultData['naColDropThreshold']);
-                        }
-
-                        if(resultData['outlierUse']){
-                            $('#pre_OtlrElmntn').prop( "checked", true );
-                            $('#pre_Ocolumn').multiselect('select', resultData['outlierColumns']);
-                            $('#pre_Ocolumn').multiselect('refresh');
-
-                            $('#outlier_strategy').val(resultData['outlierStrategy']);
-                            $('#pre_Othreshold').val(resultData['outlierThreshold']);
-                        }
-                        if(resultData['colTransUse']){
-                            $('#pre_PrTrnsfrm').prop( "checked", true );
-                            $('#pre_Pcolumn_0').val(resultData['colTransColumns'][0]);
-                            $('#pre_Pstrategy_0').val(resultData['colTransStrategies'][0]);
-                            for(var i = 1; i < resultData['colTransColumns'].length; i++) {
-                                _p.addPowerTrans(i);
-                                $('#pre_Pcolumn_'+i).val(resultData['colTransColumns'][i]);
-                                $('#pre_Pstrategy_'+i).val(resultData['colTransStrategies'][i]);
-                            }
-                        }
-
-                        // if(resultData['scalerUse']){
-                        //     $('#pre_Scaling').prop( "checked", true );
-                        //     $('#pre_Sstrategy').val(resultData['scalerStrategy']);
-                        // }
-
-                    } else {
-                        alert(resultData['error_msg']);
-                    }
-                },
-                error: function (res) {
-                    alert(res.responseJSON.message);
-                }
-            });
         });
-
-        // $('#modal-customize').on('shown.bs.modal', function (e) {
-        //     $('#datepicker').datepicker({
-        //         format: 'yyyy-mm-dd',
-        //         container:'.wrap_calendar'
-        //     });
-        // });
-
-
-
 
     };
 
-    //파일 업로드 관련
-    // _p.addDataset = function() {
-    //     $('.toggle-disable').prop('disabled', true)
-    //     $('#preprocess_loader').addClass("loader")
-    //     if($('#source_type').val()=="saved"){
-    //         var data = {};
-    //         data.dataset_name = $('#saved_dataset').val();
-    //         if($('#sample_size').val() > 0) data.sample_size = $('#sample_size').val();
-    //
-    //
-    //         return $.ajax({
-    //             type: 'post',
-    //             url: g_RESTAPI_HOST_BASE+"source/from_sklearn_dataset/",
-    //             data: data,
-    //             dataType: 'json',
-    //             success: function (resultData, textStatus, request) {
-    //                 if (resultData['error_msg'] == null ){
-    //                     alert("저장된 데이터를 불러옵니다.");
-    //                     $('.modal').modal('hide');
-    //                     _p.loadStatus();
-    //                     isFirst = true;
-    //                     $('#column_table').bootstrapTable('refresh')
-    //                 } else {
-    //                     alert(resultData['error_msg']);
-    //                     $('.toggle-disable').prop('disabled', false)
-    //                     $('#preprocess_loader').removeClass("loader")
-    //                 }
-    //             },
-    //             error: function (res) {
-    //                 alert(res.responseJSON.message);
-    //                 $('.toggle-disable').prop('disabled', false)
-    //                 $('#preprocess_loader').removeClass("loader")
-    //             }
-    //         })
-    //     }else {
-    //         _p.dataset_name = $('#dataset_name_input').val();
-    //         if (_p.dataset_name == "") {
-    //             alert("Dataset 이름을 입력해 주세요.");
-    //             return false;
-    //         }
-    //         $("#dataset").fileinput("upload");
-    //     }
-    // };
+
 
     _p.loadStatus = function (){
         var status =""
@@ -355,6 +178,12 @@ var $FRONTEND = (function (module) {
                         }
                     }
                     _p.drawCorrelation(corr);
+                    if(resultData['isProcessed']===false){
+                        $('#preprocessed_link').addClass('disabled');
+                    }else{
+                        $('#preprocessed_link').removeClass('disabled');
+
+                    }
                 } else {
                     alert(resultData['error_msg']);
                 }
@@ -405,25 +234,7 @@ var $FRONTEND = (function (module) {
 
 
     //테이블 관련
-    _p.featureFormatter = function(value,row){
-        var str = "";
-        if (value == true) {
-            str = '<div class="wrap_check type_check2 on"><input type="checkbox" id="feature_'+row.id+'" colum_name="'+row.name+'" class="inp_check features toggle-disable" onclick="$FRONTEND._p.updateColumn('+row.id+')" checked><label for="feature_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
-        }else{
-            str = '<div class="wrap_check type_check2"><input type="checkbox" id="feature_'+row.id+'" colum_name="'+row.name+'" class="inp_check features toggle-disable" onclick="$FRONTEND._p.updateColumn('+row.id+')" ><label for="feature_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
-        }
-        return str;
-    };
 
-    _p.targetFormatter = function(value,row){
-        var str = "";
-        if (value == true) {type="radio"
-            str = '<div class="wrap_check type_check3 on"><input  id="target_'+row.id+'" name="target" colum_name="'+row.name+'" class="inp_check toggle-disable" onclick="$FRONTEND._p.updateTarget('+row.id+')" checked><label for="target_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
-        }else{
-            str = '<div class="wrap_check type_check3"><input type="radio" id="target_'+row.id+'" name="target" colum_name="'+row.name+'" class="inp_check toggle-disable" onclick="$FRONTEND._p.updateTarget('+row.id+')"><label for="target_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
-        }
-        return str;
-    };
 
     _p.datatypeFormatter = function(value, row){
         var datatypes = ['object','int64','float64','datetime64'];
@@ -443,6 +254,7 @@ var $FRONTEND = (function (module) {
         var obj_imputations = ['None', 'drop', 'Most Frequent', 'Unknown'];
         var num_imputations = ['None', 'drop', 'Most Frequent', 'Mean', 'Median', '0', 'Minimum'];
         if(row.missing==0){
+
             return '<div class="wrap_select"><select id="imputation_' + row.id + '" class="form-control" data-style="btn-info" disabled><option value="None">None</option></select></div>'
         }
         var selectBox = '<div class="wrap_select"><select id="imputation_' + row.id + '" class="form-control toggle-disable" data-style="btn-info" onchange="$FRONTEND._p.updateColumn('+row.id+')">';
@@ -467,15 +279,73 @@ var $FRONTEND = (function (module) {
         selectBox += '</select></div>';
         return selectBox;
     };
+    // _p.powerTransFormatter = function(value, row){
+    //     if(showPowerTrans) {
+    //         var strategies = ['None', 'Log', 'SquaredRoot', 'Square', 'BoxCoxTransformation', 'YeoJohnsonTransformation'];
+    //         var selectBox = '<div class="wrap_select"><select id="powertrans_' + row.id + '" class="form-control toggle-disable" data-style="btn-info" onchange="$FRONTEND._p.updateColumn(' + row.id + ')">';
+    //         for (var i = 0; i < strategies.length; i++) {
+    //             if (value == strategies[i]) {
+    //                 selectBox += '<option value="' + strategies[i] + '" selected>' + strategies[i] + '</option>';
+    //             } else {
+    //                 selectBox += '<option value="' + strategies[i] + '">' + strategies[i] + '</option>';
+    //             }
+    //         }
+    //         selectBox += '</select></div>';
+    //         return selectBox;
+    //     }else{
+    //         return null
+    //     }
+    // };
+    //
+    // _p.outlierEliFormatter = function(value,row){
+    //     if(showOutlier){
+    //         var methods = ['None','BoxPlotRule','Zscore'];
+    //         var selectBox = '<div class="wrap_select"><select id="outlier_'+row.id+'" class="form-control toggle-disable" data-style="btn-info" onchange="$FRONTEND._p.updateColumn('+row.id+')">';
+    //         for(var i = 0; i < methods.length; i++){
+    //             if (value == methods[i]){
+    //                 selectBox += '<option value="'+methods[i]+'" selected>'+methods[i]+'</option>';
+    //             } else {
+    //                 selectBox += '<option value="'+methods[i]+'">'+methods[i]+'</option>';
+    //             }
+    //         }
+    //         selectBox += '</select></div>';
+    //         return selectBox
+    //     }else{
+    //         return null
+    //     }
+    //
+    // };
+
+    _p.featureFormatter = function(value,row){
+        var str = "";
+        if (value == true) {
+            str = '<div class="wrap_check type_check2 on"><input type="checkbox" id="feature_'+row.id+'" colum_name="'+row.name+'" class="inp_check features toggle-disable" onclick="$FRONTEND._p.updateColumn('+row.id+')" checked><label for="feature_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
+        }else{
+            str = '<div class="wrap_check type_check2"><input type="checkbox" id="feature_'+row.id+'" colum_name="'+row.name+'" class="inp_check features toggle-disable" onclick="$FRONTEND._p.updateColumn('+row.id+')" ><label for="feature_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
+        }
+        return str;
+    };
+
+    _p.targetFormatter = function(value,row){
+        var str = "";
+        if (value == true) {
+            str = '<div class="wrap_check type_check3 on"><input type="radio" id="target_'+row.id+'" name="target" colum_name="'+row.name+'" class="inp_check toggle-disable" onclick="$FRONTEND._p.updateTarget('+row.id+')" checked><label for="target_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
+        }else{
+            str = '<div class="wrap_check type_check3"><input type="radio" id="target_'+row.id+'" name="target" colum_name="'+row.name+'" class="inp_check toggle-disable" onclick="$FRONTEND._p.updateTarget('+row.id+')"><label for="target_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
+        }
+        return str;
+    };
 
     _p.updateColumn = function(rowid) {
         var data = {};
         data.datatype = $('#datatype_' + rowid).val();
         data.imputation = $('#imputation_' + rowid).val();
+        data.transformationStrategy = $('#powertrans_' + rowid).val();
+        data.outlierMethod = $('#outlier_' + rowid).val();
         data.isFeature = $('#feature_' + rowid).is(":checked");
         return $.ajax({
             type: 'patch',
-            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id+'/columns/{0}/'.format(rowid),
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id+'/dataset/columns/{0}/'.format(rowid),
             data: data,
             dataType: 'json',
             success: function (resultData, textStatus, request) {
@@ -486,7 +356,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                alert(res.responseJSON.message);
+                console.log(res);
             }
         })
     };
@@ -691,39 +561,205 @@ var $FRONTEND = (function (module) {
         // $('#gen_over_sampling').val("None");
         // $('#gen_time_out').val(60);
         $('.modal_check:checkbox:checked').prop( "checked", false );
-        $('#na_col_drop_threshold').val(0.9);
+        // $('#na_col_drop_threshold').val(0.9);
         // $('#pre_Ocolumn').multiselect('destroy');
         $('#pre_Omethod').val("Zscore");
         $('#pre_Othreshold_all').show();
         $('#pre_Othreshold').val(3);
-        $('#pre_Pstrategy_0').val("YeoJohnsonTransformation");
+        // $('#pre_Pstrategy_0').val("YeoJohnsonTransformation");
         $('#pre_Sstrategy').val("Standard");
 
     };
 
-    _p.addPowerTrans = function(i){
-        i  = parseInt(i);
-        var appendHtml = '<div id="appended_'+i+'"><div class="item_dl type_inline"><dt></dt><dd>' +
-            '<div class="wrap_select"><select id="pre_Pcolumn_'+i+'" class="pre_Pcolumns form-control">'+
-            columnCombobox+
-            '</select>' +
-            '</div></dd><dd><div class="wrap_select">'+
-            '<select id="pre_Pstrategy_'+i+'" class="pre_Pstrategies form-control">' +
-            '<option value="Log" selected>Log</option>' +
-            '<option value="SquaredRoot">Squared Root</option>' +
-            '<option value="Square">Square</option>' +
-            '<option value="BoxCoxTransformation">Box-Cox Transformation</option>' +
-            '<option value="YeoJohnsonTransformation" selected>Yeo-Johnson Transformation</option>' +
-            '</select></div></dd>' +
-            '<button type="button" class="btn_cal toggle-disable" onclick="$FRONTEND._p.removePowerTrans({0})">-</button></div>'.format(i)+
-            '<div class="txt_next"><button type="button" class="btn_cal toggle-disable" onclick="$FRONTEND._p.addPowerTrans({0})">+</button></div></div>'.format(i+1);
-        $('#powerTrans_area').append(appendHtml);
+    _p.loadPreConf = function() {
+        return $.ajax({
+            type: 'get',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/dataset/',
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                if (resultData['error_msg'] == null ){
+                    //Modal 세팅
+                    _p.reset();
+                    // if(resultData['naColDropUse']){
+                    //     $('#pre_DrpNCols').prop( "checked", true );
+                    //     $('#na_col_drop_threshold').val(resultData['naColDropThreshold']);
+                    // }
+                    showOutlier = false
+                    if(resultData['outlierUse']){
+                        $('#pre_OtlrElmntn').prop( "checked", true );
+
+                        $('#pre_Omethod').val(resultData['outlierStrategy']);
+                        $('#pre_Othreshold').val(resultData['outlierThreshold']);
+                        showOutlier = true
+                        // $('#outlier_col').css("width", "150px")
+                        $('#column_table').bootstrapTable('refresh')
+                    }
+                    showPowerTrans = false
+                    if(resultData['colTransUse']){
+                        $('#pre_PrTrnsfrm').prop( "checked", true );
+                        showPowerTrans = true
+                        // $('#powerTrans_col').css("width", "150px")
+                        $('#column_table').bootstrapTable('refresh')
+                    }
+
+                } else {
+                    alert(resultData['error_msg']);
+                }
+            },
+            error: function (res) {
+                alert(res.responseJSON.message);
+            }
+        });
+    }
+
+    _p.loadGenConf = function() {
+        return $.ajax({
+            type: 'get',
+            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id,
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                metricCombobox ="";
+                $.each(resultData['availableMetrics'], function( index, value ) {
+                    if(value === resultData['metric']){
+                        metricCombobox += '<option value="'+value+'" selected>'+value+'</option>';
+                    }else{
+                        metricCombobox += '<option value="'+value+'">'+value+'</option>';
+                    }
+                });
+                $('#metric').html(metricCombobox);
+
+                $('#resampling_strategy').val(resultData['resamplingStrategy']);
+                if (resultData['resamplingStrategy']=== 'holdout') {
+                    $('#k_folds_area').hide();
+                    $('#train_split_area').show();
+                    $('#split_testdata_rate').val(resultData['resamplingStrategyHoldoutTrainSize']);
+                }else{
+                    $('#train_split_area').hide();
+                    $('#k_folds_area').show();
+                    $('#resampling_strategy_cv_folds').val(resultData['resamplingStrategyCvFolds']);
+                }
+
+                var tmp = resultData['timeout']/60;
+                $('#gen_time_out').val(tmp);
+
+
+                tmp = resultData['maxEvalTime']/60;
+                $('#gen_max_eval_time').val(tmp);
+
+                if(resultData['includeOneHotEncoding']){
+                    $('#pre_1HotEncod').prop( "checked", true );
+                }
+
+                if(resultData['includeVarianceThreshold']){
+                    $('#pre_VarThreshold').prop( "checked", true );
+                }
+
+
+                smethodCombobox ="";
+                $.each(resultData['availableScalingMethods'], function( index, value ) {
+                    smethodCombobox += '<option value="'+value+'">'+value+'</option>';
+                });
+
+                $('#pre_SMethod').html(smethodCombobox);
+
+                $('#pre_SMethod').multiselect(
+                    {
+                        includeSelectAllOption: true,
+                        numberDisplayed: 1,
+                        onChange: function($option) {
+                            // Check if the filter was used.
+                            var query = $('#pre_SMethod li.multiselect-filter input').val();
+                            if (query) {
+                                $('#pre_SMethod li.multiselect-filter input').val('').trigger('keydown');
+                            }
+                        }
+                    }
+                );
+                if(resultData['includeScalingMethods'] !== null) {
+                    $('#pre_Scaling').prop( "checked", true )
+                    $('#pre_SMethod').multiselect('select', resultData['includeScalingMethods']);
+                    $('#pre_SMethod').multiselect('refresh');
+                }
+
+                fmethodCombobox ="";
+                $.each(resultData['availableFeatureEngineerings'], function( index, value ) {
+                    if(value === resultData['availableFeatureEngineerings']){
+                        fmethodCombobox += '<option value="'+value+'" selected>'+value+'</option>';
+                    }else{
+                        fmethodCombobox += '<option value="'+value+'">'+value+'</option>';
+                    }
+                });
+                $('#pre_FMethod').html(fmethodCombobox);
+
+                $('#pre_FMethod').multiselect(
+                    {
+                        includeSelectAllOption: true,
+                        numberDisplayed: 1,
+                        onChange: function($option) {
+                            // Check if the filter was used.
+                            var query = $('#pre_FMethod li.multiselect-filter input').val();
+                            if (query) {
+                                $('#pre_FMethod li.multiselect-filter input').val('').trigger('keydown');
+                            }
+                        }
+                    }
+                );
+
+                if(resultData['includeFeatureEngineerings'] !== null) {
+                    $('#pre_FtrSlcon').prop( "checked", true )
+                    $('#pre_FMethod').multiselect('select', resultData['includeFeatureEngineerings']);
+                    $('#pre_FMethod').multiselect('refresh');
+                }
+
+
+            },
+            error: function (res) {
+                alert(res.responseJSON.message);
+            }
+        });
+    }
+
+    _p.autoConf = function(){
+        return $.ajax({
+            type: 'post',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id +'/dataset/recommend_config/',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (resultData, textStatus, request) {
+                _p.loadPreConf()
+                _p.loadGenConf()
+                $('#column_table').bootstrapTable('refresh',{silent: true})
+            },
+            error: function (res) {
+                alert(res.responseText);
+            }
+        })
 
     };
 
-    _p.removePowerTrans = function(i){
-        $('#appended_'+i).remove();
-    };
+    // _p.addPowerTrans = function(i){
+    //     i  = parseInt(i);
+    //     var appendHtml = '<div id="appended_'+i+'"><div class="item_dl type_inline"><dt></dt><dd>' +
+    //         '<div class="wrap_select"><select id="pre_Pcolumn_'+i+'" class="pre_Pcolumns form-control conf">'+
+    //         columnCombobox+
+    //         '</select>' +
+    //         '</div></dd><dd><div class="wrap_select">'+
+    //         '<select id="pre_Pstrategy_'+i+'" class="pre_Pstrategies form-control conf">' +
+    //         '<option value="Log" selected>Log</option>' +
+    //         '<option value="SquaredRoot">Squared Root</option>' +
+    //         '<option value="Square">Square</option>' +
+    //         '<option value="BoxCoxTransformation">Box-Cox Transformation</option>' +
+    //         '<option value="YeoJohnsonTransformation" selected>Yeo-Johnson Transformation</option>' +
+    //         '</select></div></dd>' +
+    //         '<button type="button" class="btn_cal toggle-disable" onclick="$FRONTEND._p.removePowerTrans({0})">-</button></div>'.format(i)+
+    //         '<div class="txt_next"><button type="button" class="btn_cal toggle-disable" onclick="$FRONTEND._p.addPowerTrans({0})">+</button></div></div>'.format(i+1);
+    //     $('#powerTrans_area').append(appendHtml);
+    //
+    // };
+    //
+    // _p.removePowerTrans = function(i){
+    //     $('#appended_'+i).remove();
+    // };
 
     //AJAX call
     String.prototype.format = function() {
@@ -757,12 +793,16 @@ var $FRONTEND = (function (module) {
         data.resamplingStrategyHoldoutTrainSize = $('#split_testdata_rate').val();
         data.resamplingStrategyCvFolds = $('#resampling_strategy_cv_folds').val();
         data.overSampling = $('#gen_over_sampling option:selected').val();
+
         var timeout = $('#gen_time_out').val();
         if (timeout < 1 ||timeout > 180) {
             alert("Timeout은 1~180 사이의 값으로 입력해 주세요");
             return false;
         }
         data.timeout = timeout*60;
+
+        var max_eval_time = $('#gen_max_eval_time').val();
+        data.maxEvalTime = max_eval_time*60;
 
         if  ($('#pre_1HotEncod').is(':checked')) {
             data.includeOneHotEncoding = true;
@@ -809,26 +849,25 @@ var $FRONTEND = (function (module) {
         var data = {};
 
         //-------------------------- 1. Drop NaN Columns --------------------------
-        if  ($('#pre_DrpNCols').is(':checked')) {
-            data.naColDropUse = true;
-            if  ($('#na_col_drop_threshold').val()!="") {
-                data.naColDropThreshold = $('#na_col_drop_threshold').val();      		// "Else" unnecessary
-            }else{
-                alert("Threshold 값을 확인해 주세요.")
-                return false;
-            }
-            console.log('1. na_col_drop_threshold = ',data.naColDropThreshold ) ;
-        }
+        // if  ($('#pre_DrpNCols').is(':checked')) {
+        //     data.naColDropUse = true;
+        //     if  ($('#na_col_drop_threshold').val()!="") {
+        //         data.naColDropThreshold = $('#na_col_drop_threshold').val();      		// "Else" unnecessary
+        //     }else{
+        //         alert("Threshold 값을 확인해 주세요.")
+        //         return false;
+        //     }
+        //     console.log('1. na_col_drop_threshold = ',data.naColDropThreshold ) ;
+        // }
 
 
         // ---------------- 2. Outlier Elimination - Loop Impossible -------------------------
         if  ($('#pre_OtlrElmntn').is(':checked')) {
             data.outlierUse = true;
-            var outlier_columns = $('select[id=pre_Ocolumn]').val();
-            // outlier_columns.push($('select[id=pre_Ocolumn]').val());
+            // var outlier_columns = $('select[id=pre_Ocolumn]').val();
 
-            data.outlierColumns = outlier_columns;					// Outlier Elimination Column
-            console.log('3.1  outlier_cols : ',data.outlierColumns) ;
+            // data.outlierColumns = outlier_columns;					// Outlier Elimination Column
+            // console.log('3.1  outlier_cols : ',data.outlierColumns) ;
 
 
             data.outlierStrategy = $('select[id=pre_Omethod]').val();			 			// Outlier Elimination Method
@@ -900,7 +939,7 @@ var $FRONTEND = (function (module) {
             contentType: 'application/json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
-                    $('#modal-setting').modal('hide');
+                    //$('#modal-setting').modal('hide');
                 } else {
                     alert(resultData['error_msg']);
                 }
@@ -912,24 +951,25 @@ var $FRONTEND = (function (module) {
 
     };
 
-    // _p.preprocess = function(){
-    //
-    //     return $.ajax({
-    //         type: 'post',
-    //         url: g_RESTAPI_HOST_BASE + 'dataset/preprocess/',
-    //         dataType: 'json',
-    //         success: function (resultData, textStatus, request) {
-    //             if (resultData['error_msg'] == null ){
-    //                 _p.runAutoml();
-    //             } else {
-    //                 alert(resultData['error_msg']);
-    //             }
-    //         },
-    //         error: function (res) {
-    //             alert(res.responseText);
-    //         }
-    //     })
-    // };
+    _p.preprocess = function(){
+
+        return $.ajax({
+            type: 'post',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/dataset/preprocess/',
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                if (resultData['error_msg'] == null ){
+                    _p.loadStatus()
+                    alert("Preprocess 완료되었습니다.");
+                } else {
+                    alert(resultData['error_msg']);
+                }
+            },
+            error: function (res) {
+                alert(res.responseText);
+            }
+        })
+    };
 
     _p.runAutoml = function(){
         return $.ajax({
@@ -950,6 +990,114 @@ var $FRONTEND = (function (module) {
             }
         })
     };
+
+    //Preview 관련
+    // _p.refreshOrigTable = function () {
+    //     return $.ajax({
+    //         type: 'get',
+    //         url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/source_X/',
+    //         contentType: "application/json",
+    //         success: function (resultData, textStatus, request) {
+    //             var columns =[]
+    //             $.each(resultData[0], function(key, value){
+    //                 columns.push({
+    //                     title: key,
+    //                     field: key
+    //                 })
+    //             });
+    //
+    //             var table_data = resultData
+    //
+    //             $.ajax({
+    //                 type: 'get',
+    //                 url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/source_y/',
+    //                 contentType: "application/json",
+    //                 success: function (resultData, textStatus, request) {
+    //
+    //                     $.each(resultData[0], function(key, value){
+    //                         columns.push({
+    //                             title: key,
+    //                             field: key
+    //                         })
+    //                     });
+    //                     $('#original_table').bootstrapTable({
+    //                         columns: columns
+    //                     })
+    //                     $.each(resultData, function(index, value){
+    //                         $.each(value, function(key, value){
+    //                             table_data[index][key] = value
+    //                         });
+    //                     })
+    //
+    //
+    //                     $('#original_table').bootstrapTable('load',{rows: table_data})
+    //
+    //                 },
+    //                 error: function (res) {
+    //                     console.log(res);
+    //                 }
+    //             });
+    //
+    //         },
+    //         error: function (res) {
+    //             console.log(res);
+    //         }
+    //     });
+    //
+    //
+    // }
+    //
+    // _p.loadPreprocessed = function () {
+    //     return $.ajax({
+    //         type: 'get',
+    //         url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/preprocessed_X/',
+    //         contentType: "application/json",
+    //         success: function (resultData, textStatus, request) {
+    //             columns =[]
+    //             $.each(resultData[0], function(key, value){
+    //                 columns.push({
+    //                     title: key,
+    //                     field: key
+    //                 })
+    //             });
+    //
+    //             table_data = resultData
+    //
+    //             $.ajax({
+    //                 type: 'get',
+    //                 url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/preprocessed_y/',
+    //                 contentType: "application/json",
+    //                 success: function (resultData, textStatus, request) {
+    //
+    //                     $.each(resultData[0], function(key, value){
+    //                         columns.push({
+    //                             title: key,
+    //                             field: key
+    //                         })
+    //                     });
+    //                     $('#preprocessed_table').bootstrapTable({
+    //                         columns: columns
+    //                     })
+    //                     $.each(resultData, function(index, value){
+    //                         $.each(value, function(key, value){
+    //                             table_data[index][key] = value
+    //                         });
+    //                     })
+    //
+    //                     $('#preprocessed_table').bootstrapTable('load',{rows: table_data})
+    //
+    //                 },
+    //                 error: function (res) {
+    //                     console.log(res);
+    //                 }
+    //             });
+    //
+    //         },
+    //         error: function (res) {
+    //             console.log(res);
+    //         }
+    //     });
+    // }
 
     return module;
 }($FRONTEND || {}));
