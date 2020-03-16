@@ -37,7 +37,6 @@ var $FRONTEND = (function (module) {
 
         $('#column_table').on('load-success.bs.table', function (data, jqXHR) {
 
-
             targetColumn={};
             if(jqXHR.length<20){
                 $('.dist_buttons').hide()
@@ -199,14 +198,7 @@ var $FRONTEND = (function (module) {
                     $("#dataset_name").text(resultData['name']);
                     $("#row_count").text(resultData['rowCount']);
                     $("#col_count").text(resultData['colCount']);
-                    var corr = JSON.parse(resultData['corrJson'] );
-                    corr.data =[];
-                    for(var i = 0; i < corr.z.length; i++) {
-                        for(var j = 0; j < corr.z[i].length; j++) {
-                            corr.data.push([i,j,corr.z[i][j]]);
-                        }
-                    }
-                    _p.drawCorrelation(corr);
+
                     if(resultData['isProcessed']===false){
                         $('#preprocessed_link').addClass('disabled');
                     }else{
@@ -475,10 +467,6 @@ var $FRONTEND = (function (module) {
             return false
         }
 
-
-
-
-
         new Chart($('#distribution_'+id),{
             type: 'bar',
             data: {
@@ -596,6 +584,38 @@ var $FRONTEND = (function (module) {
     };
 
     //Modal 관련
+
+    _p.setCorrModal = function(){
+        return $.ajax({
+            type: 'get',
+            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/stat_corr/',
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                if (resultData['error_msg'] == null ){
+                    try {
+                        var corr = JSON.parse(resultData['corrJson'] );
+                        corr.data =[];
+                        for(var i = 0; i < corr.z.length; i++) {
+                            for(var j = 0; j < corr.z[i].length; j++) {
+                                corr.data.push([i,j,corr.z[i][j]]);
+                            }
+                        }
+                        _p.drawCorrelation(corr);
+                    }
+                    catch(err) {
+                        console.log(err)
+                        $('#container').text("죄송합니다. 이 정보를 불러올 수 없습니다.")
+                    }
+                } else {
+                    alert(resultData['error_msg']);
+                }
+            },
+            error: function (res) {
+                alert(res.responseJSON.message);
+            }
+        });
+
+    }
 
     _p.reset = function(){
         // $('#gen_over_sampling').val("None");
