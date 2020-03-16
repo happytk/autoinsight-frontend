@@ -34,7 +34,7 @@ var $FRONTEND = (function (module) {
             $('#column_table').bootstrapTable('refresh')
         });
 
-
+        _p.loadPreConf()
         $('#column_table').on('load-success.bs.table', function (data, jqXHR) {
 
             targetColumn={};
@@ -154,7 +154,6 @@ var $FRONTEND = (function (module) {
                 }
             });
             _p.loadGenConf()
-            _p.loadPreConf()
             return false
 
 
@@ -300,42 +299,39 @@ var $FRONTEND = (function (module) {
         selectBox += '</select></div>';
         return selectBox;
     };
-    // _p.powerTransFormatter = function(value, row){
-    //     if(showPowerTrans) {
-    //         var strategies = ['None', 'Log', 'SquaredRoot', 'Square', 'BoxCoxTransformation', 'YeoJohnsonTransformation'];
-    //         var selectBox = '<div class="wrap_select"><select id="powertrans_' + row.id + '" class="form-control toggle-disable" data-style="btn-info" onchange="$FRONTEND._p.updateColumn(' + row.id + ')">';
-    //         for (var i = 0; i < strategies.length; i++) {
-    //             if (value == strategies[i]) {
-    //                 selectBox += '<option value="' + strategies[i] + '" selected>' + strategies[i] + '</option>';
-    //             } else {
-    //                 selectBox += '<option value="' + strategies[i] + '">' + strategies[i] + '</option>';
-    //             }
-    //         }
-    //         selectBox += '</select></div>';
-    //         return selectBox;
-    //     }else{
-    //         return null
-    //     }
-    // };
-    //
-    // _p.outlierEliFormatter = function(value,row){
-    //     if(showOutlier){
-    //         var methods = ['None','BoxPlotRule','Zscore'];
-    //         var selectBox = '<div class="wrap_select"><select id="outlier_'+row.id+'" class="form-control toggle-disable" data-style="btn-info" onchange="$FRONTEND._p.updateColumn('+row.id+')">';
-    //         for(var i = 0; i < methods.length; i++){
-    //             if (value == methods[i]){
-    //                 selectBox += '<option value="'+methods[i]+'" selected>'+methods[i]+'</option>';
-    //             } else {
-    //                 selectBox += '<option value="'+methods[i]+'">'+methods[i]+'</option>';
-    //             }
-    //         }
-    //         selectBox += '</select></div>';
-    //         return selectBox
-    //     }else{
-    //         return null
-    //     }
-    //
-    // };
+
+    _p.powerTransFormatter = function(value, row){
+        if(showPowerTrans) {
+            var strategies = ['None', 'Log', 'SquaredRoot', 'Square', 'BoxCoxTransformation', 'YeoJohnsonTransformation'];
+            var selectBox = '<div class="wrap_select"><select id="powertrans_' + row.id + '" class="form-control toggle-disable" data-style="btn-info" onchange="$FRONTEND._p.updateColumn(' + row.id + ')">';
+            for (var i = 0; i < strategies.length; i++) {
+                if (value == strategies[i]) {
+                    selectBox += '<option value="' + strategies[i] + '" selected>' + strategies[i] + '</option>';
+                } else {
+                    selectBox += '<option value="' + strategies[i] + '">' + strategies[i] + '</option>';
+                }
+            }
+            selectBox += '</select></div>';
+            return selectBox;
+        }else{
+            return null
+        }
+    };
+
+    _p.outlierEliFormatter = function(value,row){
+        if(showOutlier){
+            var str = "";
+            if (value == true) {
+                str = '<div class="wrap_check type_check2 on"><input type="checkbox" id="outlier_'+row.id+'" class="inp_check features toggle-disable" onclick="$FRONTEND._p.updateColumn('+row.id+')" checked><label for="outlier_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
+            }else{
+                str = '<div class="wrap_check type_check2"><input type="checkbox" id="outlier_'+row.id+'" class="inp_check features toggle-disable" onclick="$FRONTEND._p.updateColumn('+row.id+')" ><label for="outlier_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
+            }
+            return str;
+        }else{
+            return null
+        }
+
+    };
 
     _p.featureFormatter = function(value,row){
         var str = "";
@@ -362,7 +358,7 @@ var $FRONTEND = (function (module) {
         data.datatype = $('#datatype_' + rowid).val();
         data.imputation = $('#imputation_' + rowid).val();
         data.transformationStrategy = $('#powertrans_' + rowid).val();
-        data.outlierMethod = $('#outlier_' + rowid).val();
+        data.useOutlier = $('#outlier_' + rowid).is(":checked");
         data.isFeature = $('#feature_' + rowid).is(":checked");
         return $.ajax({
             type: 'patch',
@@ -644,23 +640,30 @@ var $FRONTEND = (function (module) {
                     //     $('#pre_DrpNCols').prop( "checked", true );
                     //     $('#na_col_drop_threshold').val(resultData['naColDropThreshold']);
                     // }
-                    showOutlier = false
+
                     if(resultData['outlierUse']){
                         $('#pre_OtlrElmntn').prop( "checked", true );
 
                         $('#pre_Omethod').val(resultData['outlierStrategy']);
                         $('#pre_Othreshold').val(resultData['outlierThreshold']);
                         showOutlier = true
-                        // $('#outlier_col').css("width", "150px")
-                        $('#column_table').bootstrapTable('refresh')
+                        $('#outlier_col').css("width", "150px")
+                    }else{
+                        $('#pre_OtlrElmntn').prop( "checked", false );
+                        showOutlier = false
+                         $('#outlier_col').css("width", "0px")
                     }
-                    showPowerTrans = false
+
                     if(resultData['colTransUse']){
                         $('#pre_PrTrnsfrm').prop( "checked", true );
                         showPowerTrans = true
-                        // $('#powerTrans_col').css("width", "150px")
-                        $('#column_table').bootstrapTable('refresh')
+                        $('#powerTrans_col').css("width", "150px")
+                    }else{
+                        $('#pre_PrTrnsfrm').prop( "checked", false );
+                        showPowerTrans = false
+                        $('#powerTrans_col').css("width", "0px")
                     }
+                    $('#column_table').bootstrapTable('refresh')
 
                 } else {
                     alert(resultData['error_msg']);
@@ -836,7 +839,6 @@ var $FRONTEND = (function (module) {
             alert('입력 값을 확인해 주세요', chkValue) ;
             return false ;
         } else if (Number.isInteger(+chkValue)) {
-            // console.log('Warn. The checked item is integer!!', chkValue) ;
             return true ;
         }
         else {
@@ -941,6 +943,8 @@ var $FRONTEND = (function (module) {
                 alert("Threshold 값을 확인해 주세요.")
                 return false;
             }
+        }else{
+            data.outlierUse = false;
         }
 
 
@@ -960,6 +964,8 @@ var $FRONTEND = (function (module) {
             });
             data.colTransStrategies = col_trans_strategies;
             console.log('4.2  col_trans_strategies : ',data.colTransStrategies) ;
+        }else{
+            data.colTransUse = false;
         }
 
         // -------------------------- 4. One Hot Encoding -------------------------------
@@ -999,6 +1005,7 @@ var $FRONTEND = (function (module) {
             contentType: 'application/json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
+                    _p.loadPreConf()
                     //$('#modal-setting').modal('hide');
                 } else {
                     alert(resultData['error_msg']);
