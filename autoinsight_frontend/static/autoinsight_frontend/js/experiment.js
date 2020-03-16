@@ -127,6 +127,8 @@ var $FRONTEND = (function (module) {
             },
             error: function (res) {
                 console.log(res);
+                $('#runtime_table > tbody > tr > td:first').html('<span style="color:red">Sorry! Failed to get the data from server</span>');
+                $("#available_count").html('-')
             }
         });
     }
