@@ -61,7 +61,7 @@
                     <div id="container_info" class="area_util">
                         <ul class="list_count">
 
-                            <span class="ico_automl ico_arr"></span>Available Containers : <span id="available_count" class="txt_emph"></span>
+                            <span class="ico_automl ico_arr"></span>Available Containers : <span id="available_count" class="txt_emph">loading..</span>
 
                         </ul>
                     </div>
@@ -83,10 +83,8 @@
                         </colgroup>
                         <thead>
                         <tr>
-                            <th class="txt_l" data-field="id">ID
-                            </th>
-                            <th class="txt_l" data-field="dataset" data-formatter="$FRONTEND._p.datasetFormatter">Dataset
-                            </th>
+                            <th class="txt_l" data-field="id">ID</th>
+                            <th class="txt_l" data-field="dataset" data-formatter="$FRONTEND._p.datasetFormatter">Dataset</th>
                             <th data-field="status" data-formatter="$FRONTEND._p.statusFormatter">Status</th>
                             <th data-field="modelsCnt" data-formatter="$FRONTEND._p.modelscoreFormatter">Models<br>Count</th>
                             <th data-field="bestScore" data-formatter="$FRONTEND._p.modelscoreFormatter">Best<br>Score</th>
@@ -97,6 +95,7 @@
                             <th data-field="id" data-formatter="$FRONTEND._p.actionFormatter">Action</th>
                         </tr>
                         </thead>
+
                     </table>
 
                 </section>
