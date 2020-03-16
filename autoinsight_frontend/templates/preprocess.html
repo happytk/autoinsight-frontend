@@ -125,6 +125,8 @@
                             <col style="width:130px">
                             <col style="width:92px">
                             <col style="width:168px">
+                            <col id="powerTrans_col">
+                            <col id="outlier_col">
                             <col style="width:90px">
                             <col style="width:80px">
                             <col style="width:75px">
@@ -132,8 +134,6 @@
                             <col style="width:120px">
                             <col style="width:100px">
                             <col style="width:100px">
-                            <col id="powerTrans_col">
-                            <col id="outlier_col">
                             <col>
                         </colgroup>
                         <thead>
@@ -146,6 +146,12 @@
                             <th data-field="imputation" data-formatter="$FRONTEND._p.imputationFormatter">Imputation
                                 <!--<button class="btn_interpolation" type="button"><span class="ico_automl ico_interpolation">설정</span></button>-->
                             </th>
+                            <th data-field="transformationStrategy" data-formatter="$FRONTEND._p.powerTransFormatter">Power<br>Transformation
+                                <!--<button class="btn_interpolation" type="button"><span class="ico_automl ico_interpolation">설정</span></button>-->
+                            </th>
+                            <th data-field="useOutlier" data-formatter="$FRONTEND._p.outlierEliFormatter">Outlier<br>Elimination
+                                <!--<button class="btn_interpolation" type="button"><span class="ico_automl ico_interpolation">설정</span></button>-->
+                            </th>
                             <th data-field="unique">Unique</th>
                             <th data-field="mean">Mean</th>
                             <th data-field="min">Min</th>
@@ -153,12 +159,6 @@
                             <th data-field="id" data-formatter="$FRONTEND._p.distributionFormatter">Distribution</th>
                             <th data-field="isFeature" data-formatter="$FRONTEND._p.featureFormatter">Features</th>
                             <th data-field="isTarget" data-formatter="$FRONTEND._p.targetFormatter">Target</th>
-                            <th data-field="transformationStrategy" data-formatter="$FRONTEND._p.powerTransFormatter">Power<br>Transformation
-                                <!--<button class="btn_interpolation" type="button"><span class="ico_automl ico_interpolation">설정</span></button>-->
-                            </th>
-                            <th data-field="useOutlier" data-formatter="$FRONTEND._p.outlierEliFormatter">Outlier<br>Elimination
-                                <!--<button class="btn_interpolation" type="button"><span class="ico_automl ico_interpolation">설정</span></button>-->
-                            </th>
                             <th data-field="taskType" data-visible="false">Task Type</th>
                         </tr>
                         </thead>
