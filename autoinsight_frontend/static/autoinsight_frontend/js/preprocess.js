@@ -643,7 +643,6 @@ var $FRONTEND = (function (module) {
 
                     if(resultData['outlierUse']){
                         $('#pre_OtlrElmntn').prop( "checked", true );
-
                         $('#pre_Omethod').val(resultData['outlierStrategy']);
                         $('#pre_Othreshold').val(resultData['outlierThreshold']);
                         showOutlier = true
@@ -651,7 +650,7 @@ var $FRONTEND = (function (module) {
                     }else{
                         $('#pre_OtlrElmntn').prop( "checked", false );
                         showOutlier = false
-                         $('#outlier_col').css("width", "0px")
+                        $('#outlier_col').css("width", "0px")
                     }
 
                     if(resultData['colTransUse']){
@@ -662,6 +661,16 @@ var $FRONTEND = (function (module) {
                         $('#pre_PrTrnsfrm').prop( "checked", false );
                         showPowerTrans = false
                         $('#powerTrans_col').css("width", "0px")
+                    }
+
+                    if (resultData['outlierUse'] && resultData['colTransUse']) {
+                        $('main > .container').css("max-width", "1580px");//1280+150*2
+                    }
+                    else if (resultData['outlierUse'] || resultData['colTransUse']) {
+                        $('main > .container').css("max-width", "1430px"); //1280+150
+                    }
+                    else {
+                        $('main > .container').css("max-width", "1280px");
                     }
                     $('#column_table').bootstrapTable('refresh')
 
