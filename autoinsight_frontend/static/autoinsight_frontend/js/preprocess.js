@@ -3,7 +3,7 @@ var $FRONTEND = (function (module) {
 
 
     _p.dataset_name ="";
-    var targetColumn, isFirst, showOutlier, showPowerTrans;
+    var targetColumn, isFirst, showOutlier, showPowerTrans, distributions;
     //초기화면 세팅
     _p.init = function(){
 
@@ -37,51 +37,54 @@ var $FRONTEND = (function (module) {
 
         $('#column_table').on('load-success.bs.table', function (data, jqXHR) {
 
-
             targetColumn={};
             if(jqXHR.length<20){
+                $('.dist_buttons').hide()
+                $('canvas').show()
                 $(jqXHR).each(function(index, column) {
-
-                // _p.drawDistribution(column.id, column.freqIdxJson, column.freqJson);
-                if(column.isTarget){
-                    $('#feature_'+column['id']).attr("disabled", true);
-                    if(isFirst === true){
-                        if(column.taskType === 'multiclass' || column.taskType === 'binary'){
-                            $('#estimator_type').val("classifier");
-                            $('#metric').val('accuracy');
-                        }else{
-                            $('#estimator_type').val("regressor");
-                            $('#metric').val('r2');
+                    _p.drawDistribution(column.id, column.freqIdxJson, column.freqJson);
+                    if(column.isTarget){
+                        $('#feature_'+column['id']).attr("disabled", true);
+                        if(isFirst === true){
+                            if(column.taskType === 'multiclass' || column.taskType === 'binary'){
+                                $('#estimator_type').val("classifier");
+                                $('#metric').val('accuracy');
+                            }else{
+                                $('#estimator_type').val("regressor");
+                                $('#metric').val('r2');
+                            }
+                            if(status === 'ready') _p.updateEstimatorType();
+                            isFirst = false
                         }
-                        if(status === 'ready') _p.updateEstimatorType();
-                        isFirst = false
+                        targetColumn.id = column.id;
+                        targetColumn.name = column.name;
                     }
-                    targetColumn.id = column.id;
-                    targetColumn.name = column.name;
-                }
-            });
+                });
 
             }else{
+                $('canvas').hide()
+                $('.dist_buttons').show()
+                distributions={};
                 $(jqXHR).each(function(index, column) {
-                // $('#distribution_'+column.id).replaceWith('<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-metric" onclick="$FRONTEND._p.drawDistribution(\'{0}\',\'{1}\',\'{2}\')" type="button" >View</button>'.format(column.id, column.freqIdxJson, column.freqJson))
-                if(column.isTarget){
-                    // _p.drawDistribution(column.id, column.freqIdxJson, column.freqJson);
-                    $('#feature_'+column['id']).attr("disabled", true);
-                    if(isFirst === true){
-                        if(column.taskType === 'multiclass' || column.taskType === 'binary'){
-                            $('#estimator_type').val("classifier");
-                            $('#metric').val('accuracy');
-                        }else{
-                            $('#estimator_type').val("regressor");
-                            $('#metric').val('r2');
+                    distributions[column.id]  = [column.freqIdxJson, column.freqJson]
+                    if(column.isTarget){
+                        _p.drawDistribution(column.id);
+                        $('#feature_'+column['id']).attr("disabled", true);
+                        if(isFirst === true){
+                            if(column.taskType === 'multiclass' || column.taskType === 'binary'){
+                                $('#estimator_type').val("classifier");
+                                $('#metric').val('accuracy');
+                            }else{
+                                $('#estimator_type').val("regressor");
+                                $('#metric').val('r2');
+                            }
+                            if(status === 'ready') _p.updateEstimatorType();
+                            isFirst = false
                         }
-                        if(status === 'ready') _p.updateEstimatorType();
-                        isFirst = false
+                        targetColumn.id = column.id;
+                        targetColumn.name = column.name;
                     }
-                    targetColumn.id = column.id;
-                    targetColumn.name = column.name;
-                }
-            });
+                });
 
             }
 
@@ -195,14 +198,7 @@ var $FRONTEND = (function (module) {
                     $("#dataset_name").text(resultData['name']);
                     $("#row_count").text(resultData['rowCount']);
                     $("#col_count").text(resultData['colCount']);
-                    var corr = JSON.parse(resultData['corrJson'] );
-                    corr.data =[];
-                    for(var i = 0; i < corr.z.length; i++) {
-                        for(var j = 0; j < corr.z[i].length; j++) {
-                            corr.data.push([i,j,corr.z[i][j]]);
-                        }
-                    }
-                    _p.drawCorrelation(corr);
+
                     if(resultData['isProcessed']===false){
                         $('#preprocessed_link').addClass('disabled');
                     }else{
@@ -452,11 +448,17 @@ var $FRONTEND = (function (module) {
     };
 
     _p.distributionFormatter = function(value,row){
-        return '<canvas id="distribution_'+row.id+'"></canvas>'
+        return '<button class="btn_s btn_border dist_buttons" id="dist_button_'+value+'" data-toggle="modal" data-target="#modal-metric" onclick="$FRONTEND._p.drawDistribution('+value+')" type="button" >View</button><canvas id="distribution_'+row.id+'"></canvas>'
     };
 
 
-    _p.drawDistribution = function(id, label, data) {
+    _p.drawDistribution = function(id, label=null, data=null) {
+
+        $('#dist_button_'+id).hide()
+        if(label === null && data === null){
+            label = distributions[id][0]
+            data = distributions[id][1]
+        }
         try {
             label = JSON.parse(label);
             data = JSON.parse(data);
@@ -510,6 +512,7 @@ var $FRONTEND = (function (module) {
                 }
             }
         });
+        $('#distribution_'+id).show()
     };
 
     _p.drawCorrelation=function(corr){
@@ -581,6 +584,38 @@ var $FRONTEND = (function (module) {
     };
 
     //Modal 관련
+
+    _p.setCorrModal = function(){
+        return $.ajax({
+            type: 'get',
+            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/stat_corr/',
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                if (resultData['error_msg'] == null ){
+                    try {
+                        var corr = JSON.parse(resultData['corrJson'] );
+                        corr.data =[];
+                        for(var i = 0; i < corr.z.length; i++) {
+                            for(var j = 0; j < corr.z[i].length; j++) {
+                                corr.data.push([i,j,corr.z[i][j]]);
+                            }
+                        }
+                        _p.drawCorrelation(corr);
+                    }
+                    catch(err) {
+                        console.log(err)
+                        $('#container').text("죄송합니다. 이 정보를 불러올 수 없습니다.")
+                    }
+                } else {
+                    alert(resultData['error_msg']);
+                }
+            },
+            error: function (res) {
+                alert(res.responseJSON.message);
+            }
+        });
+
+    }
 
     _p.reset = function(){
         // $('#gen_over_sampling').val("None");
