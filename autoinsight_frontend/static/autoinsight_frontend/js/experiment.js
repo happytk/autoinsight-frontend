@@ -26,7 +26,7 @@ var $FRONTEND = (function (module) {
                                           id
                                           name
                                           targetName
-                                          featureNames
+                                          featureCount
                                           rowCount
                                         }
                                       }
@@ -107,6 +107,7 @@ var $FRONTEND = (function (module) {
             contentType: "application/json",
             success: function (resultData, textStatus, request) {
                 //feature 개수, target column 추가
+                $('#runtime_table').bootstrapTable(); //init;
                 $('#runtime_table').bootstrapTable('load', {rows: resultData.data.runtimes})
                 $("#available_count").html(
                     '' + ((resultData.data.env['totalContainerCount'] || 0) - (resultData.data.env['activeContainerCount'] || 0)) + ' / ' + resultData.data.env['totalContainerCount']
@@ -137,7 +138,7 @@ var $FRONTEND = (function (module) {
         }else if(row.status === 'learning'){
             hasPending = true
         }
-        return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureNames.length+' features, '+value.rowCount+' rows)'
+        return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureCount+' features, '+value.rowCount+' rows)'
 
 
     }

@@ -46,29 +46,21 @@
         <!-- //header -->
 
         <main>
-
-
             <div class="container">
                 <section class="section_content">
-
                     <div class="area_tit">
                         <h3 id="dataset_name" class="tit_table">Experiments</h3>
                         <div class="wrap_btn">
                             <button class="btn_m btn_border" type="button" data-toggle="modal" data-target="#modal-dataset">Create New</button>
                         </div>
                     </div>
-
                     <div id="container_info" class="area_util">
                         <ul class="list_count">
-
                             <span class="ico_automl ico_arr"></span>Available Containers : <span id="available_count" class="txt_emph">loading..</span>
-
                         </ul>
                     </div>
-
                     <table id="runtime_table"
-                           data-toggle="table"
-                           class="tbl_g tbl_preprocess">
+                            class="tbl_g tbl_preprocess">
                         <colgroup>
                             <col style="width:60px">
                             <col style="width:100%">
@@ -95,7 +87,9 @@
                             <th data-field="id" data-formatter="$FRONTEND._p.actionFormatter">Action</th>
                         </tr>
                         </thead>
-
+                        <tbody>
+                            <tr><td colspan="8">loading..</td></tr>
+                        </tbody>
                     </table>
 
                 </section>
