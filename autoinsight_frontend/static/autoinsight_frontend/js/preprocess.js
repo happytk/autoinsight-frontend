@@ -39,10 +39,10 @@ var $FRONTEND = (function (module) {
 
 
             targetColumn={};
-            // columnCombobox ="";
-            $(jqXHR).each(function(index, column) {
-                _p.drawDistribution(column.id, column.freqIdxJson, column.freqJson);
-                // columnCombobox += '<option value="'+column.name+'">'+column.name+'</option>';
+            if(jqXHR.length<20){
+                $(jqXHR).each(function(index, column) {
+
+                // _p.drawDistribution(column.id, column.freqIdxJson, column.freqJson);
                 if(column.isTarget){
                     $('#feature_'+column['id']).attr("disabled", true);
                     if(isFirst === true){
@@ -60,6 +60,31 @@ var $FRONTEND = (function (module) {
                     targetColumn.name = column.name;
                 }
             });
+
+            }else{
+                $(jqXHR).each(function(index, column) {
+                // $('#distribution_'+column.id).replaceWith('<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-metric" onclick="$FRONTEND._p.drawDistribution(\'{0}\',\'{1}\',\'{2}\')" type="button" >View</button>'.format(column.id, column.freqIdxJson, column.freqJson))
+                if(column.isTarget){
+                    // _p.drawDistribution(column.id, column.freqIdxJson, column.freqJson);
+                    $('#feature_'+column['id']).attr("disabled", true);
+                    if(isFirst === true){
+                        if(column.taskType === 'multiclass' || column.taskType === 'binary'){
+                            $('#estimator_type').val("classifier");
+                            $('#metric').val('accuracy');
+                        }else{
+                            $('#estimator_type').val("regressor");
+                            $('#metric').val('r2');
+                        }
+                        if(status === 'ready') _p.updateEstimatorType();
+                        isFirst = false
+                    }
+                    targetColumn.id = column.id;
+                    targetColumn.name = column.name;
+                }
+            });
+
+            }
+
 
 
             // $( ".columns" ).each(function( index ) {

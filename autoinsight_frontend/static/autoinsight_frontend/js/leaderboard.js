@@ -192,7 +192,7 @@ var $FRONTEND = (function (module) {
         }else if(row.limeHtmlStatus =="DONE"){
             return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-explanation" onclick="$FRONTEND._p.setExplanationModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'get')
         }else{
-            return '<button class="btn_s btn_border" disabled>Error</button>';
+            return '<a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span><div class="txt_tooltip">설명자료를 만들 수 없는 모델입니다.</div></a>';
         }
     }
 
@@ -344,6 +344,7 @@ var $FRONTEND = (function (module) {
                     $('#modal-explanation #modal-explanation-error').show()
                 }else {
                     $('#modal-explanation #modal-explanation-loading').hide()
+                    $('#modal-explanation #modal-explanation-error').hide()
                     $('#modal-explanation #modal-explanation-done').show()
                     $('#modal-explanation #modal-explanation-done iframe').attr('srcdoc', resultData.limeHtml)
                 }

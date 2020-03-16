@@ -315,6 +315,7 @@ var $FRONTEND = (function (module) {
         var data = {};
         data.workerScale = $('#workerscale_' + runtime_id).val();
         data.estimatorType = $('#estimatortype_' + runtime_id).val().toLowerCase();
+        $('#metric_'+runtime_id).prop('disabled', true)
         data.metric = $('#metric_' + runtime_id).val();
         console.log(JSON.stringify(data))
         return $.ajax({
@@ -324,6 +325,7 @@ var $FRONTEND = (function (module) {
             data: data,
             success: function (resultData, textStatus, request) {
                 // console.log(resultData)
+                $('#metric_'+runtime_id).prop('disabled', false)
                 _p.refreshTable()
             },
             error: function (res) {
