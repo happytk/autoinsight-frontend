@@ -134,6 +134,8 @@ var $FRONTEND = (function (module) {
     }
 
     _p.datasetFormatter =  function (value, row) {
+        if (!value || !row) return
+
         if(row.status === 'creating') {
             hasPending = true
             return '-'
@@ -146,6 +148,8 @@ var $FRONTEND = (function (module) {
     }
 
     _p.statusFormatter =  function (value, row) {
+        if (!value || !row) return
+
         if(value === 'learning') {
             return value + '<br/>(' + Math.round(row.doneSlot / row.timeout * 100) + '%' +')'
         }else{
@@ -154,6 +158,8 @@ var $FRONTEND = (function (module) {
     }
 
     _p.modelscoreFormatter =  function (value, row) {
+        if (!value || !row) return
+
         const cValue = (value === null ? '' : value)
         if (row.status === 'ready' || row.status === 'creating') {
             // return value;
@@ -164,6 +170,8 @@ var $FRONTEND = (function (module) {
     }
 
     _p.estimatorFormatter =  function (value, row) {
+        if (!value || !row) return
+
         var estimator_types = ['CLASSIFIER', 'REGRESSOR']
         var selectBox ='<div class="wrap_select"><select id="estimatortype_' + row.id + '" class="form-control" data-style="btn-info"'
         if(row.status === 'ready') {
@@ -184,6 +192,8 @@ var $FRONTEND = (function (module) {
     }
 
     _p.metricFormatter =  function (value, row) {
+        if (!value || !row) return
+
         var available_metrics = row.availableMetrics
         value = value.toLowerCase()
         var selectBox ='<div class="wrap_select"><select id="metric_' + row.id + '" class="form-control" data-style="btn-info"'
