@@ -12,9 +12,6 @@
     <link href="{% static 'autoinsight_frontend/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
     <link href="{% static 'autoinsight_frontend/css/style.css' %}" rel="stylesheet">
     <link href="{% static 'autoinsight_frontend/css/bootstrap-multiselect.css' %}" rel="stylesheet">
-    <style>
-    .help-text { color: #999999; font-weight: normal;}
-    </style>
     <link rel="shortcut icon" href="{% static 'autoinsight_frontend/img/favicon.ico' %}">
 {% endblock %}
 
@@ -56,7 +53,7 @@
                         </div>
                     </div>
                     <div class='help-text'>
-                        You can register the data and browse the model with the optimal parameters for it. Each experiment can be performed within the available container resource limits.
+                        You can register the data and browse the model with the optimal parameters for it. Each experiment can be performed within the available container resources.
                     </div>
                     <div id="container_info" class="area_util">
                         <ul class="list_count">
@@ -108,7 +105,8 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="header_popup">
-                    <strong class="tit_popup">New Experiment</strong><a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span><div class="txt_tooltip">You can register a file, or use an existing registered data source for a new experiment.</div></a>
+                    <strong class="tit_popup">New Experiment</strong>
+                    <div class='help-text'>You can register a file, or use an existing registered data source for a new experiment.</div>
                 </div>
                 <div class="body_popup">
                     <ul class="nav nav-tabs list_menu" id="myTab"  role="tablist">

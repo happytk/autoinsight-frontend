@@ -192,7 +192,7 @@ var $FRONTEND = (function (module) {
         }else if(row.limeHtmlStatus =="DONE"){
             return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-explanation" onclick="$FRONTEND._p.setExplanationModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'get')
         }else{
-            return '<a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span><div class="txt_tooltip">설명자료를 만들 수 없는 모델입니다.</div></a>';
+            return '<a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span><div class="txt_tooltip">This model cannot load information</div></a>';
         }
     }
 
@@ -212,7 +212,7 @@ var $FRONTEND = (function (module) {
         if (row.deployed) {
             return '<button id ="deploy' + value + '" class="btn_deploy" type="button" disabled><span class="ico_automl ico_check">Deploy</span></button>'
         }
-        return '<button id ="deploy' + value + '" class="btn_deploy" type="button" onclick="$FRONTEND._p.deployModel(\'{0}\',\'{1}\')"><span class="ico_automl ico_arr">Deploy</span></button>'.format(value, 'post')
+        return '<button id ="deploy' + value + '" class="btn_deploy tooltip_model" type="button" onclick="$FRONTEND._p.deployModel(\'{0}\',\'{1}\')"><span class="ico_automl ico_arr">Deploy</span><div class="txt_tooltip">Click to deploy</div></button>'.format(value, 'post')
     }
 
     _p.deployModel = function (model_pk, method) {
