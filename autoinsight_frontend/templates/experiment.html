@@ -56,7 +56,7 @@
                         </div>
                     </div>
                     <div class='help-text'>
-                        데이터를 등록하고 이에 맞는 최적의 파라미터를 갖는 모델을 탐색할 수 있습니다. 각 실험은 사용가능한 컨테이너 자원 한도안에서 수행할 수 있습니다.
+                        You can register the data and browse the model with the optimal parameters for it. Each experiment can be performed within the available container resource limits.
                     </div>
                     <div id="container_info" class="area_util">
                         <ul class="list_count">
@@ -108,10 +108,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="header_popup">
-                    <strong class="tit_popup">New Experiment</strong>
-                    <div class='help-text'>
-                        새로운 실험을 위해 데이터파일을 등록하거나, 혹은 기존 등록된 데이터소스를 활용할 수 있습니다.
-                    </div>
+                    <strong class="tit_popup">New Experiment</strong><a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span><div class="txt_tooltip">You can register a file, or use an existing registered data source for a new experiment.</div></a>
                 </div>
                 <div class="body_popup">
                     <ul class="nav nav-tabs list_menu" id="myTab"  role="tablist">
@@ -128,7 +125,6 @@
                         <div class="tab-pane fade active in" id="newdata" role="tabpanel" aria-labelledby="general-tab">
                             <dl>
                                 <div class="item_dl">
-                                    <dt class='help-text'>로컬파일을 등록하거나, 샘플데이터셋을 선택하세요.</dt>
                                     <dd>
                                         <label for="name" class="screen_out">Name</label>
                                         <div id="saved_dataset_area" class="wrap_select">
@@ -142,8 +138,8 @@
                                         <div class="area_file">
                                             <div class="wrap_select">
                                                 <select id="source_type" class="form-control">
-                                                    <option value ="sklearn">scikit-learn 샘플</option>
-                                                    <option value ="local" selected>내 PC에서 선택</option>
+                                                    <option value ="local" selected>Local file</option>
+                                                    <option value ="sklearn">Scikit-learn sample</option>
                                                     <!-- <option value ="icos">ICOS</option>
                                                     <option value ="hdfs">HDFS</option> -->
                                                 </select>
@@ -151,6 +147,7 @@
 
                                             <input id="dataset" type="file" class="inp_file">
                                             <input type="text" name="" id="dataset_name_input" class="inp_txt hidden" readonly>
+                                            <a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span><div class="txt_tooltip">Register a local file, or select a sample dataset</div></a>
 
                                         </div>
                                     </dd>
@@ -195,7 +192,7 @@
                                                 <option value ="100000">100000</option>
                                             </select>
                                         </div>
-                                        <div class='help-text'>데이터의 일부만 가져오려는 경우 기준을 설정할 수 있습니다.</div>
+                                        <a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span><div class="txt_tooltip">If you only want to import a part of the data, you can set criteria.</div></a>
                                     </dd>
                                 </div>
                             </dl>
