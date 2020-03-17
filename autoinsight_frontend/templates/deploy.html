@@ -64,21 +64,21 @@
             <section class="section_content" id="deployed">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">배포기본정보</h3>
+                        <h3 class="panel-title">Basic Information</h3>
                     </div>
                     <div class="panel-body">
                         <h2 id="estimator_name"></h2>
-                        <div>훈련된 예측 스코어: <span id="score" style="text-decoration: underline;"></span></div>
-                        <div>배포일자: <span id="created_at" style="text-decoration: underline;"></span></div>
+                        <div>Trained prediction score: <span id="score" style="text-decoration: underline;"></span></div>
+                        <div>Deployment date: <span id="created_at" style="text-decoration: underline;"></span></div>
                         <div class="alert alert-success" role="alert" style="margin-top: 30px;">
                             <a class="btn_confirm btn_m"
-                               href="{{ BACKEND_RESTAPI_URL }}runtimes/{{ runtime_id }}/deployment/export">모델바이너리
-                                내려받기</a>
-                            <div style="margin-top: 25px;">모델 바이너리 파일은 pickle 라이브러리를 이용하여 개별 환경에서 사용하실 수 있습니다.
-                                <br>python 3.7 이상, scikit-learn==0.22.1 기준 환경에서 잘 동작합니다. (옵션 설정에 따라 autoinsight모듈이 필요할 수 있습니다.)
+                               href="{{ BACKEND_RESTAPI_URL }}runtimes/{{ runtime_id }}/deployment/export">Download model binary
+                                </a>
+                            <div style="margin-top: 25px;">The model binary files can be used in individual environments using the pickle library.
+                                <br>System requires python 3.7 or higher, scikit-learn==0.22.1, Autoinsight module(Optional)
                                 <pre style="display: block; overflow-x: auto; padding: 0.5em; color: rgb(0, 0, 0); background: rgb(248, 248, 255);">
                                 <code>
-                                    <span style="color: rgb(64, 128, 128); font-style: italic;"># 다음의 코드로 모델파이프라인을 확인하실 수 있습니다.</span>
+                                    <span style="color: rgb(64, 128, 128); font-style: italic;"># You can check the model pipeline with the following code.</span>
                                     <span style="color: rgb(149, 65, 33);">import</span> pickle
                                     pipeline = pickle.load(open(<span style="color: rgb(33, 145, 97);">'downloaded.bin', 'rb'</span>))
                                     print(pipeline)
@@ -90,11 +90,11 @@
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">데이터 예측하기</h3>
+                        <h3 class="panel-title">Prediction</h3>
                     </div>
                     <div class="panel-body">
                         <div class="alert alert-danger" role="alert">
-                            <h4>이 폼에 대한 데이터 처리는 RestAPI URL로 열려있습니다.</h4>
+                            <h4>Data processing for the form below is open to the RestAPI URL.</h4>
                             <table class="table table-condensed" style="margin-top: 30px;">
                                 <tbody>
                                 <tr>
@@ -106,22 +106,21 @@
                                     <td>
                                         <span class="badge badge-danger">Method</span>
                                     </td>
-                                    <td><b>POST</b>로 접근합니다.</td>
+                                    <td><b>POST</b></td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <span class="badge badge-danger">Input</span>
                                     </td>
                                     <td>
-                                        <b>inputs</b>을 키값으로 갖는 Comma(,)로 구분된 Data를 Input으로 전달합니다.
+                                        Comma Separated Data with <b>inputs</b> as the keys.
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <span class="badge badge-danger">Output</span>
                                     </td>
-                                    <td><b>inputs</b>은 호출에 사용된 입력값, <b>result</b>예측값, <b>errors</b> 호출시 에러가 있으면 전달 <b>lime</b>예측하는데
-                                        사용한 설명자료(html)
+                                    <td><b>prediction result</b>, <b>errors</b>(if exists), <b>explanation of the prediction</b>(lime html)
                                     </td>
                                 </tr>
                                 </tbody>
@@ -130,11 +129,11 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th>특성이름</th>
-                                <th>데이터유형</th>
+                                <th>Feature</th>
+                                <th>Datatype</th>
                                 <th>
                                     <button type="button" class="btn_correlation btn_s"
-                                            onclick="$FRONTEND._p.fillMostFrequent();">평균값으로 채우기
+                                            onclick="$FRONTEND._p.fillMostFrequent();">Fill with the most frequent values
                                     </button>
                                 </th>
                             </tr>
@@ -144,7 +143,7 @@
                         </table>
                         <div class="text-center">
                             <button type="button" class="btn_confirm btn_b"
-                                    onclick="$FRONTEND._p.singlePredict();">예측하기
+                                    onclick="$FRONTEND._p.singlePredict();">Predict
                             </button>
                         </div>
                         <div id="single_result" class="panel-body">
@@ -158,7 +157,7 @@
                                 <tbody id="single_result_tbody">
                                 </tbody>
                             </table>
-                            <h4>Prediction 설명</h4>
+                            <h4>Explanation of the prediction</h4>
                             <p id="single_result_lime">
                                 <iframe style='border: 0; width:100%;height: 300px;'></iframe>
                             </p>
@@ -190,7 +189,7 @@
                 </div>-->
             </section>
             <section class="section_content" id="not_deployed">
-                <p>배포된 모델이 존재하지 않습니다.</p>
+                <p>The deployed model does not exist.</p>
             </section>
         </div>
 
