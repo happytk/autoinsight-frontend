@@ -26,7 +26,7 @@ var $FRONTEND = (function (module) {
                                           id
                                           name
                                           targetName
-                                          featureNames
+                                          featureCount
                                           rowCount
                                         }
                                       }
@@ -35,6 +35,7 @@ var $FRONTEND = (function (module) {
 
     //초기화면 세팅
     _p.init = function(){
+        $('#runtime_table').bootstrapTable(); //init;
         _p.refreshTable()
 
         $('#dataset').fileinput({
@@ -106,17 +107,16 @@ var $FRONTEND = (function (module) {
             data: JSON.stringify({query:REFRESH_RUNTIMES_QUERY}),
             contentType: "application/json",
             success: function (resultData, textStatus, request) {
-                //feature 개수, target column 추가
-                $('#runtime_table').bootstrapTable('load',{rows: resultData.data.runtimes})
-                $("#available_count").text(
-                    (resultData.data.env['totalContainerCount'] || 0) - (resultData.data.env['activeContainerCount'] || 0)
+                $('#runtime_table').bootstrapTable('load', {rows: resultData.data.runtimes})
+                $("#available_count").html(
+                    '' + ((resultData.data.env['totalContainerCount'] || 0) - (resultData.data.env['activeContainerCount'] || 0)) + ' / ' + resultData.data.env['totalContainerCount']
                 )
                 if((thread === 0 || next=== true) && hasPending === true){
                     hasPending = false
                     thread =1
                     setTimeout(function(){
                         _p.refreshTable(true)
-                    }, 5000)
+                    }, 3000)
                     return false
                 }
                 if(next=== true && hasPending === false){
@@ -126,24 +126,31 @@ var $FRONTEND = (function (module) {
             },
             error: function (res) {
                 console.log(res);
+                $('#runtime_table > tbody > tr > td:first').html('<span style="color:red">Sorry! Failed to get the data from server</span>');
+                $("#available_count").html('-')
             }
         });
     }
 
     _p.datasetFormatter =  function (value, row) {
+        if (!value || !row){
+            hasPending = true
+            return
+        }
         if(row.status === 'creating') {
             hasPending = true
             return '-'
         }else if(row.status === 'learning'){
             hasPending = true
-
         }
-        return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureNames.length+' features, '+value.rowCount+' rows)'
+        return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureCount+' features, '+value.rowCount+' rows)'
 
 
     }
 
     _p.statusFormatter =  function (value, row) {
+        if (!value || !row) return
+
         if(value === 'learning') {
             return value + '<br/>(' + Math.round(row.doneSlot / row.timeout * 100) + '%' +')'
         }else{
@@ -152,6 +159,8 @@ var $FRONTEND = (function (module) {
     }
 
     _p.modelscoreFormatter =  function (value, row) {
+        if (!value || !row) return
+
         const cValue = (value === null ? '' : value)
         if (row.status === 'ready' || row.status === 'creating') {
             // return value;
@@ -162,6 +171,8 @@ var $FRONTEND = (function (module) {
     }
 
     _p.estimatorFormatter =  function (value, row) {
+        if (!value || !row) return
+
         var estimator_types = ['CLASSIFIER', 'REGRESSOR']
         var selectBox ='<div class="wrap_select"><select id="estimatortype_' + row.id + '" class="form-control" data-style="btn-info"'
         if(row.status === 'ready') {
@@ -182,6 +193,8 @@ var $FRONTEND = (function (module) {
     }
 
     _p.metricFormatter =  function (value, row) {
+        if (!value || !row) return
+
         var available_metrics = row.availableMetrics
         value = value.toLowerCase()
         var selectBox ='<div class="wrap_select"><select id="metric_' + row.id + '" class="form-control" data-style="btn-info"'
@@ -315,6 +328,7 @@ var $FRONTEND = (function (module) {
         var data = {};
         data.workerScale = $('#workerscale_' + runtime_id).val();
         data.estimatorType = $('#estimatortype_' + runtime_id).val().toLowerCase();
+        $('#metric_'+runtime_id).prop('disabled', true)
         data.metric = $('#metric_' + runtime_id).val();
         console.log(JSON.stringify(data))
         return $.ajax({
@@ -324,6 +338,7 @@ var $FRONTEND = (function (module) {
             data: data,
             success: function (resultData, textStatus, request) {
                 // console.log(resultData)
+                $('#metric_'+runtime_id).prop('disabled', false)
                 _p.refreshTable()
             },
             error: function (res) {

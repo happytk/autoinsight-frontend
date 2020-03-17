@@ -114,7 +114,7 @@ var $FRONTEND = (function (module) {
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
                     var tablehtml = ""
-                    tablehtml += '<tr><td>'+JSON.stringify(resultData.input)+'</td><td>'+resultData.result+'</td><td>'+resultData.error+'</td></tr>'
+                    tablehtml += '<tr><td>'+resultData.result+'</td><td>'+resultData.error+'</td></tr>'
                     $('#single_result_tbody').html(tablehtml)
                     $('#single_result_lime iframe').attr('srcdoc', resultData.lime.asHtml)
                     $('#single_result').show()

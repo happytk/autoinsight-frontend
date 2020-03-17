@@ -109,7 +109,7 @@
                                 <span class="ico_automl ico_arr"></span>Column Count <span id="col_count" class="txt_emph"></span>
                             </li>
                         </ul>
-                        <button class="btn_m btn_correlation" type="button" data-toggle="modal" data-target="#modal-correlation">Feature correlation</button>
+                        <button class="btn_m btn_correlation" type="button" data-toggle="modal" data-target="#modal-correlation" onclick="$FRONTEND._p.setCorrModal()">Feature correlation</button>
                         <!--<div class="wrap_search">
                             <input type="text" name="" id="" class="inp_txt">
                             <button class="btn_search"><span class="ico_automl ico_search">검색</span></button>
@@ -125,6 +125,8 @@
                             <col style="width:130px">
                             <col style="width:92px">
                             <col style="width:168px">
+                            <col id="powerTrans_col">
+                            <col id="outlier_col">
                             <col style="width:90px">
                             <col style="width:80px">
                             <col style="width:75px">
@@ -132,8 +134,6 @@
                             <col style="width:120px">
                             <col style="width:100px">
                             <col style="width:100px">
-                            <col id="powerTrans_col">
-                            <col id="outlier_col">
                             <col>
                         </colgroup>
                         <thead>
@@ -146,19 +146,19 @@
                             <th data-field="imputation" data-formatter="$FRONTEND._p.imputationFormatter">Imputation
                                 <!--<button class="btn_interpolation" type="button"><span class="ico_automl ico_interpolation">설정</span></button>-->
                             </th>
+                            <th data-field="transformationStrategy" data-formatter="$FRONTEND._p.powerTransFormatter">Power<br>Transformation
+                                <!--<button class="btn_interpolation" type="button"><span class="ico_automl ico_interpolation">설정</span></button>-->
+                            </th>
+                            <th data-field="useOutlier" data-formatter="$FRONTEND._p.outlierEliFormatter">Outlier<br>Elimination
+                                <!--<button class="btn_interpolation" type="button"><span class="ico_automl ico_interpolation">설정</span></button>-->
+                            </th>
                             <th data-field="unique">Unique</th>
                             <th data-field="mean">Mean</th>
                             <th data-field="min">Min</th>
                             <th data-field="max">Max</th>
-                            <th data-formatter="$FRONTEND._p.distributionFormatter">Distribution</th>
+                            <th data-field="id" data-formatter="$FRONTEND._p.distributionFormatter">Distribution</th>
                             <th data-field="isFeature" data-formatter="$FRONTEND._p.featureFormatter">Features</th>
                             <th data-field="isTarget" data-formatter="$FRONTEND._p.targetFormatter">Target</th>
-                            <th data-field="transformationStrategy" data-formatter="$FRONTEND._p.powerTransFormatter">Power<br>Transformation
-                                <!--<button class="btn_interpolation" type="button"><span class="ico_automl ico_interpolation">설정</span></button>-->
-                            </th>
-                            <th data-field="outlierMethod" data-formatter="$FRONTEND._p.outlierEliFormatter">Outlier<br>Elimination
-                                <!--<button class="btn_interpolation" type="button"><span class="ico_automl ico_interpolation">설정</span></button>-->
-                            </th>
                             <th data-field="taskType" data-visible="false">Task Type</th>
                         </tr>
                         </thead>
@@ -753,7 +753,7 @@
                 <div class="footer_popup">
                     <div class="wrap_btn txt_r">
                         <!--<button type="button" class="btn_m btn_custom pull-left" onclick="$FRONTEND._p.reset()">Reset</button>--><!-- pre processor tab일때만 노출 -->
-                        <button type="button" class="btn_m btn_confirm toggle-disable" data-dismiss="modal">Confirm</button>
+                        <button type="button" class="btn_m" data-dismiss="modal">Close</button>
                     </div>
                     <button type="button" class="btn_close" data-dismiss="modal"><span class="ico_automl ico_close">팝업닫기</span></button>
                 </div>

@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
 <link href="{% static 'autoinsight_frontend/css/bootstrap.min.css' %}" rel="stylesheet">
 <link href="{% static 'autoinsight_frontend/css/style.css' %}" rel="stylesheet">
-<link href="{% static 'autoinsight_frontend/js/main.css' %}">
 <link rel="shortcut icon" href="{% static 'autoinsight_frontend/img/favicon.ico' %}">
 {% endblock %}
 
@@ -81,7 +80,6 @@
                                 <pre style="display: block; overflow-x: auto; padding: 0.5em; color: rgb(0, 0, 0); background: rgb(248, 248, 255);">
                                 <code>
                                     <span style="color: rgb(64, 128, 128); font-style: italic;"># 다음의 코드로 모델파이프라인을 확인하실 수 있습니다.</span>
-                                    <span style="color: rgb(64, 128, 128); font-style: italic;"># (will be implemented soon!)</span>
                                     <span style="color: rgb(149, 65, 33);">import</span> pickle
                                     pipeline = pickle.load(open(<span style="color: rgb(33, 145, 97);">'downloaded.bin', 'rb'</span>))
                                     print(pipeline)
@@ -154,7 +152,6 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th>inputs</th>
                                     <th>result</th>
                                     <th>errors</th>
                                 </tr>
