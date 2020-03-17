@@ -34,9 +34,11 @@ var $FRONTEND = (function (module) {
             $('#column_table').bootstrapTable('refresh')
         });
 
-        _p.loadPreConf()
-        $('#column_table').on('load-success.bs.table', function (data, jqXHR) {
+        _p.loadPreConf().done(function() {
+            _p.showConfColumns()
+        });
 
+        $('#column_table').on('load-success.bs.table', function (data, jqXHR) {
             targetColumn={};
             if(jqXHR.length<20){
                 $('.dist_buttons').hide()
@@ -157,6 +159,10 @@ var $FRONTEND = (function (module) {
             return false
 
 
+        });
+
+        $("#modal-setting").on('hide.bs.modal', function(){
+            _p.showConfColumns();
         });
 
     };
@@ -352,6 +358,31 @@ var $FRONTEND = (function (module) {
         }
         return str;
     };
+
+    _p.showConfColumns = function(){
+        console.log(showOutlier+","+showPowerTrans)
+        if(showOutlier) {
+            $('#outlier_col').css("width", "150px")
+        }else{
+            $('#outlier_col').css("width", "0px")
+        }
+        if(showPowerTrans){
+            $('#powerTrans_col').css("width", "150px")
+        } else{
+            $('#powerTrans_col').css("width", "0px")
+        }
+
+        if (showOutlier && showPowerTrans) {
+            $('main > .container').css("max-width", "1580px");//1280+150*2
+        }
+        else if (showOutlier || showPowerTrans) {
+            $('main > .container').css("max-width", "1430px"); //1280+150
+        }
+        else {
+            $('main > .container').css("max-width", "1280px");
+        }
+        $('#column_table').bootstrapTable('refresh')
+    }
 
     _p.updateColumn = function(rowid) {
         var data = {};
@@ -646,33 +677,21 @@ var $FRONTEND = (function (module) {
                         $('#pre_Omethod').val(resultData['outlierStrategy']);
                         $('#pre_Othreshold').val(resultData['outlierThreshold']);
                         showOutlier = true
-                        $('#outlier_col').css("width", "150px")
                     }else{
                         $('#pre_OtlrElmntn').prop( "checked", false );
                         showOutlier = false
-                        $('#outlier_col').css("width", "0px")
                     }
 
                     if(resultData['colTransUse']){
                         $('#pre_PrTrnsfrm').prop( "checked", true );
                         showPowerTrans = true
-                        $('#powerTrans_col').css("width", "150px")
                     }else{
                         $('#pre_PrTrnsfrm').prop( "checked", false );
                         showPowerTrans = false
-                        $('#powerTrans_col').css("width", "0px")
                     }
 
-                    if (resultData['outlierUse'] && resultData['colTransUse']) {
-                        $('main > .container').css("max-width", "1580px");//1280+150*2
-                    }
-                    else if (resultData['outlierUse'] || resultData['colTransUse']) {
-                        $('main > .container').css("max-width", "1430px"); //1280+150
-                    }
-                    else {
-                        $('main > .container').css("max-width", "1280px");
-                    }
-                    $('#column_table').bootstrapTable('refresh')
+
+
 
                 } else {
                     alert(resultData['error_msg']);
@@ -935,6 +954,7 @@ var $FRONTEND = (function (module) {
         // ---------------- 2. Outlier Elimination - Loop Impossible -------------------------
         if  ($('#pre_OtlrElmntn').is(':checked')) {
             data.outlierUse = true;
+            showOutlier =true
             // var outlier_columns = $('select[id=pre_Ocolumn]').val();
 
             // data.outlierColumns = outlier_columns;					// Outlier Elimination Column
@@ -942,7 +962,7 @@ var $FRONTEND = (function (module) {
 
 
             data.outlierStrategy = $('select[id=pre_Omethod]').val();			 			// Outlier Elimination Method
-            console.log('3.2  outlier_strategy : ',data.outlierStrategy) ;
+
 
 
             if  (chkItem($('#pre_Othreshold').val())) {										// Outlier Elimination stratege
@@ -954,12 +974,14 @@ var $FRONTEND = (function (module) {
             }
         }else{
             data.outlierUse = false;
+            showOutlier =false
         }
 
 
         // ---------------- 3. Power Transformation - Column / Strategy -------------------------
         if  ($('#pre_PrTrnsfrm').is(':checked')) {
             data.colTransUse = true;
+            showPowerTrans = true
             var col_trans_columns = [];
             $(".pre_Pcolumns").each(function () {
                 col_trans_columns.push($(this).val());
@@ -975,6 +997,7 @@ var $FRONTEND = (function (module) {
             console.log('4.2  col_trans_strategies : ',data.colTransStrategies) ;
         }else{
             data.colTransUse = false;
+            showPowerTrans = false
         }
 
         // -------------------------- 4. One Hot Encoding -------------------------------
@@ -1014,7 +1037,6 @@ var $FRONTEND = (function (module) {
             contentType: 'application/json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
-                    _p.loadPreConf()
                     //$('#modal-setting').modal('hide');
                 } else {
                     alert(resultData['error_msg']);

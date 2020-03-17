@@ -35,6 +35,7 @@ var $FRONTEND = (function (module) {
 
     //초기화면 세팅
     _p.init = function(){
+        $('#runtime_table').bootstrapTable(); //init;
         _p.refreshTable()
 
         $('#dataset').fileinput({
@@ -106,8 +107,6 @@ var $FRONTEND = (function (module) {
             data: JSON.stringify({query:REFRESH_RUNTIMES_QUERY}),
             contentType: "application/json",
             success: function (resultData, textStatus, request) {
-                //feature 개수, target column 추가
-                $('#runtime_table').bootstrapTable(); //init;
                 $('#runtime_table').bootstrapTable('load', {rows: resultData.data.runtimes})
                 $("#available_count").html(
                     '' + ((resultData.data.env['totalContainerCount'] || 0) - (resultData.data.env['activeContainerCount'] || 0)) + ' / ' + resultData.data.env['totalContainerCount']
@@ -117,7 +116,7 @@ var $FRONTEND = (function (module) {
                     thread =1
                     setTimeout(function(){
                         _p.refreshTable(true)
-                    }, 5000)
+                    }, 3000)
                     return false
                 }
                 if(next=== true && hasPending === false){
@@ -134,8 +133,10 @@ var $FRONTEND = (function (module) {
     }
 
     _p.datasetFormatter =  function (value, row) {
-        if (!value || !row) return
-
+        if (!value || !row){
+            hasPending = true
+            return
+        }
         if(row.status === 'creating') {
             hasPending = true
             return '-'
