@@ -3,7 +3,7 @@ var $FRONTEND = (function (module) {
 
 
     _p.dataset_name ="";
-    var targetColumn, isFirst, showOutlier, showPowerTrans;
+    var targetColumn, isFirst, showOutlier, showPowerTrans, distributions;
     //초기화면 세팅
     _p.init = function(){
 
@@ -34,32 +34,62 @@ var $FRONTEND = (function (module) {
             $('#column_table').bootstrapTable('refresh')
         });
 
+        _p.loadPreConf().done(function() {
+            _p.showConfColumns()
+        });
 
         $('#column_table').on('load-success.bs.table', function (data, jqXHR) {
-
-
             targetColumn={};
-            // columnCombobox ="";
-            $(jqXHR).each(function(index, column) {
-                _p.drawDistribution(column.id, column.freqIdxJson, column.freqJson);
-                // columnCombobox += '<option value="'+column.name+'">'+column.name+'</option>';
-                if(column.isTarget){
-                    $('#feature_'+column['id']).attr("disabled", true);
-                    if(isFirst === true){
-                        if(column.taskType === 'multiclass' || column.taskType === 'binary'){
-                            $('#estimator_type').val("classifier");
-                            $('#metric').val('accuracy');
-                        }else{
-                            $('#estimator_type').val("regressor");
-                            $('#metric').val('r2');
+            if(jqXHR.length<20){
+                $('.dist_buttons').hide()
+                $('canvas').show()
+                $(jqXHR).each(function(index, column) {
+                    _p.drawDistribution(column.id, column.freqIdxJson, column.freqJson);
+                    if(column.isTarget){
+                        $('#feature_'+column['id']).attr("disabled", true);
+                        if(isFirst === true){
+                            if(column.taskType === 'multiclass' || column.taskType === 'binary'){
+                                $('#estimator_type').val("classifier");
+                                $('#metric').val('accuracy');
+                            }else{
+                                $('#estimator_type').val("regressor");
+                                $('#metric').val('r2');
+                            }
+                            if(status === 'ready') _p.updateEstimatorType();
+                            isFirst = false
                         }
-                        if(status === 'ready') _p.updateEstimatorType();
-                        isFirst = false
+                        targetColumn.id = column.id;
+                        targetColumn.name = column.name;
                     }
-                    targetColumn.id = column.id;
-                    targetColumn.name = column.name;
-                }
-            });
+                });
+
+            }else{
+                $('canvas').hide()
+                $('.dist_buttons').show()
+                distributions={};
+                $(jqXHR).each(function(index, column) {
+                    distributions[column.id]  = [column.freqIdxJson, column.freqJson]
+                    if(column.isTarget){
+                        _p.drawDistribution(column.id);
+                        $('#feature_'+column['id']).attr("disabled", true);
+                        if(isFirst === true){
+                            if(column.taskType === 'multiclass' || column.taskType === 'binary'){
+                                $('#estimator_type').val("classifier");
+                                $('#metric').val('accuracy');
+                            }else{
+                                $('#estimator_type').val("regressor");
+                                $('#metric').val('r2');
+                            }
+                            if(status === 'ready') _p.updateEstimatorType();
+                            isFirst = false
+                        }
+                        targetColumn.id = column.id;
+                        targetColumn.name = column.name;
+                    }
+                });
+
+            }
+
 
 
             // $( ".columns" ).each(function( index ) {
@@ -126,10 +156,13 @@ var $FRONTEND = (function (module) {
                 }
             });
             _p.loadGenConf()
-            _p.loadPreConf()
             return false
 
 
+        });
+
+        $("#modal-setting").on('hide.bs.modal', function(){
+            _p.showConfColumns();
         });
 
     };
@@ -170,14 +203,7 @@ var $FRONTEND = (function (module) {
                     $("#dataset_name").text(resultData['name']);
                     $("#row_count").text(resultData['rowCount']);
                     $("#col_count").text(resultData['colCount']);
-                    var corr = JSON.parse(resultData['corrJson'] );
-                    corr.data =[];
-                    for(var i = 0; i < corr.z.length; i++) {
-                        for(var j = 0; j < corr.z[i].length; j++) {
-                            corr.data.push([i,j,corr.z[i][j]]);
-                        }
-                    }
-                    _p.drawCorrelation(corr);
+
                     if(resultData['isProcessed']===false){
                         $('#preprocessed_link').addClass('disabled');
                     }else{
@@ -279,6 +305,7 @@ var $FRONTEND = (function (module) {
         selectBox += '</select></div>';
         return selectBox;
     };
+
     _p.powerTransFormatter = function(value, row){
         if(showPowerTrans) {
             var strategies = ['None', 'Log', 'SquaredRoot', 'Square', 'BoxCoxTransformation', 'YeoJohnsonTransformation'];
@@ -299,17 +326,13 @@ var $FRONTEND = (function (module) {
 
     _p.outlierEliFormatter = function(value,row){
         if(showOutlier){
-            var methods = ['None','BoxPlotRule','Zscore'];
-            var selectBox = '<div class="wrap_select"><select id="outlier_'+row.id+'" class="form-control toggle-disable" data-style="btn-info" onchange="$FRONTEND._p.updateColumn('+row.id+')">';
-            for(var i = 0; i < methods.length; i++){
-                if (value == methods[i]){
-                    selectBox += '<option value="'+methods[i]+'" selected>'+methods[i]+'</option>';
-                } else {
-                    selectBox += '<option value="'+methods[i]+'">'+methods[i]+'</option>';
-                }
+            var str = "";
+            if (value == true) {
+                str = '<div class="wrap_check type_check2 on"><input type="checkbox" id="outlier_'+row.id+'" class="inp_check features toggle-disable" onclick="$FRONTEND._p.updateColumn('+row.id+')" checked><label for="outlier_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
+            }else{
+                str = '<div class="wrap_check type_check2"><input type="checkbox" id="outlier_'+row.id+'" class="inp_check features toggle-disable" onclick="$FRONTEND._p.updateColumn('+row.id+')" ><label for="outlier_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
             }
-            selectBox += '</select></div>';
-            return selectBox
+            return str;
         }else{
             return null
         }
@@ -336,12 +359,37 @@ var $FRONTEND = (function (module) {
         return str;
     };
 
+    _p.showConfColumns = function(){
+        console.log(showOutlier+","+showPowerTrans)
+        if(showOutlier) {
+            $('#outlier_col').css("width", "150px")
+        }else{
+            $('#outlier_col').css("width", "0px")
+        }
+        if(showPowerTrans){
+            $('#powerTrans_col').css("width", "150px")
+        } else{
+            $('#powerTrans_col').css("width", "0px")
+        }
+
+        if (showOutlier && showPowerTrans) {
+            $('main > .container').css("max-width", "1580px");//1280+150*2
+        }
+        else if (showOutlier || showPowerTrans) {
+            $('main > .container').css("max-width", "1430px"); //1280+150
+        }
+        else {
+            $('main > .container').css("max-width", "1280px");
+        }
+        $('#column_table').bootstrapTable('refresh')
+    }
+
     _p.updateColumn = function(rowid) {
         var data = {};
         data.datatype = $('#datatype_' + rowid).val();
         data.imputation = $('#imputation_' + rowid).val();
         data.transformationStrategy = $('#powertrans_' + rowid).val();
-        data.outlierMethod = $('#outlier_' + rowid).val();
+        data.useOutlier = $('#outlier_' + rowid).is(":checked");
         data.isFeature = $('#feature_' + rowid).is(":checked");
         return $.ajax({
             type: 'patch',
@@ -427,11 +475,17 @@ var $FRONTEND = (function (module) {
     };
 
     _p.distributionFormatter = function(value,row){
-        return '<canvas id="distribution_'+row.id+'"></canvas>'
+        return '<button class="btn_s btn_border dist_buttons" id="dist_button_'+value+'" data-toggle="modal" data-target="#modal-metric" onclick="$FRONTEND._p.drawDistribution('+value+')" type="button" >View</button><canvas id="distribution_'+row.id+'"></canvas>'
     };
 
 
-    _p.drawDistribution = function(id, label, data) {
+    _p.drawDistribution = function(id, label=null, data=null) {
+
+        $('#dist_button_'+id).hide()
+        if(label === null && data === null){
+            label = distributions[id][0]
+            data = distributions[id][1]
+        }
         try {
             label = JSON.parse(label);
             data = JSON.parse(data);
@@ -485,6 +539,7 @@ var $FRONTEND = (function (module) {
                 }
             }
         });
+        $('#distribution_'+id).show()
     };
 
     _p.drawCorrelation=function(corr){
@@ -557,6 +612,38 @@ var $FRONTEND = (function (module) {
 
     //Modal 관련
 
+    _p.setCorrModal = function(){
+        return $.ajax({
+            type: 'get',
+            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/stat_corr/',
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                if (resultData['error_msg'] == null ){
+                    try {
+                        var corr = JSON.parse(resultData['corrJson'] );
+                        corr.data =[];
+                        for(var i = 0; i < corr.z.length; i++) {
+                            for(var j = 0; j < corr.z[i].length; j++) {
+                                corr.data.push([i,j,corr.z[i][j]]);
+                            }
+                        }
+                        _p.drawCorrelation(corr);
+                    }
+                    catch(err) {
+                        console.log(err)
+                        $('#container').text("죄송합니다. 이 정보를 불러올 수 없습니다.")
+                    }
+                } else {
+                    alert(resultData['error_msg']);
+                }
+            },
+            error: function (res) {
+                alert(res.responseJSON.message);
+            }
+        });
+
+    }
+
     _p.reset = function(){
         // $('#gen_over_sampling').val("None");
         // $('#gen_time_out').val(60);
@@ -584,33 +671,27 @@ var $FRONTEND = (function (module) {
                     //     $('#pre_DrpNCols').prop( "checked", true );
                     //     $('#na_col_drop_threshold').val(resultData['naColDropThreshold']);
                     // }
-                    showOutlier = false
+
                     if(resultData['outlierUse']){
                         $('#pre_OtlrElmntn').prop( "checked", true );
-                        // $('#pre_Ocolumn').multiselect('select', resultData['outlierColumns']);
-                        // $('#pre_Ocolumn').multiselect('refresh');
-
                         $('#pre_Omethod').val(resultData['outlierStrategy']);
                         $('#pre_Othreshold').val(resultData['outlierThreshold']);
                         showOutlier = true
-                        $('#outlier_col').css("width", "150px")
-                        $('#column_table').bootstrapTable('refresh')
+                    }else{
+                        $('#pre_OtlrElmntn').prop( "checked", false );
+                        showOutlier = false
                     }
-                    showPowerTrans = false
+
                     if(resultData['colTransUse']){
                         $('#pre_PrTrnsfrm').prop( "checked", true );
                         showPowerTrans = true
-                        $('#powerTrans_col').css("width", "150px")
-                        $('#column_table').bootstrapTable('refresh')
-
-                        // $('#pre_Pcolumn_0').val(resultData['colTransColumns'][0]);
-                        // $('#pre_Pstrategy_0').val(resultData['colTransStrategies'][0]);
-                        // for(var i = 1; i < resultData['colTransColumns'].length; i++) {
-                        //     _p.addPowerTrans(i);
-                        //     $('#pre_Pcolumn_'+i).val(resultData['colTransColumns'][i]);
-                        //     $('#pre_Pstrategy_'+i).val(resultData['colTransStrategies'][i]);
-                        // }
+                    }else{
+                        $('#pre_PrTrnsfrm').prop( "checked", false );
+                        showPowerTrans = false
                     }
+
+
+
 
                 } else {
                     alert(resultData['error_msg']);
@@ -786,7 +867,6 @@ var $FRONTEND = (function (module) {
             alert('입력 값을 확인해 주세요', chkValue) ;
             return false ;
         } else if (Number.isInteger(+chkValue)) {
-            // console.log('Warn. The checked item is integer!!', chkValue) ;
             return true ;
         }
         else {
@@ -874,6 +954,7 @@ var $FRONTEND = (function (module) {
         // ---------------- 2. Outlier Elimination - Loop Impossible -------------------------
         if  ($('#pre_OtlrElmntn').is(':checked')) {
             data.outlierUse = true;
+            showOutlier =true
             // var outlier_columns = $('select[id=pre_Ocolumn]').val();
 
             // data.outlierColumns = outlier_columns;					// Outlier Elimination Column
@@ -881,7 +962,7 @@ var $FRONTEND = (function (module) {
 
 
             data.outlierStrategy = $('select[id=pre_Omethod]').val();			 			// Outlier Elimination Method
-            console.log('3.2  outlier_strategy : ',data.outlierStrategy) ;
+
 
 
             if  (chkItem($('#pre_Othreshold').val())) {										// Outlier Elimination stratege
@@ -891,12 +972,16 @@ var $FRONTEND = (function (module) {
                 alert("Threshold 값을 확인해 주세요.")
                 return false;
             }
+        }else{
+            data.outlierUse = false;
+            showOutlier =false
         }
 
 
         // ---------------- 3. Power Transformation - Column / Strategy -------------------------
         if  ($('#pre_PrTrnsfrm').is(':checked')) {
             data.colTransUse = true;
+            showPowerTrans = true
             var col_trans_columns = [];
             $(".pre_Pcolumns").each(function () {
                 col_trans_columns.push($(this).val());
@@ -910,6 +995,9 @@ var $FRONTEND = (function (module) {
             });
             data.colTransStrategies = col_trans_strategies;
             console.log('4.2  col_trans_strategies : ',data.colTransStrategies) ;
+        }else{
+            data.colTransUse = false;
+            showPowerTrans = false
         }
 
         // -------------------------- 4. One Hot Encoding -------------------------------

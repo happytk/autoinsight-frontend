@@ -1402,7 +1402,7 @@
             // noinspection HtmlUnknownAttribute
             tCaption = '<div class="file-caption form-control {class}" tabindex="500">\n' +
                 //'  <span class="file-caption-icon"></span>\n' +
-                '  <input class="file-caption-name" onkeydown="return false;" onpaste="return false;">\n' +
+                '  <input class="file-caption-name" onkeydown="return false;" onpaste="return false;" readonly>\n' +
                 '</div>';
             //noinspection HtmlUnknownAttribute
             tBtnDefault = '<button type="{type}" tabindex="500" title="{title}" class="{css}" ' +

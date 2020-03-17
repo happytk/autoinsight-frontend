@@ -26,7 +26,7 @@ var $FRONTEND = (function (module) {
                                           id
                                           name
                                           targetName
-                                          featureNames
+                                          featureCount
                                           rowCount
                                         }
                                       }
@@ -35,6 +35,7 @@ var $FRONTEND = (function (module) {
 
     //초기화면 세팅
     _p.init = function(){
+        $('#runtime_table').bootstrapTable(); //init;
         _p.refreshTable()
 
         $('#dataset').fileinput({
@@ -52,11 +53,16 @@ var $FRONTEND = (function (module) {
             allowedFileExtensions: ["csv","tsv"],
             uploadExtraData: function (previewId, index) {
                 var data = {};
-                data.dataset_name=$('#dataset_name_input').val()
-                data.sample_size = $('#sample_size').val()
+                data.datasetName=$('#dataset_name_input').val()
+                if($('#samplingType').val() === 'ratio') data.samplingRatio = $('#sample_ratio').val();
+                if($('#samplingType').val() === 'count') data.samplingSize = $('#sample_count').val();
                 return data;
             }
         });
+        $('#dataset').change(function(e) {
+            $('#dataset_name_input').val(e.target.files[0].name)
+        })
+
         $('#saved_dataset_area').hide();
         $('#source_type').change(function() {
             if ($(this).val() === 'sklearn') {
@@ -67,6 +73,21 @@ var $FRONTEND = (function (module) {
                 $('#dataset_name_input').show();
                 $('#saved_dataset_area').hide();
                 $('#dataset').fileinput('enable');
+            }
+        });
+        $('#sampling_type_area').hide();
+        $('#samplingType').change(function() {
+            if ($(this).val() === '') {
+                $('#sampling_type_area').hide();
+            }else{
+                $('#sampling_type_area').show();
+                if ($(this).val() === 'ratio') {
+                    $('#sample_count').hide();
+                    $('#sample_ratio').show();
+                }else{
+                    $('#sample_ratio').hide();
+                    $('#sample_count').show();
+                }
             }
         });
 
@@ -86,17 +107,16 @@ var $FRONTEND = (function (module) {
             data: JSON.stringify({query:REFRESH_RUNTIMES_QUERY}),
             contentType: "application/json",
             success: function (resultData, textStatus, request) {
-                //feature 개수, target column 추가
-                $('#runtime_table').bootstrapTable('load',{rows: resultData.data.runtimes})
-                $("#available_count").text(
-                    (resultData.data.env['totalContainerCount'] || 0) - (resultData.data.env['activeContainerCount'] || 0)
+                $('#runtime_table').bootstrapTable('load', {rows: resultData.data.runtimes})
+                $("#available_count").html(
+                    '' + ((resultData.data.env['totalContainerCount'] || 0) - (resultData.data.env['activeContainerCount'] || 0)) + ' / ' + resultData.data.env['totalContainerCount']
                 )
                 if((thread === 0 || next=== true) && hasPending === true){
                     hasPending = false
                     thread =1
                     setTimeout(function(){
                         _p.refreshTable(true)
-                    }, 5000)
+                    }, 3000)
                     return false
                 }
                 if(next=== true && hasPending === false){
@@ -106,24 +126,31 @@ var $FRONTEND = (function (module) {
             },
             error: function (res) {
                 console.log(res);
+                $('#runtime_table > tbody > tr > td:first').html('<span style="color:red">Sorry! Failed to get the data from server</span>');
+                $("#available_count").html('-')
             }
         });
     }
 
     _p.datasetFormatter =  function (value, row) {
+        if (!value || !row){
+            hasPending = true
+            return
+        }
         if(row.status === 'creating') {
             hasPending = true
             return '-'
         }else if(row.status === 'learning'){
             hasPending = true
-
         }
-        return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureNames.length+' features, '+value.rowCount+' rows)'
+        return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureCount+' features, '+value.rowCount+' rows)'
 
 
     }
 
     _p.statusFormatter =  function (value, row) {
+        if (!value || !row) return
+
         if(value === 'learning') {
             return value + '<br/>(' + Math.round(row.doneSlot / row.timeout * 100) + '%' +')'
         }else{
@@ -132,6 +159,8 @@ var $FRONTEND = (function (module) {
     }
 
     _p.modelscoreFormatter =  function (value, row) {
+        if (!value || !row) return
+
         const cValue = (value === null ? '' : value)
         if (row.status === 'ready' || row.status === 'creating') {
             // return value;
@@ -142,6 +171,8 @@ var $FRONTEND = (function (module) {
     }
 
     _p.estimatorFormatter =  function (value, row) {
+        if (!value || !row) return
+
         var estimator_types = ['CLASSIFIER', 'REGRESSOR']
         var selectBox ='<div class="wrap_select"><select id="estimatortype_' + row.id + '" class="form-control" data-style="btn-info"'
         if(row.status === 'ready') {
@@ -162,6 +193,8 @@ var $FRONTEND = (function (module) {
     }
 
     _p.metricFormatter =  function (value, row) {
+        if (!value || !row) return
+
         var available_metrics = row.availableMetrics
         value = value.toLowerCase()
         var selectBox ='<div class="wrap_select"><select id="metric_' + row.id + '" class="form-control" data-style="btn-info"'
@@ -223,8 +256,10 @@ var $FRONTEND = (function (module) {
         if(active_tab==="newdata"){
             if($('#source_type').val()=="sklearn"){
                 var data = {};
-                data.dataset_name = $('#saved_dataset').val();
-                if($('#sample_size').val() > 0) data.sample_size = $('#sample_size').val();
+                data.datasetName = $('#saved_dataset').val();
+                if($('#samplingType').val() === 'ratio') data.samplingRatio = $('#sample_ratio').val();
+                if($('#samplingType').val() === 'count') data.samplingSize = $('#sample_count').val();
+
 
 
                 return $.ajax({
@@ -293,6 +328,7 @@ var $FRONTEND = (function (module) {
         var data = {};
         data.workerScale = $('#workerscale_' + runtime_id).val();
         data.estimatorType = $('#estimatortype_' + runtime_id).val().toLowerCase();
+        $('#metric_'+runtime_id).prop('disabled', true)
         data.metric = $('#metric_' + runtime_id).val();
         console.log(JSON.stringify(data))
         return $.ajax({
@@ -302,6 +338,7 @@ var $FRONTEND = (function (module) {
             data: data,
             success: function (resultData, textStatus, request) {
                 // console.log(resultData)
+                $('#metric_'+runtime_id).prop('disabled', false)
                 _p.refreshTable()
             },
             error: function (res) {
