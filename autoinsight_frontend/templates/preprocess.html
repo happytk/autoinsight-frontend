@@ -73,7 +73,9 @@
             <div class="container">
                 <section class="section_content">
                     <h2 class="screen_out">Preprocess</h2><!-- tab menu 에서 선택된 텍스트가 들어갑니다. -->
-
+                    <div class='help-text'>
+                        Customize the options as you wish, and press Run AutoML to preprocess the dataset and start modelling!
+                    </div>
                     <div class="area_tit">
                         <h3 id="dataset_name" class="tit_table"></h3>
                         <!--<div class="area_util2">
@@ -573,7 +575,8 @@
                                             <label for="pre_1HotEncod" class="label_check"><span class="ico_automl ico_check"></span>One Hot Encoding</label>
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
-                                                    Categorical or Object columns (e.g. texts) used as Features in the experiment are One-Hot-Encoded if this option is checked. Otherwise, categorical columns are encoded into integers (Label Encoding). <br>
+                                                    Categorical or Object columns (e.g. texts) used as Features in the experiment are One-Hot-Encoded if this option is checked.<br>
+                                                    Otherwise, categorical columns are encoded into integers (Label Encoding).<br>
                                                     [Note] One Hot Encoding converts each category of a column into binary columns that can lead to a larger dataset.
                                                 </div>
                                             </a>
@@ -588,7 +591,8 @@
                                             <label for="pre_VarThreshold" class="label_check"><span class="ico_automl ico_check"></span>Variance Threshold</label>
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
-                                                    Preprocessor finds out the features with their variances lower than the standard (0 by default), and deletes those features with low or no predictive power.
+                                                    Preprocessor finds out the features with their variances lower than the standard (0 by default),<br>
+                                                    and deletes those features with low or no predictive power.
                                                 </div>
                                             </a>
                                         </div>
