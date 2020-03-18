@@ -1381,18 +1381,18 @@ path.highcharts-grid-line {
 .popup_dataset .box_content {
     height: 425px;
 }
-.content_algorithm {
+.content_estimator {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
 }
-.content_algorithm .list_tab {
+.content_estimator .list_tab {
     -webkit-box-ordinal-group:3;
     -ms-flex-order:2;
     order:2;
     padding-top:30px;
 }
-.content_algorithm .list_tab li {
+.content_estimator .list_tab li {
     position: relative;
     width:103px;
     height:37px;
@@ -1402,7 +1402,7 @@ path.highcharts-grid-line {
     border-radius: 0 5px 5px 0;
     background-color:#f6f6f6;
 }
-.content_algorithm .list_tab .active:after {
+.content_estimator .list_tab .active:after {
     content:'';
     position: absolute;
     top:0;
@@ -1411,18 +1411,18 @@ path.highcharts-grid-line {
     width:1px;
     background-color:#f6f6f6;
 }
-.content_algorithm .link_tab {
+.content_estimator .link_tab {
     display: block;
     padding-left:12px;
     line-height:37px;
     font-size: 15px;
     color:#999
 }
-.content_algorithm .active .link_tab {
+.content_estimator .active .link_tab {
     font-weight: 500;
     color:#111;
 }
-.content_algorithm .cont_tab {
+.content_estimator .cont_tab {
     overflow: auto;
     -webkit-box-flex:1;
     -ms-flex:1;
@@ -1435,7 +1435,7 @@ path.highcharts-grid-line {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
-.content_algorithm .cont_tab .wrap_check + .wrap_check {
+.content_estimator .cont_tab .wrap_check + .wrap_check {
     margin-top:30px;
 }
 .popup_info .modal-dialog {

@@ -108,8 +108,11 @@ var $FRONTEND = (function (module) {
 
 
         $('#modal-setting').on('shown.bs.modal', function (e) {
-            $('.conf').change(function() {
+            $('.gen-conf').change(function() {
                 _p.saveGenConf()
+            });
+            $('.pre-conf').change(function() {
+                _p.savePreConf()
             });
             $('#gen_max_eval_time').change(function() {
                 var max_eval_time = $(this).val()
@@ -697,7 +700,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                alert(res.responseJSON.message);
+                console.log(res)
             }
         });
     }
@@ -800,6 +803,18 @@ var $FRONTEND = (function (module) {
                     $('#pre_FMethod').multiselect('select', resultData['includeFeatureEngineerings']);
                     $('#pre_FMethod').multiselect('refresh');
                 }
+
+                var estimatorHtml = ""
+                $.each(resultData['availableEstimators'], function( index, value ) {
+                    estimatorHtml +='<div class="wrap_check">'
+                    if($.inArray(value, resultData['includeEstimators'] ) !== -1){
+                        estimatorHtml += '<input type="checkbox" name="'+value+'" id="'+value+'" class="inp_check modal_check estimators" onchange="$FRONTEND._p.saveGenConf()" checked>'
+                    }else{
+                        estimatorHtml += '<input type="checkbox" name="'+value+'" id="'+value+'" class="inp_check modal_check estimators" onchange="$FRONTEND._p.saveGenConf()">'
+                    }
+                    estimatorHtml += '<label for="'+value+'" class="label_check"><span class="ico_automl ico_check"></span>'+value+'</label></div><br>'
+                });
+                $('#available_estimators').html(estimatorHtml)
 
 
             },
@@ -915,6 +930,12 @@ var $FRONTEND = (function (module) {
             data.includeFeatureEngineeringsJson = JSON.stringify($('select[id=pre_FMethod]').val());
         }
 
+        var include_estimators = []
+        $(".estimators").each(function () {
+            if($(this).is(":checked")) include_estimators.push($(this)[0].name)
+        });
+        data.includeEstimatorsJson = JSON.stringify(include_estimators)
+
         return $.ajax({
             type: 'patch',
             url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id +'/',
@@ -922,14 +943,10 @@ var $FRONTEND = (function (module) {
             dataType: 'json',
             contentType: 'application/json',
             success: function (resultData, textStatus, request) {
-                if (resultData['error_msg'] == null ){
-                    _p.savePreConf();
-                } else {
-                    alert(resultData['error_msg']);
-                }
+
             },
             error: function (res) {
-                alert(res.responseText);
+                console.log(res)
             }
         })
     };
@@ -966,7 +983,6 @@ var $FRONTEND = (function (module) {
 
             if  (chkItem($('#pre_Othreshold').val())) {										// Outlier Elimination stratege
                 data.outlierThreshold = $('#pre_Othreshold').val();
-                console.log('3.3  outlier_threshold : ', data.outlierThreshold);
             }else{
                 alert("Threshold 값을 확인해 주세요.")
                 return false;
@@ -979,21 +995,19 @@ var $FRONTEND = (function (module) {
 
         // ---------------- 3. Power Transformation - Column / Strategy -------------------------
         if  ($('#pre_PrTrnsfrm').is(':checked')) {
-            data.colTransUse = true;
+            data.colTransUse = true
             showPowerTrans = true
-            var col_trans_columns = [];
+            var col_trans_columns = []
             $(".pre_Pcolumns").each(function () {
-                col_trans_columns.push($(this).val());
+                col_trans_columns.push($(this).val())
             });
-            data.colTransColumns = col_trans_columns;
-            console.log('4.1  col_trans_cols : ',data.colTransColumns);
+            data.colTransColumns = col_trans_columns
 
             var col_trans_strategies = [];
             $(".pre_Pstrategies").each(function () {
-                col_trans_strategies.push($(this).val());
+                col_trans_strategies.push($(this).val())
             });
-            data.colTransStrategies = col_trans_strategies;
-            console.log('4.2  col_trans_strategies : ',data.colTransStrategies) ;
+            data.colTransStrategies = col_trans_strategies
         }else{
             data.colTransUse = false;
             showPowerTrans = false
