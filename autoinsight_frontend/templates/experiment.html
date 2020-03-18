@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <div class='help-text'>
-                        You can register the data and browse the model with the optimal parameters for it. Each experiment can be performed within the available container resources.
+                        You can register data and browse the model with the optimal parameters for it. Each experiment can be performed within the available container resources.
                     </div>
                     <div id="container_info" class="area_util">
                         <ul class="list_count">
@@ -142,11 +142,9 @@
                                                     <option value ="hdfs">HDFS</option> -->
                                                 </select>
                                             </div>
-
+                                            <a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span><div class="txt_tooltip">Register a local file, or select a sample dataset</div></a>
                                             <input id="dataset" type="file" class="inp_file">
                                             <input type="text" name="" id="dataset_name_input" class="inp_txt hidden" readonly>
-                                            <a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span><div class="txt_tooltip">Register a local file, or select a sample dataset</div></a>
-
                                         </div>
                                     </dd>
                                 </div>
@@ -167,6 +165,7 @@
                                 </div>-->
                                 <div class="item_dl type_inline">
                                     <dt>Random Sampling
+                                        <a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span><div class="txt_tooltip">If you only want to import a part of the data, you can set the criteria.</div></a>
                                     </dt>
                                     <dd>
                                         <div class="wrap_select">
@@ -190,7 +189,6 @@
                                                 <option value ="100000">100000</option>
                                             </select>
                                         </div>
-                                        <a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span><div class="txt_tooltip">If you only want to import a part of the data, you can set criteria.</div></a>
                                     </dd>
                                 </div>
                             </dl>

@@ -73,7 +73,7 @@
                 <section class="section_content">
                     <h2 class="screen_out">Leaderboard</h2><!-- tab menu 에서 선택된 텍스트가 들어갑니다. -->
                     <div class='help-text'>
-                        Shows the highest evaluated model pipelines ordered by the metirc selected.
+                        Check the highest evaluated model pipelines ordered by the metirc selected.
                     </div>
                     <div class="info_table">
                         <div class="area_progress">
@@ -149,19 +149,19 @@
                 <div class="body_popup" id="modal-information-done">
                     <ul class="nav nav-tabs list_menu" id="myTab"  role="tablist">
                         <li id ="featureChart_tab" class="active" style="display: none;">
-                            <a class="link_menu tooltip_model" data-toggle="tab" href="#feature" role="tab" aria-controls="feature" aria-selected="false">Feature Importance<div class="txt_tooltip2">Description of how much each feature contributes to decreasing the weighted impurity</div></a>
+                            <a class="link_menu" data-toggle="tab" href="#feature" role="tab" aria-controls="feature" aria-selected="false">Feature Importance</a>
                         </li>
                         <li id ="rocChart_tab" style="display: none;">
-                            <a class="link_menu tooltip_model" data-toggle="tab" href="#roc" role="tab" aria-controls="roc" aria-selected="false">ROC Curve<div class="txt_tooltip2">Plotting of the true positive rate (TPR) against the false positive rate (FPR) at various threshold settings</div></a>
+                            <a class="link_menu" data-toggle="tab" href="#roc" role="tab" aria-controls="roc" aria-selected="false">ROC Curve</a>
                         </li>
                         <!--<li class="active">
                             <a class="link_menu" data-toggle="tab" href="#classification" role="tab" aria-controls="classification" aria-selected="true">Classification</a>
                         </li>-->
                         <li id ="conf_matrix_tab" style="display: none;">
-                            <a class="link_menu tooltip_model" data-toggle="tab" href="#matrix" role="tab" aria-controls="matrix" aria-selected="false">Confusion Matrix<div class="txt_tooltip2">Visualization of the performance of an algorithm</div></a>
+                            <a class="link_menu" data-toggle="tab" href="#matrix" role="tab" aria-controls="matrix" aria-selected="false">Confusion Matrix</a>
                         </li>
                         <li id ="balanceChart_tab" style="display: none;">
-                            <a class="link_menu tooltip_model" data-toggle="tab" href="#balance" role="tab" aria-controls="balance" aria-selected="false">Class Balance<div class="txt_tooltip2">Distribution of each class</div></a>
+                            <a class="link_menu" data-toggle="tab" href="#balance" role="tab" aria-controls="balance" aria-selected="false">Class Balance</a>
                         </li>
                         <li id ="residualsChart_tab" style="display: none;">
                             <a class="link_menu" data-toggle="tab" href="#residuals" role="tab" aria-controls="residuals" aria-selected="false">Residuals</a>
@@ -169,20 +169,45 @@
                     </ul>
                     <div id="myTabContent" class="tab-content box_content">
                         <div class="tab-pane fade active in" id="feature" role="tabpanel" aria-labelledby="feature-tab">
+                            <a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                <div class="txt_tooltip">
+                                    Description of how much each feature contributes to decreasing the weighted impurity
+                                </div>
+                            </a>
                             <div id="featureChart"></div>
                         </div>
                         <div class="tab-pane" id="roc" role="tabpanel" aria-labelledby="roc-tab">
+                            <a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                <div class="txt_tooltip">
+                                    Plotting of the true positive rate (TPR) against the false positive rate (FPR) at various threshold settings
+                                </div>
+                            </a>
                             <canvas id="rocChart"></canvas>
                         </div>
                         <!--<div class="tab-pane fade active in" id="classification" role="tabpanel" aria-labelledby="classification-tab">
                         </div>-->
                         <div class="tab-pane" id="matrix" role="tabpanel" aria-labelledby="matrix-tab">
+                            <a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                <div class="txt_tooltip">
+                                    Visualization of the performance of an algorithm
+                                </div>
+                            </a>
                             <div id="conf_matrix" style="height: 400px; width:100%"></div>
                         </div>
                         <div class="tab-pane" id="balance" role="tabpanel" aria-labelledby="balance-tab">
+                            <a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                <div class="txt_tooltip">
+                                    Distribution of each class
+                                </div>
+                            </a>
                             <div id="balanceChart"></div>
                         </div>
                         <div class="tab-pane" id="residuals" role="tabpanel" aria-labelledby="residuals-tab">
+                            <a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                <div class="txt_tooltip">
+                                    Graph that shows the residuals on the vertical axis and the independent variable on the horizontal axis
+                                </div>
+                            </a>
                             <canvas id="residualsChart"></canvas>
                         </div>
                     </div>

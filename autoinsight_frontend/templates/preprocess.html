@@ -321,13 +321,15 @@
                         <div class="tab-pane fade active in" id="general" role="tabpanel" aria-labelledby="general-tab">
                             <dl class="list_general">
                                 <div class="item_dl type_inline">
-                                    <dt>Scoring Metric</dt>
-                                    <dd>
+                                    <dt>Scoring Metric
                                         <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
-                                                The scoring metric is used to evaluate the quality of a model. <br>
-                                                Check <a href="https://scikit-learn.org/stable/modules/model_evaluation.html">scoring functions</a> for more details about each of them. 
+                                                The method to evaluate the quality of a model. <!--<br>
+                                                Check <a href="https://scikit-learn.org/stable/modules/model_evaluation.html">scoring functions</a> for more details about each of them.-->
                                             </div>
+                                        </a>
+                                    </dt>
+                                    <dd>
                                         <div class="wrap_select">
                                             <select name="" id="metric" class="form-control conf">
                                             </select>
@@ -336,15 +338,17 @@
                                 </div>
                                 <div class="item_dl item_evaluation type_inline">
                                     <div>
-                                        <dt>Evaluation</dt>
-                                        <dd>
+                                        <dt>Evaluation
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
-                                                    Determines a method to split the dataset into training set and test set to avoid overfitting in the model validation process. <br>
+                                                    The method to split the dataset into training set and test set to avoid overfitting in the model validation process. <!--<br>
                                                     CV (Cross-Validation) randomly splits the dataset into k subsets of equal size. The model is trained on k-1 folds while one remaining fold is kept as a test set. <br>
                                                     This process is repeated for k times, and the performance measure is the average of the scoring metric computed in the loop. <br>
-                                                    Holdout simply splits the whole dataset into random train / test subsets. The default ratio of split is 0.67 / 0.33.
+                                                    Holdout simply splits the whole dataset into random train / test subsets. The default ratio of split is 0.67 / 0.33.-->
                                                 </div>
+                                            </a>
+                                        </dt>
+                                        <dd>
                                             <div class="wrap_select">
                                                 <select name="" id="resampling_strategy" class="form-control conf">
                                                     <option value="holdout">Holdout</option>
@@ -357,24 +361,28 @@
                                     </div>
 
                                     <div id="train_split_area">
-                                        <dt>Train Split</dt>
-                                        <dd>
+                                        <dt>Train Split
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
-                                                    It is the ratio of training set, which should be a value between 0 and 1.
+                                                    The ratio of training set (values between 0 and 1).
                                                 </div>
+                                            </a>
+                                        </dt>
+                                        <dd>
                                             <input id="split_testdata_rate" class="inp_txt conf" type="number" step="0.01" value="0.67">
                                         </dd>
                                         <!--<button type="button" class="btn btn_custom" data-toggle="modal" data-target="#modal-customize">Customize</button>-->
                                     </div>
 
                                     <div id="k_folds_area">
-                                        <dt>K-folds</dt>
-                                        <dd>
+                                        <dt>K-folds
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
-                                                    It is the number of folds made in CV, which should be an integer.
+                                                    The number of folds made in CV, which should be an integer.
                                                 </div>
+                                            </a>
+                                        </dt>
+                                        <dd>
                                             <input type="number" name="" id="resampling_strategy_cv_folds" class="inp_txt inp_timeout conf" min="1" max="10" value="5">
                                         </dd>
                                     </div>
@@ -395,23 +403,27 @@
                                 </div>-->
 
                                 <div class="item_dl type_inline">
-                                    <dt>Time Out (.min)</dt>
-                                    <dd>
+                                    <dt>Time Out (.min)
                                         <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
-                                                Sets the time limit for the entire experiment by minutes.
+                                                The time limit for the entire experiment by minutes.
                                             </div>
+                                        </a>
+                                    </dt>
+                                    <dd>
                                         <input type="number" name="" id="gen_time_out" class="inp_txt inp_timeout conf" min="1" max="180" value="60">
                                     </dd>
                                 </div>
 
                                 <div class="item_dl type_inline">
-                                    <dt>Max Evaluation Time (.min)</dt>
-                                    <dd>
+                                    <dt>Max Evaluation Time (.min)
                                         <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
-                                                Sets the time limit for each model in the experiment by minutes.
+                                                The time limit for each model in the experiment by minutes.
                                             </div>
+                                        </a>
+                                    </dt>
+                                    <dd>
                                         <input type="number" name="" id="gen_max_eval_time" class="inp_txt inp_timeout" min="1" value="3">
                                     </dd>
                                 </div>
@@ -424,11 +436,12 @@
                             <!--<button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.autoConf()">Auto Configure</button>-->
                             <dl class="list_processor">
                                 <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                    <div class="txt_tooltip">
+                                    <div class='txt_tooltip'>
                                         The dataset is pre-processed as selected before the modeling processes. <br>
                                         Auto-configure option automatically determines the necessary preprocessor options judging by the given dataset. <br>
-                                        The preprocessors shown here is in the order of execution.
+                                        The options shown here is in the order of execution.
                                     </div>
+                                </a>
                                 <!-- <div class="item_dl type_inline">
                                     <dt>                                  ============= processor Add Dataset Button =============
                                         <div class="wrap_check">        seems like there is no button except general page Check it...  
@@ -454,7 +467,7 @@
                                             <label for="pre_OtlrElmntn" class="label_check"><span class="ico_automl ico_check"></span>Outlier Elimination</label>
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
-                                                    If there exist outliers in the selected columns, delete the corresponding rows from the dataset. 
+                                                    If there exist outliers in the selected columns, preprocessor deletes the corresponding rows from the dataset.
                                                 </div>
                                             </a>
                                         </div>
@@ -473,10 +486,10 @@
                                         <label for="processor4_text" class="label_txt">Method</label>
                                         <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
-                                                Methods to detect the outliers in the dataset.
-                                                Box Plot Rule appends the outlier detection method using <a href=“https://en.wikipedia.org/wiki/Five-number_summary”>Five-number summary</a>. <br>
+                                                The method to detect the outliers in the dataset.
+                                                <!--Box Plot Rule appends the outlier detection method using <a href=“https://en.wikipedia.org/wiki/Five-number_summary”>Five-number summary</a>. <br>
                                                 It defines the outlier as those values that are located further than 1.5 IQR (the distance between 1st quantile and 3rd quantile in the data) downward from the 1st quantile and upward from the 3rd quantile. <br>
-                                                Z-score appends the outlier method based on the Standard Score (Z-value). Those data points with the absolute value of Z-score larger than 3 (by default) are defined as outliers here.
+                                                Z-score appends the outlier method based on the Standard Score (Z-value). Those data points with the absolute value of Z-score larger than 3 (by default) are defined as outliers here.-->
                                             </div>
                                         </a>
                                         <div class="wrap_select">
@@ -491,7 +504,7 @@
                                             <label for="processor4_text" class="label_txt">Threshold</label>
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
-                                                    The absolute value of Z-score. Those data points with Z-score higher than this are detected as outliers (Default 3)
+                                                    The absolute value of Z-score. Data with Z-score greater than this threshold are detected as outliers (Default 3)
                                                 </div>
                                             </a>
                                             <input type="number" name="" id="pre_Othreshold" class="inp_txt conf" value="3">
@@ -507,9 +520,9 @@
                                                 <label for="pre_PrTrnsfrm" class="label_check"><span class="ico_automl ico_check"></span>Power Transformation</label>
                                                 <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                     <div class="txt_tooltip">
-                                                        Transforms the selected columns using the given strategy. <br>
+                                                        Preprocessor transforms the selected columns using the given strategy. <!--<br>
                                                         Box-Cox Transformation and Yeo-Johnson Transformation tries to map the data into a Gaussian distribution. <br>
-                                                        [Note] If there are any negative values in the column, Yeo-Johnson Transformation is recommended since Box-Cox can only be applied to positive data.
+                                                        [Note] If there are any negative values in the column, Yeo-Johnson Transformation is recommended since Box-Cox can only be applied to positive data.-->
                                                     </div>
                                                 </a>
                                             </div>
@@ -560,7 +573,7 @@
                                             <label for="pre_1HotEncod" class="label_check"><span class="ico_automl ico_check"></span>One Hot Encoding</label>
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
-                                                    Categorical or Object columns (e.g. texts) used as Features in the experiment are One-Hot-Encoded if this option is selected. Otherwise, categorical columns are encoded into integers (Label Encoding). <br>
+                                                    Categorical or Object columns (e.g. texts) used as Features in the experiment are One-Hot-Encoded if this option is checked. Otherwise, categorical columns are encoded into integers (Label Encoding). <br>
                                                     [Note] One Hot Encoding converts each category of a column into binary columns that can lead to a larger dataset.
                                                 </div>
                                             </a>
@@ -575,7 +588,7 @@
                                             <label for="pre_VarThreshold" class="label_check"><span class="ico_automl ico_check"></span>Variance Threshold</label>
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
-                                                    Finds out the features with their variances lower than the standard (0 by default), and deletes those features with low or no predictive power.
+                                                    Preprocessor finds out the features with their variances lower than the standard (0 by default), and deletes those features with low or no predictive power.
                                                 </div>
                                             </a>
                                         </div>
@@ -590,7 +603,7 @@
                                             <label for="pre_Scaling" class="label_check"><span class="ico_automl ico_check"></span>Scaling</label>
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
-                                                    Scales or Standardizes the entire features by the selected method, which can lead to better results in certain models.
+                                                    Preprocessor scales or standardizes the entire features by the selected method, which can lead to better results in certain models.
                                                 </div>
                                             </a>
                                         </div>
@@ -599,7 +612,7 @@
                                         <span class="label_txt">Methods</span>
                                         <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
-                                                Details for each method can be found in <a href="https://scikit-learn.org/stable/modules/preprocessing.html">sklearn.preprocessing </a>
+                                                Details for each method can be found in scikit-learn official website.
                                             </div>
                                         </a>
                                         <div class="wrap_select">
@@ -629,7 +642,7 @@
                                         <span class="label_txt">Methods</span>
                                         <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">
-                                                The preprocessor figures out the one optimal method among selected feature engineering methods to apply to the dataset.
+                                                Preprocessor figures out the one optimal method among selected feature engineering methods to apply to the dataset.
                                             </div>
                                         </a>
                                         <div class="wrap_select">
