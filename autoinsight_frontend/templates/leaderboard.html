@@ -49,7 +49,7 @@
                         <img src="{% static 'autoinsight_frontend/img/logo_automl.png' %}" class="img_logo" width="221" height="42" alt="AutoInsight">
                     </h1></a>
             </div>
-            <button id="data_btn" class="btn_m btn_border" style="margin-left: 78%;" type="button" onclick="window.location.href='/experiment'">Back to Experiment</button>
+            <button id="data_btn" class="btn_m btn_border" style="margin-left: 78%;" type="button" onclick="window.location.href='/experiment'">Back to Experiments</button>
         </header>
         <!-- //header -->
 
@@ -73,7 +73,9 @@
             <div class="container">
                 <section class="section_content">
                     <h2 class="screen_out">Leaderboard</h2><!-- tab menu 에서 선택된 텍스트가 들어갑니다. -->
-
+                    <div class='help-text'>
+                        Check the highest evaluated model pipelines ordered by the metirc selected.
+                    </div>
                     <div class="info_table">
                         <div class="area_progress">
                             <strong class="tit_progress">Total Progress</strong>
@@ -135,12 +137,15 @@
             <div class="modal-content">
                 <div class="header_popup">
                     <strong class="tit_popup">Model Information</strong>
+                    <div class='help-text'>
+                        You can see additional information about the model.
+                    </div>
                 </div>
                 <div class="body_popup" id="modal-information-loading">
-                    불러오는 중입니다. 잠시만 기다려주세요.
+                    Loading... Please wait.
                 </div>
                 <div class="body_popup" id="modal-information-error">
-                    죄송합니다. 이 모델은 정보를 불러올 수 없습니다.
+                    Sorry. This model cannot load information.
                 </div>
                 <div class="body_popup" id="modal-information-done">
                     <ul class="nav nav-tabs list_menu" id="myTab"  role="tablist">
@@ -165,20 +170,45 @@
                     </ul>
                     <div id="myTabContent" class="tab-content box_content">
                         <div class="tab-pane fade active in" id="feature" role="tabpanel" aria-labelledby="feature-tab">
+                            <a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                <div class="txt_tooltip">
+                                    Description of how much each feature contributes to decreasing the weighted impurity
+                                </div>
+                            </a>
                             <div id="featureChart"></div>
                         </div>
                         <div class="tab-pane" id="roc" role="tabpanel" aria-labelledby="roc-tab">
+                            <a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                <div class="txt_tooltip">
+                                    Plotting of the true positive rate (TPR) against the false positive rate (FPR) at various threshold settings
+                                </div>
+                            </a>
                             <canvas id="rocChart"></canvas>
                         </div>
                         <!--<div class="tab-pane fade active in" id="classification" role="tabpanel" aria-labelledby="classification-tab">
                         </div>-->
                         <div class="tab-pane" id="matrix" role="tabpanel" aria-labelledby="matrix-tab">
+                            <a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                <div class="txt_tooltip">
+                                    Visualization of the performance of an algorithm
+                                </div>
+                            </a>
                             <div id="conf_matrix" style="height: 400px; width:100%"></div>
                         </div>
                         <div class="tab-pane" id="balance" role="tabpanel" aria-labelledby="balance-tab">
+                            <a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                <div class="txt_tooltip">
+                                    Distribution of each class
+                                </div>
+                            </a>
                             <div id="balanceChart"></div>
                         </div>
                         <div class="tab-pane" id="residuals" role="tabpanel" aria-labelledby="residuals-tab">
+                            <a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                <div class="txt_tooltip">
+                                    Graph that shows the residuals on the vertical axis and the independent variable on the horizontal axis
+                                </div>
+                            </a>
                             <canvas id="residualsChart"></canvas>
                         </div>
                     </div>
@@ -200,12 +230,15 @@
             <div class="modal-content">
                 <div class="header_popup">
                     <strong class="tit_popup">Model Explanation</strong>
+                    <div class='help-text'>
+                        You can see explanation about models auto-generated by Lime.
+                    </div>
                 </div>
                 <div class="body_popup" id="modal-explanation-loading">
-                    불러오는 중입니다. 잠시만 기다려주세요.
+                    Loading... Please wait.
                 </div>
                 <div class="body_popup" id="modal-explanation-error">
-                    죄송합니다. 이 모델은 정보를 불러올 수 없습니다.
+                    Sorry. This model cannot load explanation.
                 </div>
                 <div class="body_popup" id="modal-explanation-done">
                     <iframe style='border: 0; width:100%;height: 300px;'></iframe>
@@ -227,12 +260,15 @@
             <div class="modal-content">
                 <div class="header_popup">
                     <strong class="tit_popup">Metrics</strong>
+                    <div class='help-text'>
+                        You can check various metrics to compare model performance.
+                    </div>
                 </div>
                 <div class="body_popup" id="modal-metric-loading">
-                    불러오는 중입니다. 잠시만 기다려주세요.
+                    Loading... Please wait.
                 </div>
                 <div class="body_popup" id="modal-metric-error">
-                    죄송합니다. 이 모델은 metric을 불러올 수 없습니다.
+                    Sorry. This model cannot load metrics.
                 </div>
                 <div class="body_popup" id="modal-metric-done">
                     <table class="table">
@@ -265,13 +301,13 @@
                     <strong class="tit_popup">Model Deploy</strong>
                 </div>
                 <div class="body_popup" id="modal-deploy-loading">
-                    모델을 배포 중입니다.
+                    The model is being deployed.
                 </div>
                 <div class="body_popup" id="modal-deploy-error">
-                    죄송합니다. 모델 배포에 실패했습니다.
+                    Sorry. Model deployment failed.
                 </div>
                 <div class="body_popup" id="modal-deploy-done">
-                    모델 배포를 완료했습니다. 배포화면으로 이동합니다.
+                    Model deployment is complete. Redirecting to the deployment tab.
                 </div>
                 {% comment %} <div class="footer_popup">
                     <button type="button" class="btn_close" data-dismiss="modal"><span class="fas fa-times"></span></button>

@@ -360,7 +360,6 @@ var $FRONTEND = (function (module) {
     };
 
     _p.showConfColumns = function(){
-        console.log(showOutlier+","+showPowerTrans)
         if(showOutlier) {
             $('#outlier_col').css("width", "150px")
         }else{

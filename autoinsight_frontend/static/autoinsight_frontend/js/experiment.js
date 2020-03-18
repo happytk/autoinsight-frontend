@@ -316,9 +316,8 @@ var $FRONTEND = (function (module) {
                 $('#preprocess_loader').removeClass("loader")
             },
             error: function (res) {
-                console.log(res);
+                alert(res.responseJSON.message)
                 $('.toggle-disable').prop('disabled', false)
-                $('#preprocess_loader').removeClass("loader")
             }
         })
 
