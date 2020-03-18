@@ -237,13 +237,13 @@ var $FRONTEND = (function (module) {
     _p.actionFormatter = function(value, row){
         btnString=''//'<button class="btn_m btn_setup" type="button" data-toggle="modal" data-target="#modal-setting" onclick="$FRONTEND._p.setModal('+value+');"><span class="ico_automl ico_setup" >설정</span></button>'
         if(row.status === 'ready'){
-            btnString += '<button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.startRuntime('+value+');">Start</button>'
-            btnString += '<button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.deleteRuntime('+value+');">Delete</button>'
+            btnString += '<button class="btn_s btn_border" type="button" onclick="$FRONTEND._p.startRuntime('+value+');">Start</button>'
+            btnString += '<button class="btn_s btn_border" type="button" onclick="$FRONTEND._p.deleteRuntime('+value+');">Delete</button>'
         }
         else if(row.status === 'learning'){
-            btnString += '<button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.stopRuntime('+value+');">Stop</button>'
+            btnString += '<button class="btn_s btn_border" type="button" onclick="$FRONTEND._p.stopRuntime('+value+');">Stop</button>'
         }else{
-            btnString += '<button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.deleteRuntime('+value+');">Delete</button>'
+            btnString += '<button class="btn_s btn_border" type="button" onclick="$FRONTEND._p.deleteRuntime('+value+');">Delete</button>'
         }
         return btnString
 
