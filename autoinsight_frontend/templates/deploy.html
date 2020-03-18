@@ -1,82 +1,86 @@
 {% load static %}
 {% block style_head %}
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>Autoinsight</title>
-<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,500,700|Noto+Serif+KR:700&display=swap"
-      rel="stylesheet">
-<!-- static -->
-<link href="{% static 'autoinsight_frontend/css/bootstrap.min.css' %}" rel="stylesheet">
-<link href="{% static 'autoinsight_frontend/css/style.css' %}" rel="stylesheet">
-<link rel="shortcut icon" href="{% static 'autoinsight_frontend/img/favicon.ico' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Autoinsight</title>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,500,700|Noto+Serif+KR:700&display=swap"
+          rel="stylesheet">
+    <!-- static -->
+    <link href="{% static 'autoinsight_frontend/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'autoinsight_frontend/css/style.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'autoinsight_frontend/img/favicon.ico' %}">
 {% endblock %}
 
 {% block script_foot %}
-<script>
-  var g_RESTAPI_HOST_BASE = '{{ BACKEND_RESTAPI_URL }}'; // base.js로 이전예정
-  var runtime_id = '{{ runtime_id }}';
-</script>
-<script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'autoinsight_frontend/js/deploy.js' %}"></script>
-<script type="text/javascript">
-  $(document).ready(function () {
-    $FRONTEND._p.init();
-  });
-</script>
+    <script>
+        var g_RESTAPI_HOST_BASE = '{{ BACKEND_RESTAPI_URL }}'; // base.js로 이전예정
+        var runtime_id = '{{ runtime_id }}';
+    </script>
+    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/deploy.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $FRONTEND._p.init();
+        });
+    </script>
 {% endblock %}
 
 {% block page_content %}
-<div class="wrapper">
-    <header>
-        <div class="container">
-            <a href="/">
-                <h1>
-                    <img src="{% static 'autoinsight_frontend/img/logo_automl.png' %}" class="img_logo" width="221"
-                         height="42" alt="AutoInsight">
-                </h1></a>
-        </div>
-        <button id="data_btn" class="btn_m btn_border" style="margin-left: 78%;" type="button"
-                onclick="window.location.href='/experiment'">Back to Experiment
-        </button>
-    </header>
-    <!-- //header -->
+    <div class="wrapper">
+        <header>
+            <div class="container">
+                <a href="/">
+                    <h1>
+                        <img src="{% static 'autoinsight_frontend/img/logo_automl.png' %}" class="img_logo" width="221"
+                             height="42" alt="AutoInsight">
+                    </h1></a>
+            </div>
+            <button id="data_btn" class="btn_m btn_border" style="margin-left: 78%;" type="button"
+                    onclick="window.location.href='/experiment'">Back to Experiment
+            </button>
+        </header>
+        <!-- //header -->
 
-    <main>
-        <div class="container">
-            <nav>
-                <ul class="list_menu">
-                    <li>
-                        <a class="link_menu" href="/preprocess/{{ runtime_id }}/">Preprocess</a>
-                    </li>
-                    <li>
-                        <a class="link_menu" href="/leaderboard/{{ runtime_id }}/">Leaderboard
-                            <div id="leaderboard_loader"></div>
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a class="link_menu" href="/deploy/{{ runtime_id }}/">Deploy Model</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        <div class="container">
-            <section class="section_content" id="deployed">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Basic Information</h3>
+        <main>
+            <div class="container">
+                <nav>
+                    <ul class="list_menu">
+                        <li>
+                            <a class="link_menu" href="/preprocess/{{ runtime_id }}/">Preprocess</a>
+                        </li>
+                        <li>
+                            <a class="link_menu" href="/leaderboard/{{ runtime_id }}/">Leaderboard
+                                <div id="leaderboard_loader"></div>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a class="link_menu" href="/deploy/{{ runtime_id }}/">Deploy Model</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="container">
+                <section class="section_content" id="deployed">
+                    <h2 class="screen_out">Deploy Model</h2><!-- tab menu 에서 선택된 텍스트가 들어갑니다. -->
+                    <div class='help-text'>
+                        Deploy the model to your platform to get predictions
                     </div>
-                    <div class="panel-body">
-                        <h2 id="estimator_name"></h2>
-                        <div>Trained prediction score: <span id="score" style="text-decoration: underline;"></span></div>
-                        <div>Deployment date: <span id="created_at" style="text-decoration: underline;"></span></div>
-                        <div class="alert alert-success" role="alert" style="margin-top: 30px;">
-                            <a class="btn_confirm btn_m"
-                               href="{{ BACKEND_RESTAPI_URL }}runtimes/{{ runtime_id }}/deployment/export">Download model binary
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Basic Information</h3>
+                        </div>
+                        <div class="panel-body">
+                            <h2 id="estimator_name"></h2>
+                            <div>Trained prediction score: <span id="score" style="text-decoration: underline;"></span></div>
+                            <div>Deployment date: <span id="created_at" style="text-decoration: underline;"></span></div>
+                            <div class="alert alert-success" role="alert" style="margin-top: 30px;">
+                                <a class="btn_confirm btn_m"
+                                   href="{{ BACKEND_RESTAPI_URL }}runtimes/{{ runtime_id }}/deployment/export">Download model binary
                                 </a>
-                            <div style="margin-top: 25px;">The model binary files can be used in individual environments using the pickle library.
-                                <br>It requires python 3.7 or higher, scikit-learn==0.22.1, Autoinsight module(optional)
-                                <pre style="display: block; overflow-x: auto; padding: 0.5em; color: rgb(0, 0, 0); background: rgb(248, 248, 255);">
+                                <div style="margin-top: 25px;">The model binary files can be used in individual environments using the pickle library.
+                                    <br>It requires python 3.7 or higher, scikit-learn==0.22.1, Autoinsight module(optional)
+                                    <pre style="display: block; overflow-x: auto; padding: 0.5em; color: rgb(0, 0, 0); background: rgb(248, 248, 255);">
                                 <code>
                                     <span style="color: rgb(64, 128, 128); font-style: italic;"># You can check the model pipeline with the following code.</span>
                                     <span style="color: rgb(149, 65, 33);">import</span> pickle
@@ -84,117 +88,117 @@
                                     print(pipeline)
                                 </code>
                             </pre>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Prediction</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="alert alert-danger" role="alert">
-                            <h4>Data processing for the form below is open to the RestAPI URL.</h4>
-                            <table class="table table-condensed" style="margin-top: 30px;">
-                                <tbody>
-                                <tr>
-                                    <td width="100px"><span class="badge badge-danger">URL</span></td>
-                                    <td><span style="text-decoration: underline;">{{ BACKEND_RESTAPI_URL }}deployment/predict/</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="badge badge-danger">Method</span>
-                                    </td>
-                                    <td><b>POST</b></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="badge badge-danger">Input</span>
-                                    </td>
-                                    <td>
-                                        Comma Separated Data with <b>inputs</b> as the keys.
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span class="badge badge-danger">Output</span>
-                                    </td>
-                                    <td><b>prediction result</b>, <b>errors</b>(if exists), <b>explanation of the prediction</b>(lime html)
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Prediction</h3>
                         </div>
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Feature</th>
-                                <th>Datatype</th>
-                                <th>
-                                    <button type="button" class="btn_correlation btn_s"
-                                            onclick="$FRONTEND._p.fillMostFrequent();">Fill with the most frequent values
-                                    </button>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody id="predict_table">
-                            </tbody>
-                        </table>
-                        <div class="text-center">
-                            <button type="button" class="btn_confirm btn_b"
-                                    onclick="$FRONTEND._p.singlePredict();">Predict
-                            </button>
-                        </div>
-                        <div id="single_result" class="panel-body">
+                        <div class="panel-body">
+                            <div class="alert alert-danger" role="alert">
+                                <h4>Data processing for the form below is open to the RestAPI URL.</h4>
+                                <table class="table table-condensed" style="margin-top: 30px;">
+                                    <tbody>
+                                    <tr>
+                                        <td width="100px"><span class="badge badge-danger">URL</span></td>
+                                        <td><span style="text-decoration: underline;">{{ BACKEND_RESTAPI_URL }}deployment/predict/</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="badge badge-danger">Method</span>
+                                        </td>
+                                        <td><b>POST</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="badge badge-danger">Input</span>
+                                        </td>
+                                        <td>
+                                            Comma Separated Data with <b>inputs</b> as the keys.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="badge badge-danger">Output</span>
+                                        </td>
+                                        <td><b>prediction result</b>, <b>errors</b>(if exists), <b>explanation of the prediction</b>(lime html)
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th>result</th>
+                                    <th>Feature</th>
+                                    <th>Datatype</th>
+                                    <th>
+                                        <button type="button" class="btn_correlation btn_s"
+                                                onclick="$FRONTEND._p.fillMostFrequent();">Fill with the most frequent values
+                                        </button>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody id="predict_table">
+                                </tbody>
+                            </table>
+                            <div class="text-center">
+                                <button type="button" class="btn_confirm btn_b"
+                                        onclick="$FRONTEND._p.singlePredict();">Predict
+                                </button>
+                            </div>
+                            <div id="single_result" class="panel-body">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>result</th>
+                                        <th>errors</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="single_result_tbody">
+                                    </tbody>
+                                </table>
+                                <h4>Explanation of the prediction</h4>
+                                <p id="single_result_lime">
+                                    <iframe style='border: 0; width:100%;height: 300px;'></iframe>
+                                </p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">데이터 예측하기(CSV)</h3>
+                        </div>
+                        <div class="panel-body">
+                            <textarea id="outlined-textarea" label="Prediction Form for Bulkdata" placeholder="csv형식의 데이터를 여러 행 붙여넣을 수 있습니다." class="form-control" rows="8" style="width: 100%;"></textarea>
+                            <button type="button" class="btn btn-primary btn-lg btn-block" onclick="$FRONTEND._p.bulkPredict();">예측하기</button>
+                        </div>
+                        <div id="bulk_result" class="panel-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>inputs</th>
+                                    <th>results</th>
                                     <th>errors</th>
                                 </tr>
                                 </thead>
-                                <tbody id="single_result_tbody">
+                                <tbody id="bulk_result_tbody">
                                 </tbody>
                             </table>
-                            <h4>Explanation of the prediction</h4>
-                            <p id="single_result_lime">
-                                <iframe style='border: 0; width:100%;height: 300px;'></iframe>
-                            </p>
-
                         </div>
-                    </div>
-                </div>
-                <!--<div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">데이터 예측하기(CSV)</h3>
-                    </div>
-                    <div class="panel-body">
-                        <textarea id="outlined-textarea" label="Prediction Form for Bulkdata" placeholder="csv형식의 데이터를 여러 행 붙여넣을 수 있습니다." class="form-control" rows="8" style="width: 100%;"></textarea>
-                        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="$FRONTEND._p.bulkPredict();">예측하기</button>
-                    </div>
-                    <div id="bulk_result" class="panel-body">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>inputs</th>
-                                <th>results</th>
-                                <th>errors</th>
-                            </tr>
-                            </thead>
-                            <tbody id="bulk_result_tbody">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>-->
-            </section>
-            <section class="section_content" id="not_deployed">
-                <p>The deployed model does not exist.</p>
-            </section>
-        </div>
+                    </div>-->
+                </section>
+                <section class="section_content" id="not_deployed">
+                    <p>You have no deployments yet</p>
+                </section>
+            </div>
 
-    </main>
-    <!-- //main -->
-</div>
-<!-- //wrapper -->
+        </main>
+        <!-- //main -->
+    </div>
+    <!-- //wrapper -->
 {% endblock %}
