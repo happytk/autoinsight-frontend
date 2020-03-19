@@ -54,8 +54,8 @@ var $FRONTEND = (function (module) {
             uploadExtraData: function (previewId, index) {
                 var data = {};
                 data.datasetName=$('#dataset_name_input').val()
-                if($('#samplingType').val() === 'ratio') data.samplingRatio = $('#sample_ratio').val();
-                if($('#samplingType').val() === 'count') data.samplingSize = $('#sample_count').val();
+                if($('#samplingType').val() === 'ratio') data.samplingRatio = parseFloat($('#sample_ratio').val());
+                if($('#samplingType').val() === 'count') data.samplingSize = parseInt($('#sample_count').val());
                 return data;
             }
         });
@@ -257,9 +257,8 @@ var $FRONTEND = (function (module) {
             if($('#source_type').val()=="sklearn"){
                 var data = {};
                 data.datasetName = $('#saved_dataset').val();
-                if($('#samplingType').val() === 'ratio') data.samplingRatio = $('#sample_ratio').val();
-                if($('#samplingType').val() === 'count') data.samplingSize = $('#sample_count').val();
-
+                if($('#samplingType').val() === 'ratio') data.samplingRatio = parseFloat($('#sample_ratio').val());
+                if($('#samplingType').val() === 'count') data.samplingSize = parseInt($('#sample_count').val());
 
 
                 return $.ajax({
@@ -279,7 +278,7 @@ var $FRONTEND = (function (module) {
                         $('#preprocess_loader').removeClass("loader")
                     },
                     error: function (res) {
-                        alert(res.responseJSON.message);
+                        console.log(res)
                         $('.toggle-disable').prop('disabled', false)
                         $('#preprocess_loader').removeClass("loader")
                     }
