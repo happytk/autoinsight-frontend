@@ -152,7 +152,7 @@ var $FRONTEND = (function (module) {
             // );
 
             $('#pre_Omethod').change(function() {
-                if ($(this).val() === 'BoxPlotRule') {
+                if ($(this).val() === 'BOX_PLOT_RULE') {
                     $('#pre_Othreshold_all').hide();
                 }else{
                     $('#pre_Othreshold_all').show();
@@ -280,8 +280,8 @@ var $FRONTEND = (function (module) {
     };
 
     _p.imputationFormatter = function(value, row) {
-        var obj_imputations = ['None', 'drop', 'Most Frequent', 'Unknown'];
-        var num_imputations = ['None', 'drop', 'Most Frequent', 'Mean', 'Median', '0', 'Minimum'];
+        var obj_imputations = ['NONE', 'DROP', 'MOST_FREQUENT', 'UNKNOWN'];
+        var num_imputations = ['NONE', 'DROP', 'MOST_FREQUENT', 'MEAN', 'MEDIAN', '0', 'MINIMUM'];
         if(row.missing==0){
 
             return '<div class="wrap_select"><select id="imputation_' + row.id + '" class="form-control" data-style="btn-info" disabled><option value="None">None</option></select></div>'
@@ -311,7 +311,7 @@ var $FRONTEND = (function (module) {
 
     _p.powerTransFormatter = function(value, row){
         if(showPowerTrans) {
-            var strategies = ['None', 'Log', 'SquaredRoot', 'Square', 'BoxCoxTransformation', 'YeoJohnsonTransformation'];
+            var strategies = ['NONE', 'LOG', 'SQUARED_ROOT', 'SQUARE', 'BOX_COX_TRANSFORMATION', 'YEO_JOHNSON_TRANSFORMATION'];
             var selectBox = '<div class="wrap_select"><select id="powertrans_' + row.id + '" class="form-control toggle-disable" data-style="btn-info" onchange="$FRONTEND._p.updateColumn(' + row.id + ')">';
             for (var i = 0; i < strategies.length; i++) {
                 if (value == strategies[i]) {
@@ -652,7 +652,7 @@ var $FRONTEND = (function (module) {
         $('.modal_check:checkbox:checked').prop( "checked", false );
         // $('#na_col_drop_threshold').val(0.9);
         // $('#pre_Ocolumn').multiselect('destroy');
-        $('#pre_Omethod').val("Zscore");
+        $('#pre_Omethod').val("Z_SCORE");
         $('#pre_Othreshold_all').show();
         $('#pre_Othreshold').val(3);
         // $('#pre_Pstrategy_0').val("YeoJohnsonTransformation");
