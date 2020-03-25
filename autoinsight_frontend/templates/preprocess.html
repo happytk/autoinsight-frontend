@@ -74,7 +74,7 @@
                 <section class="section_content">
                     <h2 class="screen_out">Preprocess</h2><!-- tab menu 에서 선택된 텍스트가 들어갑니다. -->
                     <div class='help-text'>
-                        Customize the options as you wish, and press Run AutoML to preprocess the dataset and start modelling!
+                        Customize the options as your preference, and press Run AutoML to preprocess the dataset and start modelling!
                     </div>
                     <div class="area_tit">
                         <h3 id="dataset_name" class="tit_table"></h3>
@@ -353,6 +353,26 @@
                                     </dt>
                                     <dd>
                                         <input type="number" name="" id="gen_max_eval_time" class="inp_txt inp_timeout" min="1" value="3">
+                                    </dd>
+                                </div>
+
+                                <div class="item_dl type_inline">
+                                    <dt>Additional Framework
+                                        <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                            <div class="txt_tooltip">
+                                                Additional Frameworks to be used for modelling.
+                                            </div>
+                                        </a>
+                                    </dt>
+                                    <dd>
+                                        <div class="wrap_check">
+                                            <input type="checkbox" name="autosklearn" id="autosklearn" class="inp_check modal_check gen-conf">
+                                            <label for="autosklearn" class="label_check"><span class="ico_automl ico_check"></span>AutoSklearn</label>
+                                        </div>
+                                        <div class="wrap_check">
+                                            <input type="checkbox" name="tpot" id="tpot" class="inp_check modal_check gen-conf">
+                                            <label for="tpot" class="label_check"><span class="ico_automl ico_check"></span>TPOT</label>
+                                        </div>
                                     </dd>
                                 </div>
                             </dl>

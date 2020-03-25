@@ -218,7 +218,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                alert(res.responseJSON.message);
+                console.log(res);
             }
         });
         return status
@@ -739,6 +739,14 @@ var $FRONTEND = (function (module) {
                 tmp = resultData['maxEvalTime']/60;
                 $('#gen_max_eval_time').val(tmp);
 
+                if(resultData['useAutosklearn']){
+                    $('#autosklearn').prop( "checked", true );
+                }
+
+                if(resultData['useTpot']){
+                    $('#tpot').prop( "checked", true );
+                }
+
                 if(resultData['includeOneHotEncoding']){
                     $('#pre_1HotEncod').prop( "checked", true );
                 }
@@ -907,6 +915,18 @@ var $FRONTEND = (function (module) {
 
         var max_eval_time = $('#gen_max_eval_time').val();
         data.maxEvalTime = max_eval_time*60;
+
+        if  ($('#autosklearn').is(':checked')) {
+            data.useAutosklearn = true;
+        }else{
+            data.useAutosklearn = false;
+        }
+
+        if  ($('#tpot').is(':checked')) {
+            data.useTpot = true;
+        }else{
+            data.useTpot = false;
+        }
 
         if  ($('#pre_1HotEncod').is(':checked')) {
             data.includeOneHotEncoding = true;
