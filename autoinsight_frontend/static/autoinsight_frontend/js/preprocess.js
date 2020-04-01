@@ -284,7 +284,7 @@ var $FRONTEND = (function (module) {
         var num_imputations = ['NONE', 'DROP', 'MOST_FREQUENT', 'MEAN', 'MEDIAN', '0', 'MINIMUM'];
         if(row.missing==0){
 
-            return '<div class="wrap_select"><select id="imputation_' + row.id + '" class="form-control" data-style="btn-info" disabled><option value="None">None</option></select></div>'
+            return '<div class="wrap_select"><select id="imputation_' + row.id + '" class="form-control" data-style="btn-info" disabled><option value="NONE">None</option></select></div>'
         }
         var selectBox = '<div class="wrap_select"><select id="imputation_' + row.id + '" class="form-control toggle-disable" data-style="btn-info" onchange="$FRONTEND._p.updateColumn('+row.id+')">';
         if (row.datatype == "object"){
