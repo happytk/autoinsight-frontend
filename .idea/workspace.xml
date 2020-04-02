@@ -1,0 +1,1027 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0e8903d9-3dab-4fb4-a7c1-f7c1e0645ee8" name="Default Changelist" comment="augmentation 개발중" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/autoinsight_frontend/templates/deploy.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="557">
+              <caret line="39" column="84" selection-start-line="39" selection-start-column="84" selection-end-line="39" selection-end-column="84" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/preprocess.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/autoinsight_frontend/templates/preprocess.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="990">
+              <caret line="66" column="62" selection-start-line="66" selection-start-column="62" selection-end-line="66" selection-end-column="62" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/leaderboard.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4950">
+              <caret line="330" column="25" selection-start-line="330" selection-start-column="25" selection-end-line="330" selection-end-column="25" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/autoinsight_frontend/templates/experiment.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1620">
+              <caret line="108" column="20" selection-start-line="108" selection-start-column="20" selection-end-line="108" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/autoinsight_frontend/templates/leaderboard.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="765">
+              <caret line="51" column="163" selection-start-line="51" selection-start-column="163" selection-end-line="51" selection-end-column="163" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/autoinsight_frontend/templates/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="375">
+              <caret line="25" column="18" selection-start-line="25" selection-start-column="18" selection-end-line="25" selection-end-column="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/experiment.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="21" column="46" selection-start-line="21" selection-start-column="46" selection-end-line="21" selection-end-column="46" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/deploy.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1260">
+              <caret line="84" column="27" selection-start-line="84" selection-start-column="27" selection-end-line="84" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>saveGenConf</find>
+      <find>include</find>
+      <find>max</find>
+      <find>saveGe</find>
+      <find>Existing Sou</find>
+      <find>pre_1HotEncod</find>
+      <find>sampleSize</find>
+      <find>max e</find>
+      <find>addD</find>
+      <find>data.sa</find>
+      <find>samplingSiz</find>
+      <find>samplingSize</find>
+      <find>json</find>
+      <find>samplingRatio</find>
+      <find>SourceViewSet</find>
+      <find>taskType</find>
+      <find>prepro</find>
+      <find>rest</find>
+      <find>augment</find>
+      <find>column_tab</find>
+      <find>distribution</find>
+      <find>distribution2</find>
+      <find>augme</find>
+      <find>augmented</find>
+      <find>dataset_info</find>
+      <find>augem</find>
+      <find>col_coun</find>
+      <find>aug</find>
+      <find>row_count</find>
+      <find>col_count2</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>conf</replace>
+      <replace>content_estimator</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$/static</dir>
+    </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/autoinsight_frontend/static_src/src/js/components/AutoinsightDeployer.jsx" />
+        <option value="$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/site.js" />
+        <option value="$PROJECT_DIR$/autoinsight_frontend/static_src/webpack.config.js" />
+        <option value="$PROJECT_DIR$/Dockerfile" />
+        <option value="$USER_HOME$/Downloads/autoinsight-backend-deployment-service.yml" />
+        <option value="$PROJECT_DIR$/autoinsight_public/settings.py" />
+        <option value="$PROJECT_DIR$/autoinsight_frontend/templates/index.html" />
+        <option value="$PROJECT_DIR$/autoinsight_frontend/templates/dataset.html" />
+        <option value="$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/dataset.js" />
+        <option value="$PROJECT_DIR$/autoinsight_frontend/views.py" />
+        <option value="$PROJECT_DIR$/autoinsight_frontend/urls.py" />
+        <option value="$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/fileinput.js" />
+        <option value="$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/deploy.js" />
+        <option value="$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/leaderboard.js" />
+        <option value="$PROJECT_DIR$/autoinsight_frontend/templates/deploy.html" />
+        <option value="$PROJECT_DIR$/autoinsight_frontend/templates/leaderboard.html" />
+        <option value="$PROJECT_DIR$/autoinsight_frontend/templates/popup.html" />
+        <option value="$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/css/style.css" />
+        <option value="$PROJECT_DIR$/autoinsight_frontend/templates/experiment.html" />
+        <option value="$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/experiment.js" />
+        <option value="$PROJECT_DIR$/autoinsight_frontend/templates/preprocess.html" />
+        <option value="$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/preprocess.js" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectConfigurationFiles">
+    <option name="files">
+      <list>
+        <option value="$PROJECT_DIR$/.idea/auto-insight-public.iml" />
+        <option value="$PROJECT_DIR$/.idea/misc.xml" />
+        <option value="$PROJECT_DIR$/.idea/modules.xml" />
+        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
+        <option value="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="x" value="1680" />
+    <option name="width" value="1920" />
+    <option name="height" value="1080" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="auto-insight-public" type="b2602c69:ProjectViewProjectNode" />
+              <item name="auto-insight-public" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="auto-insight-public" type="b2602c69:ProjectViewProjectNode" />
+              <item name="auto-insight-public" type="462c0819:PsiDirectoryNode" />
+              <item name="autoinsight_frontend" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="auto-insight-public" type="b2602c69:ProjectViewProjectNode" />
+              <item name="auto-insight-public" type="462c0819:PsiDirectoryNode" />
+              <item name="autoinsight_frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="auto-insight-public" type="b2602c69:ProjectViewProjectNode" />
+              <item name="auto-insight-public" type="462c0819:PsiDirectoryNode" />
+              <item name="autoinsight_frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="autoinsight_frontend" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="auto-insight-public" type="b2602c69:ProjectViewProjectNode" />
+              <item name="auto-insight-public" type="462c0819:PsiDirectoryNode" />
+              <item name="autoinsight_frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="autoinsight_frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="auto-insight-public" type="b2602c69:ProjectViewProjectNode" />
+              <item name="auto-insight-public" type="462c0819:PsiDirectoryNode" />
+              <item name="autoinsight_frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="autoinsight_frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="auto-insight-public" type="b2602c69:ProjectViewProjectNode" />
+              <item name="auto-insight-public" type="462c0819:PsiDirectoryNode" />
+              <item name="autoinsight_frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="auto-insight-public" type="b2602c69:ProjectViewProjectNode" />
+              <item name="auto-insight-public" type="462c0819:PsiDirectoryNode" />
+              <item name="autoinsight_public" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="auto-insight-public" type="b2602c69:ProjectViewProjectNode" />
+              <item name="auto-insight-public" type="462c0819:PsiDirectoryNode" />
+              <item name="autoinsight_public" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js" />
+      <recent name="$PROJECT_DIR$/autoinsight_frontend/templates" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Django server.auto-insight-public">
+    <configuration name="preprocess.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/auto-insight-public/autoinsight_frontend/templates/preprocess.html" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
+    <configuration name="auto-insight-public" type="Python.DjangoServer" factoryName="Django server">
+      <module name="auto-insight-public" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="autoinsight_public.settings" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JavaScript Debug.preprocess.html" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0e8903d9-3dab-4fb4-a7c1-f7c1e0645ee8" name="Default Changelist" comment="" />
+      <created>1578964299639</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1578964299639</updated>
+      <workItem from="1578964301042" duration="6523000" />
+      <workItem from="1578979994014" duration="6604000" />
+      <workItem from="1579050072591" duration="53000" />
+      <workItem from="1579050140220" duration="11702000" />
+      <workItem from="1579138225946" duration="686000" />
+      <workItem from="1579149556246" duration="5976000" />
+      <workItem from="1579222066905" duration="3018000" />
+      <workItem from="1579487307768" duration="1314000" />
+      <workItem from="1579499833708" duration="3472000" />
+      <workItem from="1579589949551" duration="1124000" />
+      <workItem from="1579675222890" duration="2103000" />
+      <workItem from="1579743769467" duration="711000" />
+      <workItem from="1580175781750" duration="2253000" />
+      <workItem from="1580347548163" duration="9515000" />
+      <workItem from="1580434668540" duration="2700000" />
+      <workItem from="1580689360067" duration="16219000" />
+      <workItem from="1580781137201" duration="680000" />
+      <workItem from="1580965387001" duration="57000" />
+      <workItem from="1581921669548" duration="4918000" />
+      <workItem from="1581988456464" duration="3853000" />
+      <workItem from="1581999334704" duration="9332000" />
+      <workItem from="1582077351147" duration="9835000" />
+      <workItem from="1582163536936" duration="8389000" />
+      <workItem from="1582258649012" duration="9738000" />
+      <workItem from="1582508814862" duration="6439000" />
+      <workItem from="1582593918132" duration="4586000" />
+      <workItem from="1582614262583" duration="6295000" />
+      <workItem from="1582681346789" duration="5635000" />
+      <workItem from="1582761994381" duration="2345000" />
+      <workItem from="1582767609685" duration="1759000" />
+      <workItem from="1582776182823" duration="10218000" />
+      <workItem from="1582848913772" duration="3314000" />
+      <workItem from="1582868132828" duration="1105000" />
+      <workItem from="1583108414158" duration="645000" />
+      <workItem from="1583109516135" duration="9942000" />
+      <workItem from="1583196080315" duration="7461000" />
+      <workItem from="1583281191506" duration="2081000" />
+      <workItem from="1583288613760" duration="3473000" />
+      <workItem from="1583366930719" duration="14869000" />
+      <workItem from="1583455826468" duration="875000" />
+      <workItem from="1583713362290" duration="482000" />
+      <workItem from="1583714138383" duration="10670000" />
+      <workItem from="1583800528786" duration="9336000" />
+      <workItem from="1583826197263" duration="2612000" />
+      <workItem from="1583889318600" duration="13849000" />
+      <workItem from="1583977035295" duration="3981000" />
+      <workItem from="1583991003192" duration="8110000" />
+      <workItem from="1584058696800" duration="11224000" />
+      <workItem from="1584319128487" duration="14465000" />
+      <workItem from="1584360641498" duration="760000" />
+      <workItem from="1584403696447" duration="16827000" />
+      <workItem from="1584489878686" duration="15579000" />
+      <workItem from="1584581546999" duration="6319000" />
+      <workItem from="1584679141327" duration="2000" />
+      <workItem from="1585534257315" duration="719000" />
+      <workItem from="1585556307656" duration="1041000" />
+      <workItem from="1585615658388" duration="5182000" />
+      <workItem from="1585640533546" duration="390000" />
+      <workItem from="1585720383582" duration="965000" />
+      <workItem from="1585801456854" duration="265000" />
+    </task>
+    <task id="LOCAL-00007" summary="#8 fixed: 2번, 3번 오류 해결">
+      <created>1580351176897</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1580351176897</updated>
+    </task>
+    <task id="LOCAL-00008" summary="#8 fixed: 1번 오류 해결">
+      <created>1580695035904</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1580695035904</updated>
+    </task>
+    <task id="LOCAL-00009" summary="#8 fixed: 4번 오류 해결">
+      <created>1580695452734</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1580695452734</updated>
+    </task>
+    <task id="LOCAL-00010" summary="#8 fixed: 5번 오류 해결">
+      <created>1580696464353</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1580696464353</updated>
+    </task>
+    <task id="LOCAL-00011" summary="#10 fixed: 오류 해결">
+      <created>1580708972034</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1580708972034</updated>
+    </task>
+    <task id="LOCAL-00012" summary="화면수정">
+      <created>1580709226841</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1580709226841</updated>
+    </task>
+    <task id="LOCAL-00013" summary="v1.1초안">
+      <created>1582174896766</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1582174896766</updated>
+    </task>
+    <task id="LOCAL-00014" summary="v1.1초안2">
+      <created>1582174981186</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1582174981186</updated>
+    </task>
+    <task id="LOCAL-00015" summary="v1.1초안3">
+      <created>1582188838302</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1582188838302</updated>
+    </task>
+    <task id="LOCAL-00016" summary="v1.1개발중">
+      <created>1582266920132</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1582266920132</updated>
+    </task>
+    <task id="LOCAL-00017" summary="v1.1개발중2">
+      <created>1582620914451</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1582620914451</updated>
+    </task>
+    <task id="LOCAL-00018" summary="#206 오류해결">
+      <created>1582707222788</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1582707222788</updated>
+    </task>
+    <task id="LOCAL-00019" summary="v1.2개발중">
+      <created>1582868834101</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1582868834101</updated>
+    </task>
+    <task id="LOCAL-00020" summary="v1.2개발중(3/2)">
+      <created>1583136734438</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1583136734438</updated>
+    </task>
+    <task id="LOCAL-00021" summary="#227 frontend 수정 (v1.1)">
+      <created>1583202000364</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1583202000364</updated>
+    </task>
+    <task id="LOCAL-00022" summary="BM혁신 제공(3/4)">
+      <created>1583281845088</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1583281845088</updated>
+    </task>
+    <task id="LOCAL-00023" summary="스타일 복구">
+      <created>1583282197112</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1583282197112</updated>
+    </task>
+    <task id="LOCAL-00024" summary="BM혁신 제공2(3/4)">
+      <created>1583282349933</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1583282349933</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Preprocessor configure 자동저장 &amp; #227 metric 문제 해결">
+      <created>1583374399540</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1583374399540</updated>
+    </task>
+    <task id="LOCAL-00026" summary="#214 Dataset 화면 개발">
+      <created>1583395947014</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1583395947014</updated>
+    </task>
+    <task id="LOCAL-00027" summary="#58 Preprocessor 자동 추천 기능 완성">
+      <created>1583734741304</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1583734741304</updated>
+    </task>
+    <task id="LOCAL-00028" summary="#214 Dataset 화면 개발">
+      <created>1583741245599</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1583741245599</updated>
+    </task>
+    <task id="LOCAL-00029" summary="experiment table 자동업데이트">
+      <created>1583743964565</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1583743964565</updated>
+    </task>
+    <task id="LOCAL-00030" summary="#244 개발중">
+      <created>1583821541705</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1583821541705</updated>
+    </task>
+    <task id="LOCAL-00031" summary="#244 개발완료">
+      <created>1583893402764</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1583893402764</updated>
+    </task>
+    <task id="LOCAL-00032" summary="#58 개발중">
+      <created>1583916004045</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1583916004045</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Production용">
+      <created>1583979930128</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1583979930128</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Production용 수정중">
+      <created>1583999206518</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1583999206518</updated>
+    </task>
+    <task id="LOCAL-00035" summary="interval 문제 해결">
+      <created>1584008190121</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1584008190121</updated>
+    </task>
+    <task id="LOCAL-00036" summary="interval 문제 해결2">
+      <created>1584059113860</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1584059113860</updated>
+    </task>
+    <task id="LOCAL-00037" summary="#250 오류해결중">
+      <created>1584067401865</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1584067401865</updated>
+    </task>
+    <task id="LOCAL-00038" summary="#250 오류해결중2">
+      <created>1584075483453</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1584075483453</updated>
+    </task>
+    <task id="LOCAL-00039" summary="#250 Random Sampling, dataset name 수정">
+      <created>1584085555597</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1584085555597</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Merge branch 'master' into tlc-master&#10;&#10;# Conflicts:&#10;#&#9;autoinsight_frontend/templates/dataset.html&#10;#&#9;autoinsight_frontend/templates/experiment.html&#10;#&#9;autoinsight_frontend/templates/preprocess.html">
+      <created>1584085971553</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1584085971553</updated>
+    </task>
+    <task id="LOCAL-00041" summary="#250 오류해결중3">
+      <created>1584326335518</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1584326335518</updated>
+    </task>
+    <task id="LOCAL-00042" summary="#250 distribution 문제 해결">
+      <created>1584336885136</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1584336885136</updated>
+    </task>
+    <task id="LOCAL-00043" summary="#250 correlation 문제 해결">
+      <created>1584337557709</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1584337557709</updated>
+    </task>
+    <task id="LOCAL-00044" summary="#250 컬럼설정 문제해결">
+      <created>1584349306505</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1584349306505</updated>
+    </task>
+    <task id="LOCAL-00045" summary="#250 오류해결중4">
+      <created>1584360697371</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1584360697371</updated>
+    </task>
+    <task id="LOCAL-00046" summary="#250 오류해결중5">
+      <created>1584411328580</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1584411328581</updated>
+    </task>
+    <task id="LOCAL-00047" summary="설명추가 &amp; 영문화 작업중">
+      <created>1584427935132</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1584427935132</updated>
+    </task>
+    <task id="LOCAL-00048" summary="설명추가 &amp; 영문화 작업중2">
+      <created>1584435519387</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1584435519387</updated>
+    </task>
+    <task id="LOCAL-00049" summary="설명추가 &amp; 영문화 작업중3">
+      <created>1584513823050</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1584513823050</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Merge branches 'master' and 'tlc-master' of https://github.com/kajmokr/auto-insight-public into tlc-master&#10;&#10;# Conflicts:&#10;#&#9;autoinsight_frontend/static/autoinsight_frontend/css/style.css&#10;#&#9;autoinsight_frontend/templates/deploy.html">
+      <created>1584514358752</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1584514358753</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Merge branches 'master' and 'tlc-master' of https://github.com/kajmokr/auto-insight-public into tlc-master&#10;&#10;# Conflicts:&#10;#&#9;autoinsight_frontend/static/autoinsight_frontend/css/style.css&#10;#&#9;autoinsight_frontend/templates/deploy.html">
+      <created>1584516841333</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1584516841333</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Estimator tab 개발완료">
+      <created>1584523066334</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1584523066334</updated>
+    </task>
+    <task id="LOCAL-00053" summary="autosklearn &amp; tpot 옵션추가">
+      <created>1584590757103</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1584590757103</updated>
+    </task>
+    <task id="LOCAL-00054" summary="random sampling 문제해결">
+      <created>1584601045723</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1584601045724</updated>
+    </task>
+    <task id="LOCAL-00055" summary="augment 추가">
+      <created>1585724856054</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1585724856054</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="324595000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="1680" y="0" width="1920" height="1080" extended-state="0" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19116081" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32871288" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32970297" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="8" visible="true" weight="0.2990099" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32178217" />
+      <window_info anchor="bottom" id="Python Console" order="12" />
+      <window_info anchor="bottom" id="Messages" order="13" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="#244 개발중" />
+    <MESSAGE value="#244 개발완료" />
+    <MESSAGE value="#58 개발중" />
+    <MESSAGE value="Production용" />
+    <MESSAGE value="Production용 수정중" />
+    <MESSAGE value="interval 문제 해결" />
+    <MESSAGE value="interval 문제 해결2" />
+    <MESSAGE value="#250 오류해결중" />
+    <MESSAGE value="#250 오류해결중2" />
+    <MESSAGE value="#250 Random Sampling, dataset name 수정" />
+    <MESSAGE value="Merge branch 'master' into tlc-master&#10;&#10;# Conflicts:&#10;#&#9;autoinsight_frontend/templates/dataset.html&#10;#&#9;autoinsight_frontend/templates/experiment.html&#10;#&#9;autoinsight_frontend/templates/preprocess.html" />
+    <MESSAGE value="#250 오류해결중3" />
+    <MESSAGE value="#250 distribution 문제 해결" />
+    <MESSAGE value="#250 correlation 문제 해결" />
+    <MESSAGE value="#250 컬럼설정 문제해결" />
+    <MESSAGE value="#250 오류해결중4" />
+    <MESSAGE value="#250 오류해결중5" />
+    <MESSAGE value="설명추가 &amp; 영문화 작업중" />
+    <MESSAGE value="설명추가 &amp; 영문화 작업중2" />
+    <MESSAGE value="설명추가 &amp; 영문화 작업중3" />
+    <MESSAGE value="Merge branches 'master' and 'tlc-master' of https://github.com/kajmokr/auto-insight-public into tlc-master&#10;&#10;# Conflicts:&#10;#&#9;autoinsight_frontend/static/autoinsight_frontend/css/style.css&#10;#&#9;autoinsight_frontend/templates/deploy.html" />
+    <MESSAGE value="Estimator tab 개발완료" />
+    <MESSAGE value="autosklearn &amp; tpot 옵션추가" />
+    <MESSAGE value="random sampling 문제해결" />
+    <MESSAGE value="augment 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="augment 추가" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/main.css" />
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/models.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoinsight_public/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="16" column="37" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/templates/example.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/static_src/src/js/index.jsx" />
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/static_src/src/js/components/AutoinsightDeployer.jsx" />
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/static_src/webpack.config.js" />
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/site.js" />
+    <entry file="file://$USER_HOME$/Downloads/AutoInsight.htm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="11" selection-start-line="27" selection-start-column="11" selection-end-line="27" selection-end-column="11" />
+          <folding>
+            <element signature="n#style#0;n#span#1;n#code#0;n#pre#0;n#div#0;n#div#2;n#div#1;n#div#0;n#section#0;n#div#1;n#main#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/autoinsight-frontend-deployment-service.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/autoinsight-backend-deployment-service.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="17" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/bootstrap-table.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7149">
+          <caret line="9" column="109621" selection-start-line="9" selection-start-column="109621" selection-end-line="9" selection-end-column="109621" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="59" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/setup.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/client.js" />
+    <entry file="file://$USER_HOME$/Downloads/k8s.yaml" />
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="23" column="47" selection-start-line="23" selection-start-column="47" selection-end-line="23" selection-end-column="47" />
+          <folding>
+            <element signature="e#631#659#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.dom.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="17785" column="17" selection-start-line="17785" selection-start-column="17" selection-end-line="17785" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/templates/dataset.html" />
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/dataset.js" />
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="8" column="96" selection-start-line="8" selection-start-column="96" selection-end-line="8" selection-end-column="96" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/Untitled" />
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/fileinput.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20910">
+          <caret line="1403" column="65" selection-start-line="1403" selection-start-column="65" selection-end-line="1403" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoinsight_public/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1320">
+          <caret line="88" column="5" selection-start-line="88" selection-start-column="5" selection-end-line="88" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22275">
+          <caret line="1485" column="18" selection-start-line="1485" selection-start-column="18" selection-end-line="1485" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/preprocess.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/templates/preprocess.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="990">
+          <caret line="66" column="62" selection-start-line="66" selection-start-column="62" selection-end-line="66" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/leaderboard.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4950">
+          <caret line="330" column="25" selection-start-line="330" selection-start-column="25" selection-end-line="330" selection-end-column="25" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/templates/experiment.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1620">
+          <caret line="108" column="20" selection-start-line="108" selection-start-column="20" selection-end-line="108" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/templates/leaderboard.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="765">
+          <caret line="51" column="163" selection-start-line="51" selection-start-column="163" selection-end-line="51" selection-end-column="163" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="25" column="18" selection-start-line="25" selection-start-column="18" selection-end-line="25" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/experiment.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="46" selection-start-line="21" selection-start-column="46" selection-end-line="21" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/static/autoinsight_frontend/js/deploy.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1260">
+          <caret line="84" column="27" selection-start-line="84" selection-start-column="27" selection-end-line="84" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoinsight_frontend/templates/deploy.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="557">
+          <caret line="39" column="84" selection-start-line="39" selection-start-column="84" selection-end-line="39" selection-end-column="84" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
