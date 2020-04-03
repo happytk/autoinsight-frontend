@@ -569,6 +569,9 @@ dt {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
+.tbl_g tbody td.small, .tbl_tbody td.small {
+    padding:8px 10px !important
+}
 /* .tbl_g tr:nth-child(even) td, .tbl_tbody tr:nth-child(even) td {
     background-color:#fafafa;
 }
@@ -1918,8 +1921,11 @@ path.highcharts-grid-line {
     100% { transform: rotate(360deg); }
 }
 
-.help-text {
-    margin:-20px 0 20px;
+.help-text {  
+    margin:0 0 20px;  
     color: #999999; 
     font-weight: normal;
+}
+.help-tab {
+    margin-top:-20px;
 }
