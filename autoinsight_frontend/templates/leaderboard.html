@@ -40,7 +40,7 @@
 
 {% endblock %}
 {% block page_content %}
-    <div class="wrapper">
+    <div class="wrapper wrap_leaderboard">
         <header>
             <div class="container">
                 <a href="/">
@@ -48,7 +48,6 @@
                         <img src="{% static 'autoinsight_frontend/img/logo_automl.png' %}" class="img_logo" width="221" height="42" alt="AutoInsight">
                     </h1></a>
             </div>
-            <button id="data_btn" class="btn_m btn_border" style="margin-left: 78%;" type="button" onclick="window.location.href='/experiment'">Back to Experiments</button>
         </header>
         <!-- //header -->
 
@@ -67,6 +66,9 @@
                         </li>
                     </ul>
                 </nav>
+                <button id="data_btn" class="btn_back" type="button"
+                        onclick="window.location.href='/experiment'"><span class="ico_automl ico_back">Back to Experiments</span>
+                </button>
             </div>
 
             <div class="container">
@@ -101,7 +103,7 @@
                            data-url="{{ BACKEND_RESTAPI_URL }}runtimes/{{ runtime_id }}/leaderboard/"
                            data-data-field="results"
                            data-total-field="count"
-                           class="tbl_g tbl_thead table_leaderboard">
+                           class="tbl_g table_leaderboard">
                         <colgroup>
                             <col style="width:371px">
                             <col style="width:225px">
