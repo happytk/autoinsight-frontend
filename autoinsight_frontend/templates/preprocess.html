@@ -152,8 +152,42 @@
                             </li>
                         </ul> -->
                         <div class="info_table">
-                            <div class="area_progress" style="background:gold">탭들어갈곳</div> <!-- 임시 -->
-                            <button class="btn_b btn_confirm toggle-disable" type="button" onclick="$FRONTEND._p.runAutoml()">
+                            <div class="tab_preprocess">
+                                <ul class="nav">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#">
+                                            <span class="ico_automl ico_table">결과</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#">
+                                            <span class="ico_automl ico_set">preprocess</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item item_point">
+                                        <a class="nav-link active" href="#">
+                                            <span class="ico_automl ico_table">결과</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item item_point">
+                                        <a class="nav-link active" href="#">
+                                            <span class="ico_automl ico_set">preprocess</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#">
+                                            <span class="ico_automl ico_table">결과</span>
+                                            <span class="ico_automl ico_on">선택됨</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item item_add">
+                                        <a class="nav-link active" href="#">
+                                            <span class="ico_automl ico_add">추가</span>
+                                        </a>
+                                    </li>
+                                </ul>                            
+                            </div>
+                            <button class="btn_b btn_run toggle-disable" type="button" onclick="$FRONTEND._p.runAutoml()">
                                 Run AutoML <span class="ico_automl ico_arr"></span>
                             </button>
                         </div>
