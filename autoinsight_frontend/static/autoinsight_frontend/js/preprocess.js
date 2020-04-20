@@ -22,21 +22,17 @@ var $FRONTEND = (function (module) {
 
         var status = _p.loadStatus();
         isFirst = true;
+        _p.loadPipeline()
+        _p.loadSourceTable()
 
-        // _p.refreshOrigTable()
 
 
-
-        $('#dataset').on('fileuploaded', function (objectEvent, params){
-            alert("파일이 저장되었습니다.");
-            $('.modal').modal('hide');
-            _p.loadStatus();
-            $('#column_table').bootstrapTable('refresh')
-        });
-
-        _p.loadPreConf().done(function() {
-            _p.showConfColumns()
-        });
+        // $('#dataset').on('fileuploaded', function (objectEvent, params){
+        //     alert("파일이 저장되었습니다.");
+        //     $('.modal').modal('hide');
+        //     _p.loadStatus();
+        //     $('#column_table').bootstrapTable('refresh')
+        // });
 
         $('#column_table').on('load-success.bs.table', function (data, jqXHR) {
             targetColumn={};
@@ -261,8 +257,116 @@ var $FRONTEND = (function (module) {
 
     };
 
+    //Pipeline 관련
+    _p.loadPipeline = function(status){
+        $.ajax({
+            type: 'get',
+            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/datasets_preprocessed/',
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                if (resultData['error_msg'] == null ){
+                    var pipelinehtml =""
+                    $.each(resultData, function( index, value ) {
+                        if(index===0){
+                            pipelinehtml += '<li class="nav-item pipeline preview"><a class="nav-link" onclick="$FRONTEND._p.loadSourceTable('+value.id+')"><span class="ico_automl ico_table">결과</span></a></li>'
+                        }else{
+                            pipelinehtml += '<li class="nav-item pipeline preview"><a class="nav-link" onclick="$FRONTEND._p.loadPreviewTable('+value.id+')"><span class="ico_automl ico_table">결과</span></a></li>'
+                        }
+                        pipelinehtml += '<li class="nav-item pipeline"><a class="nav-link" onclick="$FRONTEND._p.loadColumnTable('+value.id+')"><span class="ico_automl ico_set">preprocess</span></a></li>'
+                    })
+                    if(status ==="REQUEST"){
+                        pipelinehtml += '<li class="nav-item item_add loader"><a class="nav-link active" onclick="$FRONTEND._p.addElement()"><span class="ico_automl ico_add">추가</span></a></li>'
+                    }
+                    pipelinehtml += '<li class="nav-item item_add"><a class="nav-link active" onclick="$FRONTEND._p.addElement()"><span class="ico_automl ico_add">추가</span></a></li>'
+                    $('#pipeline').html(pipelinehtml)
+                } else {
+                    alert(resultData['error_msg']);
+                }
+            },
+            error: function (res) {
+                console.log(res);
+            }
+        });
 
-    //테이블 관련
+    }
+{}    _p.addElement = function (id) {
+        $('.item_point').removeClass('item_point')
+        $('<li class="nav-item pipeline item_point"><a class="nav-link" onclick="$FRONTEND._p.loadColumnTable('+id+')"><span class="ico_automl ico_set">preprocess</span></a></li>').insertAfter( ".pipeline:last")
+        _p.loadColumnTable()
+    }
+
+    //Preview 관련
+    _p.loadSourceTable = function () {
+        $('#column_table').hide()
+        return $.ajax({
+            type: 'get',
+            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset_preprocessed/preview_source/',
+            contentType: "application/json",
+            success: function (resultData, textStatus, request) {
+                var columns =[]
+                $.each(resultData[0], function(key, value){
+                    columns.push({
+                        title: key,
+                        field: key
+                    })
+                });
+                $('#preview_table').bootstrapTable({
+                    columns: columns
+                })
+
+                $('#preview_table').bootstrapTable('load',{rows: resultData})
+                $('#preview_table').show()
+
+            },
+            error: function (res) {
+                console.log(res);
+            }
+        });
+    }
+    _p.loadPreviewTable = function (dataset_id) {
+        $('#column_table').hide()
+        return $.ajax({
+            type: 'get',
+            url: g_RESTAPI_HOST_BASE+'datasets/'+dataset_id+'/preview_preprocessed/',
+            contentType: "application/json",
+            success: function (resultData, textStatus, request) {
+                var columns =[]
+                $.each(resultData[0], function(key, value){
+                    columns.push({
+                        title: key,
+                        field: key
+                    })
+                });
+                $('#preview_table').bootstrapTable({
+                    columns: columns
+                })
+
+                $('#preview_table').bootstrapTable('load',{rows: resultData})
+                $('#preview_table').show()
+
+            },
+            error: function (res) {
+                console.log(res);
+            }
+        });
+    }
+
+    //Preprocessor 관련
+
+    _p.loadColumnTable = function (dataset_id) {
+
+        $('#preview_table').hide()
+        $('#column_table').bootstrapTable({
+            url: g_RESTAPI_HOST_BASE+'datasets/'+dataset_id+'/columns/'
+        })
+        _p.loadPreConf().done(function() {
+            _p.showConfColumns()
+        })
+        $('#column_table').show()
+
+
+
+    }
 
 
     _p.datatypeFormatter = function(value, row){
@@ -364,14 +468,18 @@ var $FRONTEND = (function (module) {
 
     _p.showConfColumns = function(){
         if(showOutlier) {
-            $('#outlier_col').css("width", "150px")
+            $('#column_table').bootstrapTable('showColumn', 'useOutlier')
+            //$('#outlier_col').css("width", "150px")
         }else{
-            $('#outlier_col').css("width", "0px")
+            $('#column_table').bootstrapTable('hideColumn', 'useOutlier')
+            //$('#outlier_col').css("width", "0px")
         }
         if(showPowerTrans){
-            $('#powerTrans_col').css("width", "150px")
+            $('#column_table').bootstrapTable('showColumn', 'transformationStrategy')
+            //$('#powerTrans_col').css("width", "150px")
         } else{
-            $('#powerTrans_col').css("width", "0px")
+            $('#column_table').bootstrapTable('hideColumn', 'transformationStrategy')
+            //$('#powerTrans_col').css("width", "0px")
         }
 
         if (showOutlier && showPowerTrans) {
@@ -1091,6 +1199,7 @@ var $FRONTEND = (function (module) {
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
                     _p.loadStatus()
+                    _p.loadPipeline(resultData['resultData'])
                     alert("Preprocess 완료되었습니다.");
                 } else {
                     alert(resultData['error_msg']);
@@ -1121,114 +1230,6 @@ var $FRONTEND = (function (module) {
             }
         })
     };
-
-    //Preview 관련
-    // _p.refreshOrigTable = function () {
-    //     return $.ajax({
-    //         type: 'get',
-    //         url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/source_X/',
-    //         contentType: "application/json",
-    //         success: function (resultData, textStatus, request) {
-    //             var columns =[]
-    //             $.each(resultData[0], function(key, value){
-    //                 columns.push({
-    //                     title: key,
-    //                     field: key
-    //                 })
-    //             });
-    //
-    //             var table_data = resultData
-    //
-    //             $.ajax({
-    //                 type: 'get',
-    //                 url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/source_y/',
-    //                 contentType: "application/json",
-    //                 success: function (resultData, textStatus, request) {
-    //
-    //                     $.each(resultData[0], function(key, value){
-    //                         columns.push({
-    //                             title: key,
-    //                             field: key
-    //                         })
-    //                     });
-    //                     $('#original_table').bootstrapTable({
-    //                         columns: columns
-    //                     })
-    //                     $.each(resultData, function(index, value){
-    //                         $.each(value, function(key, value){
-    //                             table_data[index][key] = value
-    //                         });
-    //                     })
-    //
-    //
-    //                     $('#original_table').bootstrapTable('load',{rows: table_data})
-    //
-    //                 },
-    //                 error: function (res) {
-    //                     console.log(res);
-    //                 }
-    //             });
-    //
-    //         },
-    //         error: function (res) {
-    //             console.log(res);
-    //         }
-    //     });
-    //
-    //
-    // }
-    //
-    // _p.loadPreprocessed = function () {
-    //     return $.ajax({
-    //         type: 'get',
-    //         url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/preprocessed_X/',
-    //         contentType: "application/json",
-    //         success: function (resultData, textStatus, request) {
-    //             columns =[]
-    //             $.each(resultData[0], function(key, value){
-    //                 columns.push({
-    //                     title: key,
-    //                     field: key
-    //                 })
-    //             });
-    //
-    //             table_data = resultData
-    //
-    //             $.ajax({
-    //                 type: 'get',
-    //                 url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/preprocessed_y/',
-    //                 contentType: "application/json",
-    //                 success: function (resultData, textStatus, request) {
-    //
-    //                     $.each(resultData[0], function(key, value){
-    //                         columns.push({
-    //                             title: key,
-    //                             field: key
-    //                         })
-    //                     });
-    //                     $('#preprocessed_table').bootstrapTable({
-    //                         columns: columns
-    //                     })
-    //                     $.each(resultData, function(index, value){
-    //                         $.each(value, function(key, value){
-    //                             table_data[index][key] = value
-    //                         });
-    //                     })
-    //
-    //                     $('#preprocessed_table').bootstrapTable('load',{rows: table_data})
-    //
-    //                 },
-    //                 error: function (res) {
-    //                     console.log(res);
-    //                 }
-    //             });
-    //
-    //         },
-    //         error: function (res) {
-    //             console.log(res);
-    //         }
-    //     });
-    // }
 
     return module;
 }($FRONTEND || {}));
