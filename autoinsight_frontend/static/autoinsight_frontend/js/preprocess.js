@@ -34,6 +34,7 @@ var $FRONTEND = (function (module) {
         //     $('#column_table').bootstrapTable('refresh')
         // });
 
+
         $('#column_table').on('load-success.bs.table', function (data, jqXHR) {
             targetColumn={};
             if(jqXHR.length<20){
@@ -258,7 +259,7 @@ var $FRONTEND = (function (module) {
     };
 
     //Pipeline 관련
-    _p.loadPipeline = function(status){
+    _p.loadPipeline = function(){
         $.ajax({
             type: 'get',
             url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/datasets_preprocessed/',
@@ -268,16 +269,25 @@ var $FRONTEND = (function (module) {
                     var pipelinehtml =""
                     $.each(resultData, function( index, value ) {
                         if(index===0){
-                            pipelinehtml += '<li class="nav-item pipeline preview"><a class="nav-link" onclick="$FRONTEND._p.loadSourceTable('+value.id+')"><span class="ico_automl ico_table">결과</span></a></li>'
+                            pipelinehtml += '<li class="nav-item pipeline preview"><a class="nav-link" onclick="$FRONTEND._p.changePoint(event); $FRONTEND._p.loadSourceTable('+value.id+')"><span class="ico_automl ico_table">결과</span></a></li>'
                         }else{
-                            pipelinehtml += '<li class="nav-item pipeline preview"><a class="nav-link" onclick="$FRONTEND._p.loadPreviewTable('+value.id+')"><span class="ico_automl ico_table">결과</span></a></li>'
+                            pipelinehtml += '<li class="nav-item pipeline preview"><a class="nav-link" onclick="$FRONTEND._p.changePoint(event); $FRONTEND._p.loadPreviewTable('+value.id+')"><span class="ico_automl ico_table">결과</span></a></li>'
                         }
-                        pipelinehtml += '<li class="nav-item pipeline"><a class="nav-link" onclick="$FRONTEND._p.loadColumnTable('+value.id+')"><span class="ico_automl ico_set">preprocess</span></a></li>'
+                        pipelinehtml += '<li class="nav-item pipeline"><a class="nav-link" onclick="$FRONTEND._p.changePoint(event); $FRONTEND._p.loadColumnTable('+value.id+')"><span class="ico_automl ico_set">preprocess</span></a></li>'
+
+
+                        if(value.processingStatus==="REQUEST"){
+                            pipelinehtml += '<li class="nav-item pipeline preview"><a class="nav-link"><div class="loader"></div></a></li>'
+                            setTimeout(function(){
+                                _p.loadPipeline()
+                            }, 1000)
+                            return false
+                        }
+                        if(index===resultData.length-1) pipelinehtml += '<li class="nav-item item_add"><a class="nav-link active" onclick="$FRONTEND._p.addElement('+value.id+')"><span class="ico_automl ico_add">추가</span></a></li>'
+
+
                     })
-                    if(status ==="REQUEST"){
-                        pipelinehtml += '<li class="nav-item item_add loader"><a class="nav-link active" onclick="$FRONTEND._p.addElement()"><span class="ico_automl ico_add">추가</span></a></li>'
-                    }
-                    pipelinehtml += '<li class="nav-item item_add"><a class="nav-link active" onclick="$FRONTEND._p.addElement()"><span class="ico_automl ico_add">추가</span></a></li>'
+
                     $('#pipeline').html(pipelinehtml)
                 } else {
                     alert(resultData['error_msg']);
@@ -289,20 +299,35 @@ var $FRONTEND = (function (module) {
         });
 
     }
-{}    _p.addElement = function (id) {
+    _p.addElement = function (id) {
         $('.item_point').removeClass('item_point')
-        $('<li class="nav-item pipeline item_point"><a class="nav-link" onclick="$FRONTEND._p.loadColumnTable('+id+')"><span class="ico_automl ico_set">preprocess</span></a></li>').insertAfter( ".pipeline:last")
-        _p.loadColumnTable()
+        if($('.pipeline:last').hasClass( 'preview' )){
+            $('<li class="nav-item pipeline item_point"><a class="nav-link" onclick="$FRONTEND._p.changePoint(); $FRONTEND._p.loadColumnTable('+id+')"><span class="ico_automl ico_set">preprocess</span></a></li>').insertAfter( ".pipeline:last")
+            _p.loadColumnTable(id)
+
+        }else{
+            _p.preprocess().done(function() {
+                _p.loadPreviewTable(id)
+            })
+
+        }
     }
+
+    _p.changePoint = function (event) {
+        $('.item_point').removeClass('item_point')
+        $(event.target).parent().parent().addClass('item_point')
+    };
 
     //Preview 관련
     _p.loadSourceTable = function () {
         $('#column_table').hide()
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset_preprocessed/preview_source/',
+            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/preview_source/',
             contentType: "application/json",
             success: function (resultData, textStatus, request) {
+                $('.item_point').removeClass('item_point')
+                $('.pipeline').first().addClass('item_point')
                 var columns =[]
                 $.each(resultData[0], function(key, value){
                     columns.push({
@@ -327,7 +352,7 @@ var $FRONTEND = (function (module) {
         $('#column_table').hide()
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE+'datasets/'+dataset_id+'/preview_preprocessed/',
+            url: g_RESTAPI_HOST_BASE+'datasets/'+dataset_id+'/preview_source/',
             contentType: "application/json",
             success: function (resultData, textStatus, request) {
                 var columns =[]
@@ -1194,13 +1219,13 @@ var $FRONTEND = (function (module) {
 
         return $.ajax({
             type: 'post',
-            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/dataset/preprocess/',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/dataset_preprocessed/preprocess/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
                     _p.loadStatus()
-                    _p.loadPipeline(resultData['resultData'])
-                    alert("Preprocess 완료되었습니다.");
+                    alert("Preprocess를 요청하였습니다.");
+                    _p.loadPipeline()
                 } else {
                     alert(resultData['error_msg']);
                 }
@@ -1226,7 +1251,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                alert(res.responseJSON.message);
+                console(res);
             }
         })
     };
