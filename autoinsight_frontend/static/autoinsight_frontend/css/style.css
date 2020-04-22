@@ -1420,6 +1420,7 @@ main {
     font-weight: 700;
     margin-bottom:27px;
 }
+*/
 .area_file {
     position: relative;
     display: -webkit-box;
@@ -1479,7 +1480,7 @@ main {
     padding:15px 20px;
     border-radius: 5px;
     background-color:#f0f0f0;
-} */
+}
 
 /** popup **/
 /* common */
