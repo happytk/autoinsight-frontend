@@ -63,80 +63,101 @@
             <div class="container">
                 <section class="section_content" id="deployed">
                     <h2 class="screen_out">Deploy Model</h2><!-- tab menu 에서 선택된 텍스트가 들어갑니다. -->
-                    <div class='help-text help-tab'>
+                    <div class="area_tit">
+                        <h3 id="estimator_name" class="tit_table"></h3>
+                    </div>
+                    <div class='help-text'>
                         Deploy the model to your platform to get predictions
                     </div>
-                    <div class="panel panel-default">
+                    <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Basic Information</h3>
+                            <strong class="screen_out">Basic Information</strong>
+                            <ul class="nav nav-tabs list_menu">
+                                <li class="nav-item active">
+                                    <a href="#" class="nav-link link_menu">Overview</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link link_menu">Stats</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link link_menu">Evalution</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link link_menu">Information</a>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="panel-body">
-                            <h2 id="estimator_name"></h2>
-                            <div>Trained prediction score: <span id="score" style="text-decoration: underline;"></span></div>
-                            <div>Deployment date: <span id="created_at" style="text-decoration: underline;"></span></div>
-                            <div class="alert alert-success" role="alert" style="margin-top: 30px;">
-                                <a class="btn_confirm btn_m"
-                                   href="{{ BACKEND_RESTAPI_URL }}runtimes/{{ runtime_id }}/deployment/export">Download model binary
-                                </a>
-                                <div style="margin-top: 25px;">The model binary files can be used in individual environments using the pickle library.
-                                    <br>It requires python 3.7 or higher, scikit-learn==0.22.1, Autoinsight module(optional)
-                                    <pre style="display: block; overflow-x: auto; padding: 0.5em; color: rgb(0, 0, 0); background: rgb(248, 248, 255);">
-                                <code>
-                                    <span style="color: rgb(64, 128, 128); font-style: italic;"># You can check the model pipeline with the following code.</span>
-                                    <span style="color: rgb(149, 65, 33);">import</span> pickle
-                                    pipeline = pickle.load(open(<span style="color: rgb(33, 145, 97);">'downloaded.bin', 'rb'</span>))
-                                    print(pipeline)
-                                </code>
-                            </pre>
+                        <div class="panel-body box_content">
+                            <div class="info_deploy">
+                                Trained prediction score: <span id="score"></span><br>
+                                Deployment date: <span id="created_at"></span>
+                            </div>
+                            <div class="wrap_code">
+                                <div class="desc_code">
+                                    <p>
+                                        The model binary files can be used in individual environments using the pickle library.<br>
+                                        It requires python 3.7 or higher, scikit-learn==0.22.1, Autoinsight module(optional)
+                                    </p>
+                                    
+                                    <a class="btn_down" href="{{ BACKEND_RESTAPI_URL }}runtimes/{{ runtime_id }}/deployment/export">Download model binary</a>
                                 </div>
+                                <pre>
+                                    <code>
+                                        <span style="color: rgb(64, 128, 128); font-style: italic;"># You can check the model pipeline with the following code.</span>
+                                        <span style="color: rgb(149, 65, 33);">import</span> pickle
+                                        pipeline = pickle.load(open(<span style="color: rgb(33, 145, 97);">'downloaded.bin', 'rb'</span>))
+                                        print(pipeline)
+                                    </code>
+                                </pre>
                             </div>
                         </div>
                     </div>
-                    <div class="panel panel-default">
+                    <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Prediction</h3>
+                            <strong class="panel-title">Prediction</strong>
                         </div>
                         <div class="panel-body">
-                            <div class="alert alert-danger" role="alert">
-                                <h4>Data processing for the form below is open to the RestAPI URL.</h4>
-                                <table class="table table-condensed" style="margin-top: 30px;">
-                                    <tbody>
-                                    <tr>
-                                        <td width="100px"><span class="badge badge-danger">URL</span></td>
-                                        <td><span style="text-decoration: underline;">{{ BACKEND_RESTAPI_URL }}deployment/predict/</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span class="badge badge-danger">Method</span>
-                                        </td>
-                                        <td><b>POST</b></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span class="badge badge-danger">Input</span>
-                                        </td>
-                                        <td>
-                                            Comma Separated Data with <b>inputs</b> as the keys.
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span class="badge badge-danger">Output</span>
-                                        </td>
-                                        <td><b>prediction result</b>, <b>errors</b>(if exists), <b>explanation of the prediction</b>(lime html)
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <table class="table">
+                            <strong class="info_prediction">Data processing for the form below is open to the RestAPI URL.</strong>
+                            <table class="table-condensed tbl_predict">
+                                <colgroup>
+                                    <col style="width:105px">
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <td><span class="badge badge-danger">URL</span></td>
+                                    <td><span style="text-decoration: underline;">{{ BACKEND_RESTAPI_URL }}deployment/predict/</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-danger">Method</span>
+                                    </td>
+                                    <td><b>POST</b></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-danger">Input</span>
+                                    </td>
+                                    <td>
+                                        Comma Separated Data with <b>inputs</b> as the keys.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-danger">Output</span>
+                                    </td>
+                                    <td><b>prediction result</b>, <b>errors</b>(if exists), <b>explanation of the prediction</b>(lime html)
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table-striped tbl_g tbl_predict2">
                                 <thead>
                                 <tr>
                                     <th>Feature</th>
                                     <th>Datatype</th>
                                     <th>
-                                        <button type="button" class="btn_correlation btn_s"
+                                        <button type="button" class="btn_border btn_s"
                                                 onclick="$FRONTEND._p.fillMostFrequent();">Fill with the most frequent values
                                         </button>
                                     </th>
@@ -145,7 +166,7 @@
                                 <tbody id="predict_table">
                                 </tbody>
                             </table>
-                            <div class="text-center">
+                            <div class="txt_r">
                                 <button type="button" class="btn_confirm btn_b"
                                         onclick="$FRONTEND._p.singlePredict();">Predict
                                 </button>

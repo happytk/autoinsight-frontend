@@ -405,6 +405,7 @@ var $FRONTEND = (function (module) {
             }
         }
         selectBox += '</select></div>';
+        selectBox += '<button class="btn_set"><span class="ico_automl ico_set">설정</span></button>';
         return selectBox;
     };
 
