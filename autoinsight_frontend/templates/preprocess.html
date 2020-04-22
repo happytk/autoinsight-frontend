@@ -145,8 +145,8 @@
                     <div id="dataset_info" class="area_util">
                         <div class="info_table">
                             <div class="tab_preprocess">
-                                <ul class="nav">
-                                    <li class="nav-item">
+                                <ul id="pipeline" class="nav">
+                                    <!--<li class="nav-item">
                                         <a class="nav-link active" href="#">
                                             <span class="ico_automl ico_table">결과</span>
                                         </a>
@@ -178,10 +178,10 @@
                                         <a class="nav-link active" href="#">
                                             <span class="ico_automl ico_add">추가</span>
                                         </a>
-                                    </li>
+                                    </li>-->
                                 </ul>                            
                             </div>
-                            <button class="btn_b btn_run toggle-disable" type="button" onclick="$FRONTEND._p.runAutoml()">
+                            <button id="runButton" class="btn_b btn_run" type="button" onclick="$FRONTEND._p.runAutoml()">
                                 Run AutoML <span class="ico_automl ico_arr"></span>
                             </button>
                         </div>
@@ -993,7 +993,7 @@
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
-                                        <input id="datepicker" data-provide="datepicker" type='text' class="form-control" />
+                                        <!--<input id="datepicker" data-provide="datepicker" type='text' class="form-control" /> -->
                                     </div>
                                     <!-- https://github.com/uxsolutions/bootstrap-datepicker -->
                                     <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>

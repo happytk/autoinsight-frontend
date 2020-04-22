@@ -1,38 +1,14 @@
 var $FRONTEND = (function (module) {
     var _p = module._p = module._p || {};
 
-
-    _p.dataset_name ="";
-    var targetColumn, isFirst, showOutlier, showPowerTrans, distributions;
+    var targetColumn, isFirst, showOutlier, showPowerTrans, distributions, curStep, maxStep;
     //초기화면 세팅
     _p.init = function(){
-
-        $('#saved_dataset_area').hide();
-        $('#source_type').change(function() {
-            if ($(this).val() === 'saved') {
-                $('#dataset_name_input').hide();
-                $('#saved_dataset_area').show();
-                $('#dataset').fileinput('disable');
-            }else{
-                $('#dataset_name_input').show();
-                $('#saved_dataset_area').hide();
-                $('#dataset').fileinput('enable');
-            }
-        });
 
         var status = _p.loadStatus();
         isFirst = true;
         _p.loadPipeline()
         _p.loadSourceTable()
-
-
-
-        // $('#dataset').on('fileuploaded', function (objectEvent, params){
-        //     alert("파일이 저장되었습니다.");
-        //     $('.modal').modal('hide');
-        //     _p.loadStatus();
-        //     $('#column_table').bootstrapTable('refresh')
-        // });
 
 
         $('#column_table').on('load-success.bs.table', function (data, jqXHR) {
@@ -87,14 +63,16 @@ var $FRONTEND = (function (module) {
 
             }
 
+            if(curStep <maxStep){
+                $('.toggle-disable').prop('disabled', true)
+                $('.gen-conf').prop('disabled', true)
+                $('.pre-conf').prop('disabled', true)
+            }else{
+                $('.toggle-disable').prop('disabled', false)
+                $('.gen-conf').prop('disabled', false)
+                $('.pre-conf').prop('disabled', false)
+            }
 
-
-            // $( ".columns" ).each(function( index ) {
-            //     $(this).html(columnCombobox);
-            // });
-
-
-            $('.toggle-disable').prop('disabled', false)
             $('#preprocess_loader').removeClass("loader")
 
         });
@@ -179,13 +157,19 @@ var $FRONTEND = (function (module) {
                 //화면 세팅
                 status = resultData.status
                 if(resultData.status === "ready"){
-                    $('.toggle-disable').prop('disabled', false);
                     $('#loader').removeClass("loader");
-                }else if(resultData.status === "learning"){
-                    $('.toggle-disable').prop('disabled', true);
-                    $('#leaderboard_loader').addClass("loader");
+                    $('#runButton').prop('disabled', false);
+                    $('.toggle-disable').prop('disabled', false);
+                    $('.gen-conf').prop('disabled', false);
+                    $('.pre-conf').prop('disabled', false);
+
                 }else{
+                    if(resultData.status === "learning") $('#leaderboard_loader').addClass("loader");
+                    $('#runButton').prop('disabled', true);
                     $('.toggle-disable').prop('disabled', true);
+                    $('.gen-conf').prop('disabled', true);
+                    $('.pre-conf').prop('disabled', true);
+
                 }
                 $('#estimator_type').val(resultData.estimatorType);
             },
@@ -203,13 +187,6 @@ var $FRONTEND = (function (module) {
                     $("#dataset_name").text(resultData['name']);
                     $("#row_count").text(resultData['rowCount']);
                     $("#col_count").text(resultData['colCount']);
-
-                    if(resultData['isProcessed']===false){
-                        $('#preprocessed_link').addClass('disabled');
-                    }else{
-                        $('#preprocessed_link').removeClass('disabled');
-
-                    }
                 } else {
                     alert(resultData['error_msg']);
                 }
@@ -267,14 +244,17 @@ var $FRONTEND = (function (module) {
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
                     var pipelinehtml =""
+                    var step
+                    maxStep =0
                     $.each(resultData, function( index, value ) {
-                        if(index===0){
-                            pipelinehtml += '<li class="nav-item pipeline preview"><a class="nav-link" onclick="$FRONTEND._p.changePoint(event); $FRONTEND._p.loadSourceTable('+value.id+')"><span class="ico_automl ico_table">결과</span></a></li>'
+                        step = index*2
+                        if(step===0){
+                            pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline preview item_point" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadSourceTable('+value.id+')"><a class="nav-link"><span class="ico_automl ico_table">결과</span></a></li>'
                         }else{
-                            pipelinehtml += '<li class="nav-item pipeline preview"><a class="nav-link" onclick="$FRONTEND._p.changePoint(event); $FRONTEND._p.loadPreviewTable('+value.id+')"><span class="ico_automl ico_table">결과</span></a></li>'
+                            pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline preview" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadPreviewTable('+value.id+')"><a class="nav-link"><span class="ico_automl ico_table">결과</span></a></li>'
                         }
-                        pipelinehtml += '<li class="nav-item pipeline"><a class="nav-link" onclick="$FRONTEND._p.changePoint(event); $FRONTEND._p.loadColumnTable('+value.id+')"><span class="ico_automl ico_set">preprocess</span></a></li>'
-
+                        step += 1
+                        pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadColumnTable('+value.id+')"><a class="nav-link"><span class="ico_automl ico_set">preprocess</span></a></li>'
 
                         if(value.processingStatus==="REQUEST"){
                             pipelinehtml += '<li class="nav-item pipeline preview"><a class="nav-link"><div class="loader"></div></a></li>'
@@ -283,7 +263,10 @@ var $FRONTEND = (function (module) {
                             }, 1000)
                             return false
                         }
-                        if(index===resultData.length-1) pipelinehtml += '<li class="nav-item item_add"><a class="nav-link active" onclick="$FRONTEND._p.addElement('+value.id+')"><span class="ico_automl ico_add">추가</span></a></li>'
+                        if(index===resultData.length-1){
+                            maxStep = step
+                            pipelinehtml += '<li class="nav-item item_add" onclick="$FRONTEND._p.addElement('+value.id+')"><a class="nav-link active"><span class="ico_automl ico_add">추가</span></a></li>'
+                        }
 
 
                     })
@@ -313,9 +296,10 @@ var $FRONTEND = (function (module) {
         }
     }
 
-    _p.changePoint = function (event) {
+    _p.changePoint = function (step) {
         $('.item_point').removeClass('item_point')
-        $(event.target).parent().parent().addClass('item_point')
+        $('#step_'+step).addClass('item_point')
+        curStep = step
     };
 
     //Preview 관련
@@ -326,8 +310,6 @@ var $FRONTEND = (function (module) {
             url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/preview_source/',
             contentType: "application/json",
             success: function (resultData, textStatus, request) {
-                $('.item_point').removeClass('item_point')
-                $('.pipeline').first().addClass('item_point')
                 var columns =[]
                 $.each(resultData[0], function(key, value){
                     columns.push({
@@ -405,7 +387,6 @@ var $FRONTEND = (function (module) {
             }
         }
         selectBox += '</select></div>';
-        selectBox += '<button class="btn_set"><span class="ico_automl ico_set">설정</span></button>';
         return selectBox;
     };
 
