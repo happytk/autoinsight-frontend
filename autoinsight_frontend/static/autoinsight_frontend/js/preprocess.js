@@ -156,7 +156,7 @@ var $FRONTEND = (function (module) {
             success: function (resultData, textStatus, request) {
                 //화면 세팅
                 status = resultData.status
-                if(resultData.status === "ready"){
+                if(status === "ready"){
                     $('#loader').removeClass("loader");
                     $('#runButton').prop('disabled', false);
                     $('.toggle-disable').prop('disabled', false);
@@ -266,6 +266,7 @@ var $FRONTEND = (function (module) {
                         if(index===resultData.length-1){
                             maxStep = step
                             pipelinehtml += '<li class="nav-item item_add" onclick="$FRONTEND._p.addElement('+value.id+')"><a class="nav-link active"><span class="ico_automl ico_add">추가</span></a></li>'
+                            $('#runButton').prop('disabled', false)
                         }
 
 
