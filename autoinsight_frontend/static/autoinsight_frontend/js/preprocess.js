@@ -254,7 +254,7 @@ var $FRONTEND = (function (module) {
                             pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline preview" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadPreviewTable('+value.id+')"><a class="nav-link"><span class="ico_automl ico_table">결과</span></a></li>'
                         }
                         step += 1
-                        pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadColumnTable('+value.id+')"><a class="nav-link"><span class="ico_automl ico_set">preprocess</span></a></li>'
+                        pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadColumnTable('+value.id+')"><a class="nav-link"><span class="ico_automl ico_set">preprocess</span><span class="ico_automl ico_del" onclick="$FRONTEND._p.deletePreprocess('+value.id+');">삭제</span></a></li>'
 
                         if(value.processingStatus==="REQUEST"){
                             pipelinehtml += '<li class="nav-item pipeline preview"><a class="nav-link"><div class="loader"></div></a></li>'
@@ -359,7 +359,7 @@ var $FRONTEND = (function (module) {
         });
     }
 
-    //Preprocessor 관련
+    //Preprocess 관련
 
     _p.loadColumnTable = function (dataset_id) {
 
@@ -375,6 +375,22 @@ var $FRONTEND = (function (module) {
 
 
     }
+
+    _p.deletePreprocess = function(){
+        return $.ajax({
+            type: 'delete',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id+'/dataset_preprocessed/',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (resultData, textStatus, request) {
+                _p.loadPipeline()
+            },
+            error: function (res) {
+                alert(res.responseJSON.message);
+            }
+        })
+    }
+
 
 
     _p.datatypeFormatter = function(value, row){
