@@ -172,13 +172,13 @@ var $FRONTEND = (function (module) {
         return a
     }
 
-    _p.informationFormatter = function (value, row) {
+    _p.statsFormatter = function (value, row) {
         if(row.evaluationStatStatus =="INIT"){
-            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-information" onclick="$FRONTEND._p.setInformationModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'post')
+            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-stats" onclick="$FRONTEND._p.setStatsnModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'post')
         }else if(row.evaluationStatStatus =="PROCESSING"){
             return '<button class="btn_s btn_border" disabled>Processing</button>';
         }else if(row.evaluationStatStatus =="DONE"){
-            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-information" onclick="$FRONTEND._p.setInformationModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'get')
+            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-stats" onclick="$FRONTEND._p.setStatsnModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'get')
         }else{
             return '<button class="btn_s btn_border" disabled>Error</button>';
         }
@@ -192,7 +192,7 @@ var $FRONTEND = (function (module) {
         }else if(row.limeHtmlStatus =="DONE"){
             return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-explanation" onclick="$FRONTEND._p.setExplanationModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'get')
         }else{
-            return '<a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span><div class="txt_tooltip">This model cannot load information</div></a>';
+            return '<a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span><div class="txt_tooltip">This model cannot load explantion</div></a>';
         }
     }
 
@@ -260,7 +260,7 @@ var $FRONTEND = (function (module) {
 
 
     // Modal 관련
-    _p.setInformationModal = function (model_pk, method) {
+    _p.setStatsnModal = function (model_pk, method) {
         if(method==='post') {
             $('#modal-information #modal-information-loading').show()
             $('#modal-information #modal-information-done').hide()
@@ -274,7 +274,7 @@ var $FRONTEND = (function (module) {
             success: function (resultData, textStatus, request) {
                 if(resultData.status==="INIT" || resultData.status==="PROCESSING"){
                     setTimeout(function(){
-                        _p.setInformationModal(model_pk, 'get');
+                        _p.setStatsnModal(model_pk, 'get');
                         if(status ==="finished") $('#learderboard_table').bootstrapTable('refresh', { silent: true })
                     }, 1000)
                     return false

@@ -142,7 +142,7 @@
                         </div> -->
                     </div>
 
-                    <div id="dataset_info" class="area_util">
+                    <div class="area_util">
                         <div class="info_table">
                             <div class="tab_preprocess">
                                 <ul id="pipeline" class="nav">
@@ -179,92 +179,97 @@
                                             <span class="ico_automl ico_add">추가</span>
                                         </a>
                                     </li>-->
-                                </ul>                            
+                                </ul>
                             </div>
-                            <button id="runButton" class="btn_b btn_run" type="button" data-toggle="modal" data-target="#modal-run">
+                            <button id="runButton" class="btn_b btn_run" type="button" data-toggle="modal" data-target="#modal-run" onclick="$FRONTEND._p.setRunModal()">
                                 Run AutoML <span class="ico_automl ico_arr"></span>
                             </button>
                         </div>
                         <!-- <div class="wrap_btn">
-                            <button class="btn_m btn_correlation" type="button" data-toggle="modal" data-target="#modal-correlation" onclick="$FRONTEND._p.setCorrModal()">Feature correlation</button>
                             <button class="btn_m btn_border">Export</button>
                             <button class="btn_m btn_border">Delete</button>
                         </div> -->
-                    <ul class="list_count">
-                        <li>
-                            <span class="ico_automl ico_arr"></span>Row Count <span id="row_count" class="txt_emph"></span>
-                            <button class="btn_add" data-toggle="modal" data-target="#modal-augment">
-                                <span class="ico_automl ico_add">추가</span>
-                            </button>
-                        </li>
-                        <li>
-                            <span class="ico_automl ico_arr"></span>Column Count <span id="col_count" class="txt_emph"></span>
-                            <button class="btn_add">
-                                <span class="ico_automl ico_add">추가</span>
-                            </button>
-                        </li>
-                    </ul>
+                        <ul class="list_count">
+                            <li>
+                                <span class="ico_automl ico_arr"></span>Row Count <span id="row_count" class="txt_emph"></span>
+                                <button class="btn_add" data-toggle="modal" data-target="#modal-augment">
+                                    <!--<span class="ico_automl ico_add">추가</span>-->
+                                </button>
+                            </li>
+                            <li>
+                                <span class="ico_automl ico_arr"></span>Column Count <span id="col_count" class="txt_emph"></span>
+                                <button class="btn_add">
+                                    <!--<span class="ico_automl ico_add">추가</span>-->
+                                </button>
+                            </li>
+                        </ul>
                     </div>
-                    <table id="preview_table"
-                           data-pagination="false"
-                           class="tbl_g tbl_preprocess">
-                    </table>
-                    <table id="column_table"
-                           data-pagination="false"
-                           class="tbl_g tbl_preprocess">
-                        <thead>
-                        <tr>
-                            <th class="txt_l" data-field="name">Name
-                                <!--<button class="btn_sort" type="button"><span class="ico_automl ico_sort">정렬</span></button>-->
-                            </th>
-                            <th data-field="datatype" data-formatter="$FRONTEND._p.datatypeFormatter">Datatype</th>
-                            <th data-field="missing">Missing</th>
-                            <th data-field="imputation" data-formatter="$FRONTEND._p.imputationFormatter">Imputation
-                            </th>
-                            <th data-field="transformationStrategy" data-formatter="$FRONTEND._p.powerTransFormatter">Power<br>Transformation
-                            </th>
-                            <th data-field="useOutlier" data-formatter="$FRONTEND._p.outlierEliFormatter">Outlier<br>Elimination
-                            </th>
-                            <th data-field="unique">Unique</th>
-                            <th data-field="mean">Mean</th>
-                            <th data-field="min">Min</th>
-                            <th data-field="max">Max</th>
-                            <th data-field="id" data-formatter="$FRONTEND._p.distributionFormatter">Distribution</th>
-                            <th data-field="isFeature" data-formatter="$FRONTEND._p.featureFormatter">Features</th>
-                            <th data-field="isTarget" data-formatter="$FRONTEND._p.targetFormatter">Target</th>
-                            <th data-field="taskType" data-visible="false">Task Type</th>
-                        </tr>
-                        </thead>
-                    </table>
+                    <div id="preview_area">
+                        <button class="btn_m btn_correlation" type="button" data-toggle="modal" data-target="#modal-correlation" onclick="$FRONTEND._p.setCorrModal()">Feature correlation</button>
+                        <table id="preview_table"
+                               data-pagination="false"
+                               class="tbl_g tbl_preprocess">
+                        </table>
+                    </div>
+                    <div id="column_area">
+
+                        <table id="column_table"
+                               data-pagination="false"
+                               class="tbl_g tbl_preprocess">
+                            <!--<thead>
+                            <tr>
+                                <th class="txt_l" data-field="name">Name-->
+                                    <!--<button class="btn_sort" type="button"><span class="ico_automl ico_sort">정렬</span></button>-->
+                                <!--</th>
+                                <th data-field="datatype" data-formatter="$FRONTEND._p.datatypeFormatter">Datatype</th>
+                                <th data-field="missing">Missing</th>
+                                <th data-field="imputation" data-formatter="$FRONTEND._p.imputationFormatter">Imputation
+                                </th>
+                                <th data-field="transformationStrategy" data-formatter="$FRONTEND._p.powerTransFormatter">Power<br>Transformation
+                                </th>
+                                <th data-field="useOutlier" data-formatter="$FRONTEND._p.outlierEliFormatter">Outlier<br>Elimination
+                                </th>
+                                <th data-field="unique">Unique</th>
+                                <th data-field="mean">Mean</th>
+                                <th data-field="min">Min</th>
+                                <th data-field="max">Max</th>
+                                <th data-field="id" data-formatter="$FRONTEND._p.distributionFormatter">Distribution</th>
+                                <th data-field="isFeature" data-formatter="$FRONTEND._p.featureFormatter">Features</th>
+                                <th data-field="isTarget" data-formatter="$FRONTEND._p.targetFormatter">Target</th>
+                                <th data-field="taskType" data-visible="false">Task Type</th>
+                            </tr>
+                            </thead>-->
+                        </table>
 
 
-                    <div class="area_util2">
-                        <!-- <strong class="tit_select">AutoML Type</strong>
-                        <div class="wrap_select">
-                            <select id="estimator_type" class="form-control toggle-disable">
-                                <option value = "classifier" selected>
-                                    <a class="link_option" href="#none">Classification</a>
-                                </option>
-                                <option value = "regressor">
-                                    <a class="link_option" href="#none">Regression</a>
-                                </option>
-                            </select>
-                        </div> -->
-                        <div class="wrap_btn">
-                            <button class="btn_m btn_border" type="button" data-toggle="modal" data-target="#modal-setting">
-                                Configure
-                            </button>
-                            <button class="btn_m" type="button" onclick="$FRONTEND._p.preprocess()">
-                                Preprocess
-                            </button>
+                        <div class="area_util2">
+                            <!-- <strong class="tit_select">AutoML Type</strong>
+                            <div class="wrap_select">
+                                <select id="estimator_type" class="form-control toggle-disable">
+                                    <option value = "classifier" selected>
+                                        <a class="link_option" href="#none">Classification</a>
+                                    </option>
+                                    <option value = "regressor">
+                                        <a class="link_option" href="#none">Regression</a>
+                                    </option>
+                                </select>
+                            </div> -->
+                            <div class="wrap_btn">
+                                <button class="btn_m btn_border" type="button" data-toggle="modal" data-target="#modal-setting">
+                                    Configure
+                                </button>
+                                <button class="btn_m" type="button" onclick="$FRONTEND._p.preprocess()">
+                                    Preprocess
+                                </button>
+                            </div>
+                            <!--<div class="wrap_btn">
+                                <button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.autoConf()">Auto Configure</button>
+                                <button class="btn_m btn_setup" type="button" data-toggle="modal" data-target="#modal-setting">
+                                    <span class="ico_automl ico_setup">설정</span>
+                                </button>
+                                <button class="btn_m btn_confirm toggle-disable" type="button" onclick="$FRONTEND._p.preprocess()">Preprocess</button>
+                            </div>-->
                         </div>
-                        <!--<div class="wrap_btn">
-                            <button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.autoConf()">Auto Configure</button>
-                            <button class="btn_m btn_setup" type="button" data-toggle="modal" data-target="#modal-setting">
-                                <span class="ico_automl ico_setup">설정</span>
-                            </button>
-                            <button class="btn_m btn_confirm toggle-disable" type="button" onclick="$FRONTEND._p.preprocess()">Preprocess</button>
-                        </div>-->
                     </div>
                     <!--<h3 class="tit_table">Preview</h3>
                     <nav>
@@ -1106,14 +1111,16 @@
                                 <div class="item_dl type_inline">
                                     <dt>Target</dt>
                                     <dd>
-                                        <div class="wrap_select">
+                                        <h4 id="target"></h4>
+                                        <!--<div class="wrap_select">
+
                                             <select name="" id="" class="form-control">
                                                 <option value="">select</option>
                                             </select>
-                                        </div>
+                                        </div>-->
                                     </dd>
                                 </div>
-                                <div class="item_dl type_inline">
+                                <!--<div class="item_dl type_inline">
                                     <dt>Metric</dt>
                                     <dd>
                                         <div class="wrap_select">
@@ -1123,7 +1130,7 @@
                                         </div>
                                         <button class="btn_set"><span class="ico_automl ico_set">설정</span></button>
                                     </dd>
-                                </div>
+                                </div>-->
                             </dl>
                         </div>
                     </div>
@@ -1186,7 +1193,7 @@
             </div>
         </div>
     </div>
-    <!-- //Data Augmentor -->    
+    <!-- //Data Augmentor -->
 
 
     <!-- Datetime64 Configuration -->
@@ -1210,7 +1217,7 @@
                         </div>
                         <div class="item_dl type_inline">
                             <dt>Populate Features</dt>
-                            <dd>                                
+                            <dd>
                                 <div class="wrap_check type_switch">
                                     <input type="checkbox" name="" id="random" class="inp_check">
                                     <label for="random" class="label_check">off</label><!-- input check시 텍스트 on 으로 수정-->
@@ -1219,7 +1226,7 @@
                         </div>
                         <div class="item_dl type_inline">
                             <dt>Convert to timestamp</dt>
-                            <dd>                                
+                            <dd>
                                 <div class="wrap_check type_switch">
                                     <input type="checkbox" name="" id="random2" class="inp_check">
                                     <label for="random" class="label_check">off</label><!-- input check시 텍스트 on 으로 수정-->
@@ -1237,8 +1244,8 @@
             </div>
         </div>
     </div>
-    <!-- //Datetime64 Configuration --> 
-    
+    <!-- //Datetime64 Configuration -->
+
     <!-- Time Series Generator -->
     <div class="modal popup_datetime64">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -1298,7 +1305,7 @@
             </div>
         </div>
     </div>
-    <!-- //Time Series Generator --> 
+    <!-- //Time Series Generator -->
 
     <!-- //popup -->
 {% endblock %}

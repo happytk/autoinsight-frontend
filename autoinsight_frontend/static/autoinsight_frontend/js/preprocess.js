@@ -1,14 +1,14 @@
 var $FRONTEND = (function (module) {
     var _p = module._p = module._p || {};
 
-    var targetColumn, isFirst, showOutlier, showPowerTrans, distributions, curStep, maxStep;
+    var targetColumn, isFirst, showOutlier, showPowerTrans, distributions, curStep, maxStep, datasetId, status;
     //초기화면 세팅
     _p.init = function(){
 
-        var status = _p.loadStatus();
-        isFirst = true;
+        status = _p.loadStatus()
         _p.loadPipeline()
-        _p.loadSourceTable()
+
+        isFirst = true
 
 
         $('#column_table').on('load-success.bs.table', function (data, jqXHR) {
@@ -140,7 +140,7 @@ var $FRONTEND = (function (module) {
         });
 
         $("#modal-setting").on('hide.bs.modal', function(){
-            _p.showConfColumns();
+            $('#column_table').bootstrapTable('refresh')
         });
 
     };
@@ -148,7 +148,7 @@ var $FRONTEND = (function (module) {
 
 
     _p.loadStatus = function (){
-        var status =""
+        status =""
         $.ajax({
             type: 'get',
             url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id + '/',
@@ -177,14 +177,17 @@ var $FRONTEND = (function (module) {
                 alert(res.responseJSON.message);
             }
         });
-        $.ajax({
+        return status
+    };
+
+    _p.loadDatasetInfo = function(dataset_id){
+        return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/',
+            url: g_RESTAPI_HOST_BASE+'datasets/{0}/'.format(dataset_id), //'runtimes/'+runtime_id+'/dataset/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
-                    $("#dataset_info").show();
-                    $("#dataset_name").text(resultData['name']);
+                    $("#dataset_name").text(resultData['name'].split(".")[0]);
                     $("#row_count").text(resultData['rowCount']);
                     $("#col_count").text(resultData['colCount']);
                 } else {
@@ -195,8 +198,7 @@ var $FRONTEND = (function (module) {
                 console.log(res);
             }
         });
-        return status
-    };
+    }
 
     _p.clearAll = function(){
         try {
@@ -248,27 +250,28 @@ var $FRONTEND = (function (module) {
                     maxStep =0
                     $.each(resultData, function( index, value ) {
                         step = index*2
-                        if(step===0){
-                            pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline preview item_point" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadSourceTable('+value.id+')"><a class="nav-link"><span class="ico_automl ico_table">결과</span></a></li>'
+                        if(index<resultData.length-1){
+                            pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline preview" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadPreviewArea('+value.id+')"><a class="nav-link"><span class="ico_automl ico_table">결과</span></a></li>'
+                            step += 1
+                            pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadColumnArea('+value.id+')"><a class="nav-link"><span class="ico_automl ico_set">preprocess</span><span class="ico_automl ico_del" onclick="$FRONTEND._p.deletePreprocess('+value.id+');">삭제</span></a></li>'
                         }else{
-                            pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline preview" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadPreviewTable('+value.id+')"><a class="nav-link"><span class="ico_automl ico_table">결과</span></a></li>'
-                        }
-                        step += 1
-                        pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadColumnTable('+value.id+')"><a class="nav-link"><span class="ico_automl ico_set">preprocess</span><span class="ico_automl ico_del" onclick="$FRONTEND._p.deletePreprocess('+value.id+');">삭제</span></a></li>'
-
-                        if(value.processingStatus==="REQUEST"){
-                            pipelinehtml += '<li class="nav-item pipeline preview"><a class="nav-link"><div class="loader"></div></a></li>'
-                            setTimeout(function(){
-                                _p.loadPipeline()
-                            }, 1000)
-                            return false
-                        }
-                        if(index===resultData.length-1){
+                            pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline preview item_point" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadPreviewArea('+value.id+')"><a class="nav-link"><span class="ico_automl ico_table">결과</span><span class="ico_automl ico_on">선택됨</span></a></li>'
+                            step += 1
                             maxStep = step
-                            pipelinehtml += '<li class="nav-item item_add" onclick="$FRONTEND._p.addElement('+value.id+')"><a class="nav-link active"><span class="ico_automl ico_add">추가</span></a></li>'
-                            $('#runButton').prop('disabled', false)
-                        }
+                            pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadColumnArea('+value.id+')"><a class="nav-link"><span class="ico_automl ico_set">preprocess</span><span class="ico_automl ico_del" onclick="$FRONTEND._p.deletePreprocess('+value.id+');">삭제</span></a></li>'
+                            if(value.processingStatus==="REQUEST"){
+                                pipelinehtml += '<li class="nav-item pipeline preview"><a class="nav-link"><div class="loader"></div></a></li>'
+                                setTimeout(function(){
+                                    _p.loadPipeline()
+                                }, 1000)
+                                return false
+                            }else{
+                                pipelinehtml += '<li class="nav-item item_add" ><a class="nav-link active"><span class="ico_automl ico_add" onclick="$FRONTEND._p.addElement('+value.id+')">추가</span></a></li>'
+                                $('#runButton').prop('disabled', false)
+                                _p.loadPreviewArea(value.id)
+                            }
 
+                        }
 
                     })
 
@@ -286,12 +289,12 @@ var $FRONTEND = (function (module) {
     _p.addElement = function (id) {
         $('.item_point').removeClass('item_point')
         if($('.pipeline:last').hasClass( 'preview' )){
-            $('<li class="nav-item pipeline item_point"><a class="nav-link" onclick="$FRONTEND._p.changePoint(); $FRONTEND._p.loadColumnTable('+id+')"><span class="ico_automl ico_set">preprocess</span></a></li>').insertAfter( ".pipeline:last")
-            _p.loadColumnTable(id)
+            $('<li class="nav-item pipeline item_point"><a class="nav-link" onclick="$FRONTEND._p.changePoint(); $FRONTEND._p.loadColumnArea('+id+')"><span class="ico_automl ico_set">preprocess</span></a></li>').insertAfter( ".pipeline:last")
+            _p.loadColumnArea(id)
 
         }else{
             _p.preprocess().done(function() {
-                _p.loadPreviewTable(id)
+                _p.loadPreviewArea(id)
             })
 
         }
@@ -304,13 +307,16 @@ var $FRONTEND = (function (module) {
     };
 
     //Preview 관련
-    _p.loadSourceTable = function () {
-        $('#column_table').hide()
+    _p.loadPreviewArea = function (dataset_id) {
+        datasetId = dataset_id
+        $('#column_area').hide()
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/preview_source/',
+            url: g_RESTAPI_HOST_BASE+'datasets/'+datasetId+'/preview_source/',
             contentType: "application/json",
             success: function (resultData, textStatus, request) {
+                _p.loadDatasetInfo(datasetId)
+                $('#preview_table').bootstrapTable('destroy')
                 var columns =[]
                 $.each(resultData[0], function(key, value){
                     columns.push({
@@ -323,34 +329,7 @@ var $FRONTEND = (function (module) {
                 })
 
                 $('#preview_table').bootstrapTable('load',{rows: resultData})
-                $('#preview_table').show()
-
-            },
-            error: function (res) {
-                console.log(res);
-            }
-        });
-    }
-    _p.loadPreviewTable = function (dataset_id) {
-        $('#column_table').hide()
-        return $.ajax({
-            type: 'get',
-            url: g_RESTAPI_HOST_BASE+'datasets/'+dataset_id+'/preview_source/',
-            contentType: "application/json",
-            success: function (resultData, textStatus, request) {
-                var columns =[]
-                $.each(resultData[0], function(key, value){
-                    columns.push({
-                        title: key,
-                        field: key
-                    })
-                });
-                $('#preview_table').bootstrapTable({
-                    columns: columns
-                })
-
-                $('#preview_table').bootstrapTable('load',{rows: resultData})
-                $('#preview_table').show()
+                $('#preview_area').show()
 
             },
             error: function (res) {
@@ -361,25 +340,85 @@ var $FRONTEND = (function (module) {
 
     //Preprocess 관련
 
-    _p.loadColumnTable = function (dataset_id) {
-
-        $('#preview_table').hide()
-        $('#column_table').bootstrapTable({
-            url: g_RESTAPI_HOST_BASE+'datasets/'+dataset_id+'/columns/'
-        })
+    _p.loadColumnArea = function (dataset_id) {
+        datasetId = dataset_id
         _p.loadPreConf().done(function() {
-            _p.showConfColumns()
-        })
-        $('#column_table').show()
+            var columns = [{
+                class: 'txt_l',
+                field: 'name',
+                title: 'Name'
+            }, {
+                field: 'datatype',
+                title: 'Datatype',
+                formatter: '$FRONTEND._p.datatypeFormatter'
+            }, {
+                field: 'missing',
+                title: 'Missing'
+            }, {
+                field: 'imputation',
+                title: 'Imputation',
+                formatter: '$FRONTEND._p.imputationFormatter'
+            }, {
+                field: 'transformationStrategy',
+                title: 'Power<br>Transformation',
+                formatter: '$FRONTEND._p.powerTransFormatter',
+                visible: showPowerTrans
+            }, {
+                field: 'useOutlier',
+                title: 'Outlier<br>Elimination',
+                formatter: '$FRONTEND._p.outlierEliFormatter',
+                visible: showOutlier
+            }, {
+                field: 'unique',
+                title: 'Unique'
+            }, {
+                field: 'mean',
+                title: 'Mean'
+            }, {
+                field: 'min',
+                title: 'Min'
+            }, {
+                field: 'max',
+                title: 'Max'
+            }, {
+                field: 'id',
+                title: 'Distribution',
+                formatter: '$FRONTEND._p.distributionFormatter'
+            }, {
+                field: 'isFeature',
+                title: 'Features',
+                formatter: '$FRONTEND._p.featureFormatter'
+            }, {
+                field: 'isTarget',
+                title: 'Target',
+                formatter: '$FRONTEND._p.targetFormatter',
+            }, {
+                field: 'taskType',
+                title: 'Task Type',
+                visible: false
+            }]
+            $('#preview_area').hide()
+            $('#column_table').bootstrapTable('destroy')
+            $('#column_table').bootstrapTable({
+                url:  g_RESTAPI_HOST_BASE+'datasets/'+datasetId+'/columns/',
+                columns: columns
+            })
 
+            var max_width = 1280
+            if(showPowerTrans) max_width += 150
+            if(showOutlier) max_width += 150
+            $('main > .container').css("max-width", max_width);
+
+            $('#column_area').show()
+        })
 
 
     }
 
-    _p.deletePreprocess = function(){
+    _p.deletePreprocess = function(dataset_id){
         return $.ajax({
             type: 'delete',
-            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id+'/dataset_preprocessed/',
+            url: g_RESTAPI_HOST_BASE + 'datasets/'+dataset_id+'/',
             dataType: 'json',
             contentType: 'application/json',
             success: function (resultData, textStatus, request) {
@@ -490,33 +529,33 @@ var $FRONTEND = (function (module) {
         return str;
     };
 
-    _p.showConfColumns = function(){
-        if(showOutlier) {
-            $('#column_table').bootstrapTable('showColumn', 'useOutlier')
-            //$('#outlier_col').css("width", "150px")
-        }else{
-            $('#column_table').bootstrapTable('hideColumn', 'useOutlier')
-            //$('#outlier_col').css("width", "0px")
-        }
-        if(showPowerTrans){
-            $('#column_table').bootstrapTable('showColumn', 'transformationStrategy')
-            //$('#powerTrans_col').css("width", "150px")
-        } else{
-            $('#column_table').bootstrapTable('hideColumn', 'transformationStrategy')
-            //$('#powerTrans_col').css("width", "0px")
-        }
-
-        if (showOutlier && showPowerTrans) {
-            $('main > .container').css("max-width", "1580px");//1280+150*2
-        }
-        else if (showOutlier || showPowerTrans) {
-            $('main > .container').css("max-width", "1430px"); //1280+150
-        }
-        else {
-            $('main > .container').css("max-width", "1280px");
-        }
-        $('#column_table').bootstrapTable('refresh')
-    }
+    // _p.showOptColumns = function(){
+    //     if(showOutlier) {
+    //         $('#column_table').bootstrapTable('showColumn', 'useOutlier')
+    //         //$('#outlier_col').css("width", "150px")
+    //     }else{
+    //         $('#column_table').bootstrapTable('hideColumn', 'useOutlier')
+    //         //$('#outlier_col').css("width", "0px")
+    //     }
+    //     if(showPowerTrans){
+    //         $('#column_table').bootstrapTable('showColumn', 'transformationStrategy')
+    //         //$('#powerTrans_col').css("width", "150px")
+    //     } else{
+    //         $('#column_table').bootstrapTable('hideColumn', 'transformationStrategy')
+    //         //$('#powerTrans_col').css("width", "0px")
+    //     }
+    //
+    //     if (showOutlier && showPowerTrans) {
+    //         $('main > .container').css("max-width", "1580px");//1280+150*2
+    //     }
+    //     else if (showOutlier || showPowerTrans) {
+    //         $('main > .container').css("max-width", "1430px"); //1280+150
+    //     }
+    //     else {
+    //         $('main > .container').css("max-width", "1280px");
+    //     }
+    //     $('#column_table').bootstrapTable('refresh')
+    // }
 
     _p.updateColumn = function(rowid) {
         var data = {};
@@ -527,7 +566,7 @@ var $FRONTEND = (function (module) {
         data.isFeature = $('#feature_' + rowid).is(":checked");
         return $.ajax({
             type: 'patch',
-            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id+'/dataset/columns/{0}/'.format(rowid),
+            url: g_RESTAPI_HOST_BASE + 'datasets/{0}/columns/{1}/'.format(datasetId, rowid),//runtimes/'+runtime_id+'/dataset_preprocessed/columns/{0}/'.format(rowid),
             data: data,
             dataType: 'json',
             success: function (resultData, textStatus, request) {
@@ -559,11 +598,16 @@ var $FRONTEND = (function (module) {
     };
 
     _p.updateTarget = function(rowid){
+        if(curStep > 1){
+            alert("Once selected, you cannot change the target.")
+            $('#column_table').bootstrapTable('refresh')
+            return false
+        }
         var data ={};
         data.isTarget = false;
         return $.ajax({
             type: 'patch',
-            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/dataset/columns/{0}/'.format(targetColumn.id),
+            url: g_RESTAPI_HOST_BASE + 'datasets/{0}/columns/{1}/'.format(datasetId, rowid),//'runtimes/'+runtime_id + '/dataset_preprocessed/columns/{0}/'.format(targetColumn.id),
             data: data,
             dataType: 'json',
             success: function (resultData, textStatus, request) {
@@ -575,7 +619,7 @@ var $FRONTEND = (function (module) {
                     data.isTarget = true;
                     $.ajax({
                         type: 'patch',
-                        url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/dataset/columns/{0}/'.format(rowid),
+                        url: g_RESTAPI_HOST_BASE + 'datasets/{0}/columns/{1}/'.format(datasetId, rowid),//'runtimes/'+runtime_id + '/dataset_preprocessed/columns/{0}/'.format(rowid),
                         data: data,
                         dataType: 'json',
                         success: function (resultData, textStatus, request) {
@@ -745,11 +789,13 @@ var $FRONTEND = (function (module) {
     };
 
     //Modal 관련
-
+    _p.setRunModal = function(){
+        $('#target').text(targetColumn.name)
+    }
     _p.setCorrModal = function(){
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/stat_corr/',
+            url: g_RESTAPI_HOST_BASE+ 'datasets/{0}/stat_corr/'.format(datasetId),//'runtimes/'+runtime_id+'/dataset/stat_corr/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
@@ -778,6 +824,8 @@ var $FRONTEND = (function (module) {
 
     }
 
+
+
     _p.reset = function(){
         // $('#gen_over_sampling').val("None");
         // $('#gen_time_out').val(60);
@@ -795,7 +843,7 @@ var $FRONTEND = (function (module) {
     _p.loadPreConf = function() {
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/dataset/',
+            url: g_RESTAPI_HOST_BASE + 'datasets/{0}/'.format(datasetId),//'runtimes/'+runtime_id + '/dataset/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
@@ -967,7 +1015,7 @@ var $FRONTEND = (function (module) {
     _p.autoConf = function(){
         return $.ajax({
             type: 'post',
-            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id +'/dataset/recommend_config/',
+            url: g_RESTAPI_HOST_BASE + 'datasets/{0}/recommend_config/'.format(datasetId), //+ 'runtimes/'+runtime_id +'/dataset/recommend_config/',
             dataType: 'json',
             contentType: 'application/json',
             success: function (resultData, textStatus, request) {
@@ -1196,7 +1244,7 @@ var $FRONTEND = (function (module) {
         // }
         return $.ajax({
             type: 'patch',
-            url : g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/dataset/',
+            url : g_RESTAPI_HOST_BASE + 'datasets/{0}/'.format(datasetId),//'runtimes/'+runtime_id + '/dataset/',
             data: JSON.stringify(data),
             dataType: 'json',
             contentType: 'application/json',
@@ -1222,9 +1270,10 @@ var $FRONTEND = (function (module) {
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
-                    _p.loadStatus()
-                    alert("Preprocess를 요청하였습니다.");
+                    //_p.loadStatus()
                     _p.loadPipeline()
+                    alert("Preprocess를 요청하였습니다.");
+
                 } else {
                     alert(resultData['error_msg']);
                 }
