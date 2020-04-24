@@ -41,11 +41,8 @@
 
     <script>
         $(function(){
-            // 테이블네비게이션 추가
-            $('.bootstrap-table').append('<div class="tbl_nav"><button class="btn_prev"><span class="screen_out">prev<span></button><button class="btn_next float-right"><span class="screen_out">next<span></button></div>');
-
             // 테이블네비게이션 sticky
-            var offset= $('#preview_table').offset().top;
+            var offset= $('.tbl_preprocess').offset().top;
             $(window).scroll(function(){
                 if (window.pageYOffset >= offset) {
                     $('.tbl_nav').addClass("sticky")
@@ -53,27 +50,6 @@
                     $('.tbl_nav').removeClass("sticky");
                 }
             })
-
-
-
-            // 테이블좌우스크롤
-            var maxscroll = $('.fixed-table-body').width();
-
-            $('.tbl_nav').find('.btn_prev').click(function(){
-                $('.fixed-table-body').animate(
-                    {scrollLeft: -1* maxscroll}, "slow"
-                )
-                console.log($('.fixed-table-body').scrollLeft())
-            });
-            $('.tbl_nav').find('.btn_next').click(function(){
-                $('.fixed-table-body').animate(
-                    {scrollLeft: maxscroll}, "slow"
-                )
-                console.log($('.fixed-table-body').scrollLeft())
-            });
-
-
-
         });
     </script>
 
@@ -164,7 +140,7 @@
                                     </li>
                                     <li class="nav-item item_point">
                                         <a class="nav-link active" href="#">
-                                            <span class="ico_automl ico_set">preprocess</span>                                            
+                                            <span class="ico_automl ico_set">preprocess</span>
                                             <span class="ico_automl ico_del">삭제</span>
                                         </a>
                                     </li>
@@ -210,6 +186,10 @@
                                data-pagination="false"
                                class="tbl_g tbl_preprocess">
                         </table>
+                        <div class="tbl_nav">
+                            <button class="btn_prev" disabled="disabled"><span class="screen_out">prev<span></button>
+                            <button class="btn_next float-right"><span class="screen_out">next<span></button>
+                        </div>
                     </div>
                     <div id="column_area">
 
@@ -240,7 +220,7 @@
                         </tr>
                         </thead>-->
                         </table>
-
+                        <div class="tbl_nav"><button class="btn_prev"><span class="screen_out">prev<span></button><button class="btn_next float-right"><span class="screen_out">next<span></button></div>
 
                         <div class="area_util2">
                             <!-- <strong class="tit_select">AutoML Type</strong>
@@ -470,8 +450,8 @@
                                 </a>
                                 <!-- <div class="item_dl type_inline">
                                     <dt>                                  ============= processor Add Dataset Button =============
-                                        <div class="wrap_check">        seems like there is no button except general page Check it...  
-                                            <input type="checkbox" name="" id="pre_DrpNCols" class="inp_check modal_check conf">       1st check box NoN 
+                                        <div class="wrap_check">        seems like there is no button except general page Check it...
+                                            <input type="checkbox" name="" id="pre_DrpNCols" class="inp_check modal_check conf">       1st check box NoN
                                             <label for="processor1" class="label_check"><span class="ico_automl ico_check"></span>Drop NaN Columns</label>
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
