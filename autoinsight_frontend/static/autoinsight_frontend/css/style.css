@@ -83,7 +83,6 @@ strong {
 
 table {
     width:100%;
-    table-layout: fixed;
     border-collapse: separate;
     border-spacing: 0;
 }
@@ -744,9 +743,9 @@ main {
     left:0;
     right:0;
     height:13px;
-    background:#fff;  
-    background:-webkit-gradient(linear, left bottom, left top, color-stop(65%, rgba(255,255,255,1)), to(rgba(255,255,255,0)));  
-    background:linear-gradient(0deg, rgba(255,255,255,1) 65%, rgba(255,255,255,0) 100%);  
+    background:#fff;
+    background:-webkit-gradient(linear, left bottom, left top, color-stop(65%, rgba(255,255,255,1)), to(rgba(255,255,255,0)));
+    background:linear-gradient(0deg, rgba(255,255,255,1) 65%, rgba(255,255,255,0) 100%);
     z-index: 10;
 }
 .list_menu .active {
@@ -949,6 +948,9 @@ main {
     float: right;
     width:285px;
 }
+#preview_area, #column_area {
+    position: relative;
+}
 .wrap_experiment .tbl_g,
 .wrap_preprocess .tbl_g {
     table-layout: unset;
@@ -985,7 +987,7 @@ main {
     position: relative;
 }
 .tab_preprocess .nav-item:first-child{
-    padding-left:10px;
+    padding-left:11px;
 }
 .tab_preprocess .nav-item:after {
     content:'';
@@ -1000,7 +1002,8 @@ main {
     position: relative;
     width:35px;
     height:100%;
-    padding:0
+    padding:0;
+    cursor: pointer;
 }
 .tab_preprocess .nav-link:hover, .tab_preprocess .nav-link:focus {
     background-color:transparent
@@ -1016,6 +1019,11 @@ main {
     background-color:#9289ab;
     border-radius: 50%;
     z-index: 1;
+}
+.tab_preprocess .nav-link .loader {
+    width:35px;
+    height:35px;
+    margin-top:23px;
 }
 .tab_preprocess .item_add:after {
     left:-15px;
@@ -1050,18 +1058,22 @@ main {
 .tab_preprocess .ico_on {
     position: absolute;
     top:15px;
-    right:-9px;
+    right:-6px;
     width:20px;
     height:20px;
     background-position: -100px -75px;
 }
 .tab_preprocess .ico_del {
+    display: none;
     position: absolute;
     top:15px;
     right:-7px;
     width:20px;
     height:20px;
     background-position: -100px -100px;
+}
+.tab_preprocess .nav-link:hover .ico_del {
+    display: block;
 }
 .tab_preprocess .item_point .nav-link {
     width:55px;
@@ -1095,7 +1107,7 @@ main {
     margin-top:13px;
     background-position: -40px -170px;
 }
-.tab_preprocess .item_point .nav-link .ico_del {
+.tab_preprocess .item_point .nav-link .ico_automl {
     top:0;
 }
 .btn_run {
@@ -1106,7 +1118,7 @@ main {
     width:19px;
     height:13px;
     margin: 7px 0 0 7px;
-    background-position: -100px 0;    
+    background-position: -100px 0;
 }
 .tbl_nav button {
     position: absolute;
@@ -1133,10 +1145,14 @@ main {
     -webkit-transform: rotate(225deg);
             transform: rotate(225deg);
 }
+.tbl_nav button:disabled {
+    cursor: default;
+    opacity: .3;
+}
 .tbl_nav.sticky button {
     position:fixed;
 }
-.tbl_nav .btn_next {    
+.tbl_nav .btn_next {
     left:50%;
     margin-left:550px;
 }
@@ -2094,9 +2110,9 @@ path.highcharts-grid-line {
     100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
 }
 
-.help-text {  
-    margin:0 0 20px;  
-    color: #999999; 
+.help-text {
+    margin:0 0 20px;
+    color: #999999;
     font-weight: normal;
 }
 .help-tab {
