@@ -790,7 +790,49 @@ var $FRONTEND = (function (module) {
 
     //Modal 관련
     _p.setRunModal = function(){
-        $('#target').text(targetColumn.name)
+        var CONFIRM_RUNTIMES_QUERY = `
+                                    query {
+                                      runtime (id: `+runtime_id+`) {
+                                        id
+                                        metric
+                                        availableMetrics
+                                        estimatorType
+                                        dataset {
+                                          id
+                                          name
+                                          targetName
+                                        }
+                                      }
+                                    }
+                                    `;
+
+        return $.ajax({
+            type: 'post',
+            url: g_RESTAPI_HOST_BASE+'graphql',
+            data: JSON.stringify({query:CONFIRM_RUNTIMES_QUERY}),
+            contentType: "application/json",
+            success: function (resultData, textStatus, request) {
+                if(resultData.data.runtime.estimatorType==="CLASSIFIER"){
+                    $('#classification_confirm').addClass("active")
+                }else{
+                    $('#regression_confirm').addClass("active")
+                }
+                $('#target_confirm').text(resultData.data.runtime.dataset.targetName);
+                metricCombobox ="";
+                $.each(resultData.data.runtime.availableMetrics, function( index, value ) {
+                    if(value === resultData.data.runtime.metric){
+                        metricCombobox += '<option value="'+value+'" selected>'+value+'</option>';
+                    }else{
+                        metricCombobox += '<option value="'+value+'">'+value+'</option>';
+                    }
+                });
+                $('#metric_confirm').html(metricCombobox);
+            },
+            error: function (res) {
+                console.log(res)
+            }
+        });
+
     }
     _p.setCorrModal = function(){
         return $.ajax({

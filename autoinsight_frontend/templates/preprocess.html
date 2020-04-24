@@ -219,26 +219,26 @@
                             <!--<thead>
                             <tr>
                                 <th class="txt_l" data-field="name">Name-->
-                                    <!--<button class="btn_sort" type="button"><span class="ico_automl ico_sort">정렬</span></button>-->
-                                <!--</th>
-                                <th data-field="datatype" data-formatter="$FRONTEND._p.datatypeFormatter">Datatype</th>
-                                <th data-field="missing">Missing</th>
-                                <th data-field="imputation" data-formatter="$FRONTEND._p.imputationFormatter">Imputation
-                                </th>
-                                <th data-field="transformationStrategy" data-formatter="$FRONTEND._p.powerTransFormatter">Power<br>Transformation
-                                </th>
-                                <th data-field="useOutlier" data-formatter="$FRONTEND._p.outlierEliFormatter">Outlier<br>Elimination
-                                </th>
-                                <th data-field="unique">Unique</th>
-                                <th data-field="mean">Mean</th>
-                                <th data-field="min">Min</th>
-                                <th data-field="max">Max</th>
-                                <th data-field="id" data-formatter="$FRONTEND._p.distributionFormatter">Distribution</th>
-                                <th data-field="isFeature" data-formatter="$FRONTEND._p.featureFormatter">Features</th>
-                                <th data-field="isTarget" data-formatter="$FRONTEND._p.targetFormatter">Target</th>
-                                <th data-field="taskType" data-visible="false">Task Type</th>
-                            </tr>
-                            </thead>-->
+                            <!--<button class="btn_sort" type="button"><span class="ico_automl ico_sort">정렬</span></button>-->
+                            <!--</th>
+                            <th data-field="datatype" data-formatter="$FRONTEND._p.datatypeFormatter">Datatype</th>
+                            <th data-field="missing">Missing</th>
+                            <th data-field="imputation" data-formatter="$FRONTEND._p.imputationFormatter">Imputation
+                            </th>
+                            <th data-field="transformationStrategy" data-formatter="$FRONTEND._p.powerTransFormatter">Power<br>Transformation
+                            </th>
+                            <th data-field="useOutlier" data-formatter="$FRONTEND._p.outlierEliFormatter">Outlier<br>Elimination
+                            </th>
+                            <th data-field="unique">Unique</th>
+                            <th data-field="mean">Mean</th>
+                            <th data-field="min">Min</th>
+                            <th data-field="max">Max</th>
+                            <th data-field="id" data-formatter="$FRONTEND._p.distributionFormatter">Distribution</th>
+                            <th data-field="isFeature" data-formatter="$FRONTEND._p.featureFormatter">Features</th>
+                            <th data-field="isTarget" data-formatter="$FRONTEND._p.targetFormatter">Target</th>
+                            <th data-field="taskType" data-visible="false">Task Type</th>
+                        </tr>
+                        </thead>-->
                         </table>
 
 
@@ -1098,42 +1098,37 @@
                 </div>
                 <div class="body_popup">
                     <ul class="nav nav-tabs list_menu">
-                        <li class="nav-item active">
+                        <li id="classification_confirm" class="nav-item">
                             <a href="#" class="nav-link">Classification</a>
                         </li>
-                        <li class="nav-item">
+                        <li id="regression_confirm" class="nav-item">
                             <a href="#" class="nav-link">Regression</a>
                         </li>
                     </ul>
-                    <div class="tab-content box_content">
-                        <div class="tab-pane fade active in" id="" role="tabpanel" aria-labelledby="general-tab">
-                            <dl>
-                                <div class="item_dl type_inline">
-                                    <dt>Target</dt>
-                                    <dd>
-                                        <h4 id="target"></h4>
-                                        <!--<div class="wrap_select">
+                    <dl>
+                        <div class="item_dl type_inline">
+                            <dt>Target</dt>
+                            <dd>
+                                <h4 id="target_confirm"></h4>
+                                <!--<div class="wrap_select">
 
-                                            <select name="" id="" class="form-control">
-                                                <option value="">select</option>
-                                            </select>
-                                        </div>-->
-                                    </dd>
-                                </div>
-                                <!--<div class="item_dl type_inline">
-                                    <dt>Metric</dt>
-                                    <dd>
-                                        <div class="wrap_select">
-                                            <select name="" id="" class="form-control">
-                                                <option value="">select</option>
-                                            </select>
-                                        </div>
-                                        <button class="btn_set"><span class="ico_automl ico_set">설정</span></button>
-                                    </dd>
+                                    <select name="" id="" class="form-control">
+                                        <option value="">select</option>
+                                    </select>
                                 </div>-->
-                            </dl>
+                            </dd>
                         </div>
-                    </div>
+                        <div class="item_dl type_inline">
+                            <dt>Metric</dt>
+                            <dd>
+                                <div class="wrap_select">
+                                    <select id="metric_confirm" class="form-control" disabled>
+                                    </select>
+                                </div>
+                                <!--<button class="btn_set"><span class="ico_automl ico_set">설정</span></button>-->
+                            </dd>
+                        </div>
+                    </dl>
                 </div>
                 <div class="footer_popup">
                     <div class="wrap_btn txt_r">

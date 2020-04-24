@@ -29,7 +29,7 @@ var $FRONTEND = (function (module) {
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData.error_msg == null) {
-                    if (resultData.status === "learning") {
+                    if (resultData.status === "learning" || resultData.status === "preprocessing") {
                         $('#leaderboard_loader').addClass('loader')
                         $('#stopButton').attr('disabled', false)
                     }
@@ -64,21 +64,28 @@ var $FRONTEND = (function (module) {
                     status ="finished"
                     console.log('stopped', resultData.error_msg)
                 } else {
-                    if (resultData.status !== "learning") {
+                    if (resultData.status !== "learning" && resultData.status !== "preprocessing") {
                         $('#leaderboard_loader').removeClass('loader')
                         clearInterval(interval)
                         status ="finished"
                     }
-                    percent = Math.round(resultData.doneSlot / resultData.timeout * 100) + '%'
+                    if(resultData.status === "preprocessing"){
+                        percent = 0+'%'
+                        elapsed = "preprocessing"
+                    }else{
+                        percent = Math.round(resultData.doneSlot / resultData.timeout * 100) + '%'
+                        var s = parseInt(resultData.doneSlot)
+                        var h = Math.floor(s / 3600) // Get whole hours
+                        s -= h * 3600
+                        var m = Math.floor(s / 60) // Get remaining minutes
+                        s -= m * 60
+                        elapsed = h + ':' + (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s)
+                    }
+
                     $('#percent').text(percent)
                     $('#progress_bar').css('width', percent)
 
-                    var s = parseInt(resultData.doneSlot)
-                    var h = Math.floor(s / 3600) // Get whole hours
-                    s -= h * 3600
-                    var m = Math.floor(s / 60) // Get remaining minutes
-                    s -= m * 60
-                    elapsed = h + ':' + (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s)
+
                     $('#elapsed').text(elapsed)
 
                     $('#learderboard_table').bootstrapTable('refresh', { silent: true })
@@ -196,13 +203,13 @@ var $FRONTEND = (function (module) {
         }
     }
 
-    _p.metricFormatter = function (value, row) {
+    _p.infoFormatter = function (value, row) {
         if(row.allMetricsStatus =="INIT"){
-            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-metric" onclick="$FRONTEND._p.setMetricModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'post')
+            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-info" onclick="$FRONTEND._p.setInfoModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'post')
         }else if(row.allMetricsStatus =="PROCESSING"){
             return '<button class="btn_s btn_border" disabled>Processing</button>';
         }else if(row.allMetricsStatus =="DONE"){
-            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-metric" onclick="$FRONTEND._p.setMetricModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'get')
+            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-info" onclick="$FRONTEND._p.setInfoModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'get')
         }else{
             return '<button class="btn_s btn_border" disabled>Error</button>';
         }
@@ -262,9 +269,9 @@ var $FRONTEND = (function (module) {
     // Modal 관련
     _p.setStatsnModal = function (model_pk, method) {
         if(method==='post') {
-            $('#modal-information #modal-information-loading').show()
-            $('#modal-information #modal-information-done').hide()
-            $('#modal-information #modal-information-error').hide()
+            $('#modal-stats #modal-stats-loading').show()
+            $('#modal-stats #modal-stats-done').hide()
+            $('#modal-stats #modal-stats-error').hide()
         }
 
         return $.ajax({
@@ -279,13 +286,13 @@ var $FRONTEND = (function (module) {
                     }, 1000)
                     return false
                 }else if(resultData.status ==="ERROR"){
-                    $('#modal-information #modal-information-loading').hide()
-                    $('#modal-information #modal-information-done').hide()
-                    $('#modal-information #modal-information-error').show()
+                    $('#modal-stats #modal-stats-loading').hide()
+                    $('#modal-stats #modal-stats-done').hide()
+                    $('#modal-stats #modal-stats-error').show()
                 }else {
-                    $('#modal-information #modal-information-loading').hide()
-                    $('#modal-information #modal-information-error').hide()
-                    $('#modal-information #modal-information-done').show()
+                    $('#modal-stats #modal-stats-loading').hide()
+                    $('#modal-stats #modal-stats-error').hide()
+                    $('#modal-stats #modal-stats-done').show()
                     if(resultData.featureImportancesJson !== null){
                         _p.drawFeature(resultData.featureImportancesJson)
                         $('#featureChart_tab').show()
@@ -310,9 +317,9 @@ var $FRONTEND = (function (module) {
 
             },
             error: function (res) {
-                $('#modal-information #modal-information-loading').hide()
-                $('#modal-information #modal-information-done').hide()
-                $('#modal-information #modal-information-error').show()
+                $('#modal-stats #modal-stats-loading').hide()
+                $('#modal-stats #modal-stats-done').hide()
+                $('#modal-stats #modal-stats-error').show()
                 alert(res.responseJSON.message)
             }
         })
@@ -335,7 +342,7 @@ var $FRONTEND = (function (module) {
             success: function (resultData, textStatus, request) {
                 if(resultData.status==="INIT" || resultData.status==="PROCESSING"){
                     setTimeout(function(){
-                         _p.setExplanationModal(model_pk, 'get')
+                        _p.setExplanationModal(model_pk, 'get')
                         if(status ==="finished") $('#learderboard_table').bootstrapTable('refresh', { silent: true })
                     }, 1000)
                     return false
@@ -356,11 +363,11 @@ var $FRONTEND = (function (module) {
         })
     }
 
-    _p.setMetricModal = function (model_pk, method) {
+    _p.setInfoModal = function (model_pk, method) {
         if(method==='post') {
-            $('#modal-metric #modal-metric-loading').show()
-            $('#modal-metric #modal-metric-done').hide()
-            $('#modal-metric #modal-metric-error').hide()
+            $('#modal-info #modal-info-loading').show()
+            $('#modal-info #modal-info-done').hide()
+            $('#modal-info #modal-info-error').hide()
         }
 
         return $.ajax({
@@ -370,31 +377,31 @@ var $FRONTEND = (function (module) {
             success: function (resultData, textStatus, request) {
                 if(resultData.status==="INIT" || resultData.status==="PROCESSING"){
                     setTimeout(function(){
-                        _p.setMetricModal(model_pk, 'get');
+                        _p.setInfoModal(model_pk, 'get');
                         if(status ==="finished") $('#learderboard_table').bootstrapTable('refresh', { silent: true })
                     }, 1000)
                     return false
                 }else if(resultData.status ==="ERROR"){
-                    $('#modal-metric #modal-metric-loading').hide()
-                    $('#modal-metric #modal-metric-done').hide()
-                    $('#modal-metric #modal-metric-error').show()
+                    $('#modal-info #modal-info-loading').hide()
+                    $('#modal-info #modal-info-done').hide()
+                    $('#modal-info #modal-info-error').show()
                 }else {
-                    $('#modal-metric #modal-metric-loading').hide()
-                    $('#modal-metric #modal-metric-error').hide()
+                    $('#modal-info #modal-info-loading').hide()
+                    $('#modal-info #modal-info-error').hide()
 
                     var tablehtml = ""
                     $.each( resultData.allMetricsJson, function( key, value ) {
                         tablehtml += '<tr><td>'+key+'</td><td>'+value+'</td></tr>'
                     })
                     $('#metric_tbody').html(tablehtml)
-                    $('#modal-metric #modal-metric-done').show()
+                    $('#modal-info #modal-info-done').show()
                 }
 
             },
             error: function (res) {
-                $('#modal-metric #modal-metric-loading').hide()
-                $('#modal-metric #modal-metric-done').hide()
-                $('#modal-metric #modal-metric-error').show()
+                $('#modal-info #modal-info-loading').hide()
+                $('#modal-info #modal-info-done').hide()
+                $('#modal-info #modal-info-error').show()
                 console.log(res)
             }
         })
