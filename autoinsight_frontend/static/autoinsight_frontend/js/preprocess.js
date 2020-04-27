@@ -792,7 +792,7 @@ var $FRONTEND = (function (module) {
     };
 
     //Modal 관련
-    _p.setRunModal = function(){
+    _p.showRunSetting = function(){
         var CONFIRM_RUNTIMES_QUERY = `
                                     query {
                                       runtime (id: `+runtime_id+`) {
@@ -816,9 +816,11 @@ var $FRONTEND = (function (module) {
             contentType: "application/json",
             success: function (resultData, textStatus, request) {
                 if(resultData.data.runtime.estimatorType==="CLASSIFIER"){
-                    $('#classification_confirm').addClass("active")
+                    $('#regression_confirm').removeClass("on")
+                    $('#classification_confirm').addClass("on")
                 }else{
-                    $('#regression_confirm').addClass("active")
+                    $('#classification_confirm').removeClass("on")
+                    $('#regression_confirm').addClass("on")
                 }
                 $('#target_confirm').text(resultData.data.runtime.dataset.targetName);
                 metricCombobox ="";
@@ -830,6 +832,8 @@ var $FRONTEND = (function (module) {
                     }
                 });
                 $('#metric_confirm').html(metricCombobox);
+                $('#run-setting').css('display','block')
+                $('#runButton').attr("onclick","$FRONTEND._p.runAutoml()" )
             },
             error: function (res) {
                 console.log(res)

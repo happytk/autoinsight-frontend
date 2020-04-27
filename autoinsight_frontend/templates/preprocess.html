@@ -157,13 +157,13 @@
                                     </li>-->
                                 </ul>
                             </div>
-                            <button id="runButton" class="btn_b btn_run" type="button" data-toggle="modal" data-target="#modal-run" onclick="$FRONTEND._p.setRunModal()">
+                            <button id="runButton" class="btn_b btn_run" type="button" data-toggle="modal" data-target="#modal-run" onclick="$FRONTEND._p.showRunSetting()">
                                 Run AutoML <span class="ico_automl ico_arr"></span>
                             </button>
-                            <div class="layer_automl" style="display: block;"> <!-- Run AutoML 클릭시 block 처리-->
+                            <div id="run-setting" class="layer_automl"> <!-- Run AutoML 클릭시 block 처리-->
                                 <div class="wrap_btn">
-                                    <button type="button" class="btn_m on">Classification</button> <!-- 선택시 on 클래스 추가 -->
-                                    <button type="button" class="btn_m">Regression</button>
+                                    <button id="classification_confirm" type="button" class="btn_m">Classification</button> <!-- 선택시 on 클래스 추가 -->
+                                    <button id="regression_confirm" type="button" class="btn_m">Regression</button>
                                 </div>
                                 <dl>
                                     <div class="item_dl type_inline">
@@ -193,15 +193,15 @@
                         <ul class="list_count">
                             <li>
                                 <span class="ico_automl ico_arr"></span>Row Count <span id="row_count" class="txt_emph"></span>
-                                <button class="btn_add" data-toggle="modal" data-target="#modal-augment">
-                                    <!--<span class="ico_automl ico_add">추가</span>-->
-                                </button>
+                                <!--<button class="btn_add" data-toggle="modal" data-target="#modal-augment">
+                                    <span class="ico_automl ico_add">추가</span>
+                                </button>-->
                             </li>
                             <li>
                                 <span class="ico_automl ico_arr"></span>Column Count <span id="col_count" class="txt_emph"></span>
-                                <button class="btn_add">
-                                    <!--<span class="ico_automl ico_add">추가</span>-->
-                                </button>
+                                <!--<button class="btn_add">
+                                    <span class="ico_automl ico_add">추가</span>
+                                </button>-->
                             </li>
                         </ul>
                     </div>
@@ -211,10 +211,10 @@
                                data-pagination="false"
                                class="tbl_g tbl_preprocess">
                         </table>
-                        <div class="tbl_nav">
+                        <!--<div class="tbl_nav">
                             <button class="btn_prev" disabled="disabled"><span class="screen_out">prev<span></button>
                             <button class="btn_next float-right"><span class="screen_out">next<span></button>
-                        </div>
+                        </div>-->
                     </div>
                     <div id="column_area">
 
@@ -1095,7 +1095,7 @@
     <!-- //Customize Train Split -->
 
     <!-- run automl -->
-    <div id="modal-run" class="modal popup_run">
+    <!--<div id="modal-run" class="modal popup_run">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="header_popup">
@@ -1103,10 +1103,10 @@
                 </div>
                 <div class="body_popup">
                     <ul class="nav nav-tabs list_menu">
-                        <li id="classification_confirm" class="nav-item">
+                        <li class="nav-item">
                             <a href="#" class="nav-link">Classification</a>
                         </li>
-                        <li id="regression_confirm" class="nav-item">
+                        <li class="nav-item">
                             <a href="#" class="nav-link">Regression</a>
                         </li>
                     </ul>
@@ -1115,12 +1115,12 @@
                             <dt>Target</dt>
                             <dd>
                                 <h4 id="target_confirm"></h4>
-                                <!--<div class="wrap_select">
+                                <div class="wrap_select">
 
                                     <select name="" id="" class="form-control">
                                         <option value="">select</option>
                                     </select>
-                                </div>-->
+                                </div>-
                             </dd>
                         </div>
                         <div class="item_dl type_inline">
@@ -1130,7 +1130,7 @@
                                     <select id="metric_confirm" class="form-control" disabled>
                                     </select>
                                 </div>
-                                <!--<button class="btn_set"><span class="ico_automl ico_set">설정</span></button>-->
+                                <button class="btn_set"><span class="ico_automl ico_set">설정</span></button>
                             </dd>
                         </div>
                     </dl>
@@ -1146,7 +1146,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <!-- //run automl -->
 
 
