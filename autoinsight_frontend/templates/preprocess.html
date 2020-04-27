@@ -160,6 +160,31 @@
                             <button id="runButton" class="btn_b btn_run" type="button" data-toggle="modal" data-target="#modal-run" onclick="$FRONTEND._p.setRunModal()">
                                 Run AutoML <span class="ico_automl ico_arr"></span>
                             </button>
+                            <div class="layer_automl" style="display: block;"> <!-- Run AutoML 클릭시 block 처리-->
+                                <div class="wrap_btn">
+                                    <button type="button" class="btn_m on">Classification</button> <!-- 선택시 on 클래스 추가 -->
+                                    <button type="button" class="btn_m">Regression</button>
+                                </div>
+                                <dl>
+                                    <div class="item_dl type_inline">
+                                        <dt>Target</dt>
+                                        <dd>
+                                            <span id="target_confirm"></span>
+                                        </dd>
+                                    </div>
+                                    <div class="item_dl type_inline">
+                                        <dt>Metric</dt>
+                                        <dd>
+                                            <div class="wrap_select">
+                                                <select id="metric_confirm" class="form-control" disabled>
+                                                </select>
+                                            </div>
+                                            <!--<button class="btn_set"><span class="ico_automl ico_set">설정</span></button>-->
+                                        </dd>
+                                    </div>
+                                </dl>
+                                <span class="tail"></span>
+                            </div>
                         </div>
                         <!-- <div class="wrap_btn">
                             <button class="btn_m btn_border">Export</button>

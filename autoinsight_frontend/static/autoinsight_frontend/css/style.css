@@ -950,6 +950,7 @@ main {
 }
 #preview_area, #column_area {
     position: relative;
+    margin-top: 20px;
 }
 .wrap_experiment .tbl_g,
 .wrap_preprocess .tbl_g {
@@ -1119,6 +1120,54 @@ main {
     height:13px;
     margin: 7px 0 0 7px;
     background-position: -100px 0;
+}
+.layer_automl {
+    display: none;
+    position: absolute;
+    top:10px;
+    right:40px;
+    padding:15px 15px 20px;
+    border:1px solid #bbb;
+    border-radius: 10px;
+    background-color:#fff;
+    box-shadow: 0 1px 10px #eee;
+}
+.layer_automl:before {
+    content:'';
+    position: absolute;
+    bottom:-6px;
+    left:50%;
+    width: 10px;
+    height: 10px;
+    margin-left:-5px;
+    border:1px solid #bbb;
+    border-width: 0 1px 1px 0;
+    background-color: #fff;
+    transform: rotate(45deg);
+}
+.layer_automl .wrap_btn {
+    overflow: hidden;
+    display: flex;
+    margin:0 0 15px 0;
+    border-radius: 5px;
+}
+.layer_automl .wrap_btn button {
+    flex:1;
+    margin:0;
+    color:#999999;    border-radius: 0;
+    background-color:#e6e6e6;
+}
+.layer_automl .wrap_btn button:first-child {
+    border-radius: 5px 0 0 5px;
+}
+
+.layer_automl .wrap_btn button:last-child {
+    border-radius: 0 5px 5px 0;
+}
+.layer_automl .wrap_btn .on {
+    color:#000;
+    border:1px solid #d6d6d6;
+    background-color:#fff;
 }
 .tbl_nav button {
     position: absolute;
