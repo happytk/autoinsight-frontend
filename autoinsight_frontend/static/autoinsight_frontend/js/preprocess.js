@@ -1,7 +1,7 @@
 var $FRONTEND = (function (module) {
     var _p = module._p = module._p || {};
 
-    var targetColumn, isFirst, showOutlier, showPowerTrans, distributions, curStep, maxStep, datasetId, status;
+    var targetColumn, isFirst, estimator_type, showOutlier, showPowerTrans, distributions, curStep, maxStep, datasetId, status;
     //초기화면 세팅
     _p.init = function(){
 
@@ -10,7 +10,11 @@ var $FRONTEND = (function (module) {
 
         isFirst = true
 
-
+        $('html').click(function(e){
+            if(!$(e.target).hasClass('layer')){
+                $('#run-setting').css('display','none')
+            }
+        })
         $('#column_table').on('load-success.bs.table', function (data, jqXHR) {
             targetColumn={};
             if(jqXHR.length<20){
@@ -22,13 +26,13 @@ var $FRONTEND = (function (module) {
                         $('#feature_'+column['id']).attr("disabled", true);
                         if(isFirst === true){
                             if(column.taskType === 'multiclass' || column.taskType === 'binary'){
-                                $('#estimator_type').val("classifier");
+                                $estimator_type = "classifier"
                                 $('#metric').val('accuracy');
                             }else{
-                                $('#estimator_type').val("regressor");
+                                estimator_type = "classifier"
                                 $('#metric').val('r2');
                             }
-                            if(status === 'ready') _p.updateEstimatorType();
+                            if(status === 'ready') _p.updateEstimatorType(estimator_type, false);
                             isFirst = false
                         }
                         targetColumn.id = column.id;
@@ -47,13 +51,13 @@ var $FRONTEND = (function (module) {
                         $('#feature_'+column['id']).attr("disabled", true);
                         if(isFirst === true){
                             if(column.taskType === 'multiclass' || column.taskType === 'binary'){
-                                $('#estimator_type').val("classifier");
+                                estimator_type = "classifier"
                                 $('#metric').val('accuracy');
                             }else{
-                                $('#estimator_type').val("regressor");
+                                estimator_type = "regressor"
                                 $('#metric').val('r2');
                             }
-                            if(status === 'ready') _p.updateEstimatorType();
+                            if(status === 'ready') _p.updateEstimatorType(estimator_type, false);
                             isFirst = false
                         }
                         targetColumn.id = column.id;
@@ -77,9 +81,9 @@ var $FRONTEND = (function (module) {
 
         });
 
-        $('#estimator_type').change(function() {
-            _p.updateEstimatorType();
-        });
+        // $('#estimator_type').change(function() {
+        //     _p.updateEstimatorType();
+        // });
 
 
         $('#modal-setting').on('shown.bs.modal', function (e) {
@@ -171,7 +175,6 @@ var $FRONTEND = (function (module) {
                     $('.pre-conf').prop('disabled', true);
 
                 }
-                $('#estimator_type').val(resultData.estimatorType);
             },
             error: function (res) {
                 alert(res.responseJSON.message);
@@ -340,6 +343,47 @@ var $FRONTEND = (function (module) {
             }
         });
     }
+
+    //Runtime 관련
+    _p.updateEstimatorType = function(estimator_type, show) {
+        var data = {};
+        data.estimatorType = estimator_type//$('#estimator_type option:selected').val();
+        return $.ajax({
+            type: 'patch',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id+'/',
+            data: JSON.stringify(data),
+            dataType: 'json', //
+            success: function (resultData, textStatus, request) {
+                if (resultData['error_msg'] == null ){
+                    if(show) _p.setRunSetting()
+                }
+            },
+            contentType: 'application/json',
+            error: function (res) {
+                alert(res.responseJSON.message);
+            }
+        })
+    };
+
+    _p.updateMetric = function() {
+        var data = {};
+        data.metric = $('#metric_confirm option:selected').val()
+        return $.ajax({
+            type: 'patch',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id+'/',
+            data: JSON.stringify(data),
+            dataType: 'json', //
+            success: function (resultData, textStatus, request) {
+                if (resultData['error_msg'] == null ){
+                    _p.setRunSetting()
+                }
+            },
+            contentType: 'application/json',
+            error: function (res) {
+                alert(res.responseJSON.message);
+            }
+        })
+    };
 
     //Preprocess 관련
 
@@ -585,21 +629,6 @@ var $FRONTEND = (function (module) {
         })
     };
 
-    _p.updateEstimatorType = function(rowid) {
-        var data = {};
-        data.estimatorType = $('#estimator_type option:selected').val();
-        return $.ajax({
-            type: 'patch',
-            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id+'/',
-            data: JSON.stringify(data),
-            dataType: 'json',
-            contentType: 'application/json',
-            error: function (res) {
-                alert(res.responseJSON.message);
-            }
-        })
-    };
-
     _p.updateTarget = function(rowid){
         if(curStep > 1){
             alert("Once selected, you cannot change the target.")
@@ -630,11 +659,11 @@ var $FRONTEND = (function (module) {
                                 targetColumn.id = resultData.id;
                                 targetColumn.name = resultData.name;
                                 if(resultData.taskType === 'multiclass' || resultData.taskType === 'binary'){
-                                    $('#estimator_type').val("classifier");
+                                    estimator_type = "classifier"
                                 }else{
-                                    $('#estimator_type').val("regressor");
+                                    estimator_type = "regressor"
                                 }
-                                _p.updateEstimatorType();
+                                _p.updateEstimatorType(estimator_type, false);
                                 $('#feature_'+rowid).prop("checked", false);
                                 $('#feature_'+rowid).attr("disabled", true);
                             } else {
@@ -792,8 +821,13 @@ var $FRONTEND = (function (module) {
     };
 
     //Modal 관련
-    _p.showRunSetting = function(){
-        var CONFIRM_RUNTIMES_QUERY = `
+    _p.setRunSetting = function(){
+        if($('#run-setting').css('display')==='block'){
+            _p.runAutoml()
+        } else{
+
+
+            var CONFIRM_RUNTIMES_QUERY = `
                                     query {
                                       runtime (id: `+runtime_id+`) {
                                         id
@@ -809,36 +843,36 @@ var $FRONTEND = (function (module) {
                                     }
                                     `;
 
-        return $.ajax({
-            type: 'post',
-            url: g_RESTAPI_HOST_BASE+'graphql',
-            data: JSON.stringify({query:CONFIRM_RUNTIMES_QUERY}),
-            contentType: "application/json",
-            success: function (resultData, textStatus, request) {
-                if(resultData.data.runtime.estimatorType==="CLASSIFIER"){
-                    $('#regression_confirm').removeClass("on")
-                    $('#classification_confirm').addClass("on")
-                }else{
-                    $('#classification_confirm').removeClass("on")
-                    $('#regression_confirm').addClass("on")
-                }
-                $('#target_confirm').text(resultData.data.runtime.dataset.targetName);
-                metricCombobox ="";
-                $.each(resultData.data.runtime.availableMetrics, function( index, value ) {
-                    if(value === resultData.data.runtime.metric){
-                        metricCombobox += '<option value="'+value+'" selected>'+value+'</option>';
+            return $.ajax({
+                type: 'post',
+                url: g_RESTAPI_HOST_BASE+'graphql',
+                data: JSON.stringify({query:CONFIRM_RUNTIMES_QUERY}),
+                contentType: "application/json",
+                success: function (resultData, textStatus, request) {
+                    if(resultData.data.runtime.estimatorType==="CLASSIFIER"){
+                        $('#regression_confirm').removeClass("on")
+                        $('#classification_confirm').addClass("on")
                     }else{
-                        metricCombobox += '<option value="'+value+'">'+value+'</option>';
+                        $('#classification_confirm').removeClass("on")
+                        $('#regression_confirm').addClass("on")
                     }
-                });
-                $('#metric_confirm').html(metricCombobox);
-                $('#run-setting').css('display','block')
-                $('#runButton').attr("onclick","$FRONTEND._p.runAutoml()" )
-            },
-            error: function (res) {
-                console.log(res)
-            }
-        });
+                    $('#target_confirm').text(resultData.data.runtime.dataset.targetName);
+                    metricCombobox ="";
+                    $.each(resultData.data.runtime.availableMetrics, function( index, value ) {
+                        if(value === resultData.data.runtime.metric){
+                            metricCombobox += '<option value="'+value+'" selected>'+value+'</option>';
+                        }else{
+                            metricCombobox += '<option value="'+value+'">'+value+'</option>';
+                        }
+                    });
+                    $('#metric_confirm').html(metricCombobox);
+                    $('#run-setting').css('display','block')
+                },
+                error: function (res) {
+                    console.log(res)
+                }
+            });
+        }
 
     }
     _p.setCorrModal = function(){
