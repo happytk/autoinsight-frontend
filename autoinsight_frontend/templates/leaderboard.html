@@ -256,7 +256,7 @@
     <!-- //Model Explanation -->
 
     <!-- Model Metric -->
-    <div class="modal fade popup_info" id="modal-info" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"  aria-hidden="true">
+    <!-- <div class="modal fade popup_info" id="modal-info" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"  aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="header_popup">
@@ -291,7 +291,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <!-- //Model Metric -->
 
     <!-- Model Deploy -->
@@ -318,10 +318,10 @@
     </div>
     <!-- //Model Explanation -->
 
-    
+
 
     <!-- information -->
-    <div id="modal-information" class="modal popup_infomation fade in">
+    <div id="modal-info" class="modal popup_infomation fade in">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="header_popup">
@@ -329,91 +329,68 @@
                 </div>
                 <div class="body_popup">
                     <ul class="nav nav-tabs list_menu">
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Pipeline</a>
-                        </li>
                         <li class="nav-item active">
-                            <a href="#" class="nav-link">Metrics</a>
+                            <a class="nav-link" data-toggle="tab" href="#pipeline" role="tab" aria-controls="pipeline" aria-selected="true">Pipeline</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="metric_tab" class="nav-link" data-toggle="tab" href="#metric" role="tab" aria-controls="metric" aria-selected="false">Metrics</a>
                         </li>
                     </ul>
                     <div class="tab-content box_content">
-                        <div class="tab-pane">
-                            <div class="txt_r">
+
+                        <div class="tab-pane fade active in" id="pipeline" role="tabpanel" aria-labelledby="pipeline-tab">
+                            <!--<div class="txt_r">
                                 <button type="button" class="btn_m btn_border">Download</button>
-                            </div>
-                            <img src="/static/autoinsight_frontend/img/img_pipeline.png" class="img_pipeline" alt="" width="801" height="300">
-                        </div>
-                        <div class="tab-pane fade active in">
+                            </div>-->
                             <div class="help-text">
-                                You can check various metrics to compare model performance.
+                                See piepeline for the model selected.
                             </div>
                             <table class="tbl_g table-striped">
                                 <thead>
                                 <tr>
-                                    <th>Metric</th>
-                                    <th>Value</th>
+                                    <th>Step</th>
+                                    <th>Details</th>
                                 </tr>
                                 </thead>
-                                <tbody id="metric_tbody">
-                                    <tr>
-                                        <td class="txt_l">accuracy</td>
-                                        <td class="txt_l">0.9666666666666668</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="txt_l">balancedAccuracy</td>
-                                        <td class="txt_l">0.9666666666666666</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="txt_l">f1Macro</td>
-                                        <td class="txt_l">0.9666499582289056</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="txt_l">f1Micro</td>
-                                        <td class="txt_l">0.9666666666666668</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="txt_l">f1Weighted</td>
-                                        <td class="txt_l">0.9666499582289056</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="txt_l">precisionMacro</td>
-                                        <td class="txt_l">0.9672727272727272</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="txt_l">precisionMicro</td>
-                                        <td class="txt_l">0.9666666666666668</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="txt_l">precisionWeighted</td>
-                                        <td class="txt_l">0.9672727272727274</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="txt_l">recallMacro</td>
-                                        <td class="txt_l">0.9666666666666666</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="txt_l">recallMicro</td>
-                                        <td class="txt_l">0.9666666666666668</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="txt_l">recallWeighted</td>
-                                        <td class="txt_l">0.9666666666666668</td>
-                                    </tr>
+                                <tbody id="pipeline_tbody">
                                 </tbody>
                             </table>
+                            <!--<img src="/static/autoinsight_frontend/img/img_pipeline.png" class="img_pipeline" alt="" width="801" height="300">-->
+                        </div>
+                        <div class="tab-pane fade" id="metric" role="tabpanel" aria-labelledby="metric-tab">
+                            <div class="body_popup" id="modal-info-loading">
+                                Loading... Please wait.
+                            </div>
+                            <div class="body_popup" id="modal-info-error">
+                                Sorry. This model cannot load Metrics.
+                            </div>
+                            <div class="body_popup" id="modal-info-done">
+                                <div class="help-text">
+                                    You can check various metrics to compare model performance.
+                                </div>
+                                <table class="tbl_g table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Metric</th>
+                                        <th>Value</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="metric_tbody">
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="footer_popup">
-                    <div class="wrap_btn txt_r">
-                        <button type="button" class="btn_m btn_confirm" data-dismiss="modal">Save</button>
-                        <button type="button" class="btn_m" data-dismiss="modal">Cancel</button>
+                    <div class="footer_popup">
+                        <div class="wrap_btn txt_r">
+                            <button type="button" class="btn_m btn_confirm" data-dismiss="modal">Save</button>
+                            <button type="button" class="btn_m" data-dismiss="modal">Cancel</button>
+                        </div>
+                        <button type="button" class="btn_close" data-dismiss="modal"><span class="ico_automl ico_close">팝업닫기</span></button>
                     </div>
-                    <button type="button" class="btn_close" data-dismiss="modal"><span class="ico_automl ico_close">팝업닫기</span></button>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- //information -->
+        <!-- //information -->
 
 {% endblock %}

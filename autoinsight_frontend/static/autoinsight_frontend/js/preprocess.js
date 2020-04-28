@@ -262,6 +262,7 @@ var $FRONTEND = (function (module) {
                                 pipelinehtml += '<li class="nav-item"><a class="nav-link"><span class="ico_automl ico_table">결과</span><span class="ico_automl ico_on">선택됨</span></a></li>'
                                 pipelinehtml += '<li class="nav-item"><a class="nav-link active"><span class="ico_automl ico_set">preprocess</span><span class="ico_automl ico_del">삭제</span></a></li>'
                                 pipelinehtml += '<li class="nav-item pipeline preview"><a class="nav-link"><div class="loader"></div></a></li>'
+                                $('#runButton').prop('disabled', true)
                                 setTimeout(function(){
                                     _p.loadPipeline()
                                     return false
@@ -272,7 +273,7 @@ var $FRONTEND = (function (module) {
                                 step += 1
                                 maxStep = step
                                 pipelinehtml += '<li class="nav-item item_add" ><a class="nav-link active"><span class="ico_automl ico_add" onclick="$FRONTEND._p.addElement('+value.id+')">추가</span></a></li>'
-                                $('#runButton').prop('disabled', false)
+                                if(status==="ready") $('#runButton').prop('disabled', false)
                                 _p.loadPreviewArea(value.id)
                             }
 
@@ -1009,6 +1010,9 @@ var $FRONTEND = (function (module) {
                 if(resultData['useTpot']){
                     $('#tpot').prop( "checked", true );
                 }
+                if(resultData['useEnsemble']){
+                    $('#ensemble').prop( "checked", true );
+                }
 
                 if(resultData['includeOneHotEncoding']){
                     $('#pre_1HotEncod').prop( "checked", true );
@@ -1189,6 +1193,12 @@ var $FRONTEND = (function (module) {
             data.useTpot = true;
         }else{
             data.useTpot = false;
+        }
+
+        if  ($('#ensemble').is(':checked')) {
+            data.useEnsemble = true;
+        }else{
+            data.useEnsemble = false;
         }
 
         if  ($('#pre_1HotEncod').is(':checked')) {

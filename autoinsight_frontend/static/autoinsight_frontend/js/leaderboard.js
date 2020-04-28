@@ -364,12 +364,45 @@ var $FRONTEND = (function (module) {
     }
 
     _p.setInfoModal = function (model_pk, method) {
+        $('#metric_tab').attr("onclick", "$FRONTEND._p.loadMetrics(\'{0}\',\'{1}\')".format(model_pk,method));
+        return $.ajax({
+            type: 'get',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/{0}/models/{1}/pipeline_info/'.format(runtime_id, model_pk),
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                if(resultData.status ==="ERROR"){
+                    $('#modal-info #modal-info-loading').hide()
+                    $('#modal-info #modal-info-done').hide()
+                    $('#modal-info #modal-info-error').show()
+                }else {
+                    $('#modal-info #modal-info-loading').hide()
+                    $('#modal-info #modal-info-error').hide()
+                    var tablehtml = ""
+                    $.each( resultData.namedSteps, function( key, value ) {
+                        tablehtml += '<tr><td class="txt_l">'+key+'</td><td class="txt_l">'+value+'</td></tr>'
+                    })
+                    $('#pipeline_tbody').html(tablehtml)
+                    $('#modal-info #modal-info-done').show()
+                }
+
+            },
+            error: function (res) {
+                $('#modal-info #modal-info-loading').hide()
+                $('#modal-info #modal-info-done').hide()
+                $('#modal-info #modal-info-error').show()
+                console.log(res)
+            }
+        })
+
+
+    }
+
+    _p.loadMetrics = function (model_pk, method) {
         if(method==='post') {
             $('#modal-info #modal-info-loading').show()
             $('#modal-info #modal-info-done').hide()
             $('#modal-info #modal-info-error').hide()
         }
-
         return $.ajax({
             type: method,
             url: g_RESTAPI_HOST_BASE + 'runtimes/{0}/models/{1}/metrics/'.format(runtime_id, model_pk),
@@ -377,7 +410,7 @@ var $FRONTEND = (function (module) {
             success: function (resultData, textStatus, request) {
                 if(resultData.status==="INIT" || resultData.status==="PROCESSING"){
                     setTimeout(function(){
-                        _p.setInfoModal(model_pk, 'get');
+                        _p.loadMetrics(model_pk, 'get');
                         if(status ==="finished") $('#learderboard_table').bootstrapTable('refresh', { silent: true })
                     }, 1000)
                     return false
@@ -390,8 +423,8 @@ var $FRONTEND = (function (module) {
                     $('#modal-info #modal-info-error').hide()
 
                     var tablehtml = ""
-                    $.each( resultData.allMetricsJson, function( key, value ) {
-                        tablehtml += '<tr><td>'+key+'</td><td>'+value+'</td></tr>'
+                    $.each(resultData.allMetricsJson, function( key, value ) {
+                        tablehtml += '<tr><td class="txt_l">'+key+'</td><td class="txt_l">'+value+'</td></tr>'
                     })
                     $('#metric_tbody').html(tablehtml)
                     $('#modal-info #modal-info-done').show()
