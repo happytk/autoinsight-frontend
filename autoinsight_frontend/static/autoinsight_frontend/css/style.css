@@ -100,6 +100,9 @@ table {
 .txt_r {
     text-align: right !important;
 }
+.type_block {
+    display: block;
+}
 .screen_out {
     overflow: hidden;
     position: absolute;
@@ -1772,8 +1775,47 @@ path.highcharts-grid-line {
 .popup_infomation .modal-dialog {
     width:924px;
 }
+.popup_infomation .step_pipeline {
+    display: flex;
+    width:100%;
+    text-align: center;
+    align-items: center;
+    margin:35px 0;
+}
+.popup_infomation .step_pipeline li:first-child {
+    position: relative;
+    align-self: flex-start;
+}
 .popup_infomation .img_pipeline {
-    margin-top:40px;
+    margin-top:36px;
+}
+.popup_infomation .item_step {
+    display: inline-block;
+    width:175px;
+    padding:20px 14px;
+    vertical-align: middle;
+    color:#fff;
+    font-weight: 700;
+    border-radius: 3px;
+    background-color:#1d359f;
+}
+.popup_infomation .list_preprocess {
+    margin-left:-12px;
+    padding:15px;
+    border-radius: 3px;
+    background-color:#e4e8fc;
+}
+.popup_infomation .list_preprocess li:nth-child(even) .item_step {
+    background-color:#1e42e4;
+}
+.popup_infomation .step_pipeline > li:last-child .item_step {
+    background-color:#ff8100
+}
+.popup_infomation .step_pipeline > li:nth-last-child(2) .item_step {
+    background-color:#f3b205
+}
+.popup_infomation .step_pipeline .type_block {
+    margin:0 auto
 }
 #featureChart g.highcharts-yaxis path.highcharts-tick:first-of-type, .popup_info g.highcharts-yaxis path.highcharts-tick:nth-last-child(3) {
     display: none;

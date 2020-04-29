@@ -356,6 +356,36 @@
                                 </tbody>
                             </table>
                             <!--<img src="/static/autoinsight_frontend/img/img_pipeline.png" class="img_pipeline" alt="" width="801" height="300">-->
+                            <ol class="step_pipeline">
+                                <li>
+                                    <img src="/static/autoinsight_frontend/img/img_pipeline1.png" class="img_pipeline" alt="">
+                                </li>
+
+                                <li>
+                                    <ol class="list_preprocess">
+                                        <li>
+                                            <span class="item_step">NanPreprocessor</span>
+                                            <img src="/static/autoinsight_frontend/img/arr_pipeline1.png" class="type_block" alt="next">
+                                        </li>
+                                        <li>
+                                            <span class="item_step">DateTimePreprocessor</span>
+                                            <img src="/static/autoinsight_frontend/img/arr_pipeline1.png" class="type_block" alt="next">
+                                        </li>
+                                        <li>
+                                            <span class="item_step">CategoricalPreprocessor</span>
+                                        </li>
+                                    </ol>
+                                </li>
+
+                                <li>
+                                    <img src="/static/autoinsight_frontend/img/arr_pipeline2.png" alt="next">
+                                    <span class="item_step">Preprocessor Output</span>
+                                </li>
+                                <li>
+                                    <img src="/static/autoinsight_frontend/img/arr_pipeline2.png" alt="next">
+                                    <span class="item_step">LGBMRegressor</span>
+                                </li>
+                            </ol>
                         </div>
                         <div class="tab-pane fade" id="metric" role="tabpanel" aria-labelledby="metric-tab">
                             <div class="body_popup" id="modal-info-loading">
