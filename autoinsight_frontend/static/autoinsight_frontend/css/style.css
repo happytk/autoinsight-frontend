@@ -547,7 +547,7 @@ dt {
     margin-right:1px;
 }
 .tbl_g canvas {
-    height:40px;
+    height:40px !important;
 }
 .tbl_g button + button {
     margin-left:2px;
@@ -978,12 +978,10 @@ main {
     margin:16px 30px 0 0;
     border-bottom: 4px solid #e6e6e6;
 }
-.tab_preprocess .nav {
-    height: 73px;
-}
 .tab_preprocess .nav-item {
     float: left;
-    height: 100%;
+    height: 73px;
+    margin-top: 15px;
     padding-left:52px;
     text-align: center;
 }
@@ -1777,6 +1775,7 @@ path.highcharts-grid-line {
 }
 .popup_infomation .step_pipeline {
     display: flex;
+    justify-content: space-between;
     width:100%;
     text-align: center;
     align-items: center;
