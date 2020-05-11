@@ -1,11 +1,9 @@
 var $FRONTEND = (function (module) {
     var _p = module._p = module._p || {};
 
-    var status;
+    var targetColumnId;
     //초기화면 세팅
     _p.init = function(){
-
-        status = _p.loadStatus()
         _p.loadRuntimeInfo()
 
         $('.gen-conf').change(function() {
@@ -26,16 +24,19 @@ var $FRONTEND = (function (module) {
 
     }
 
-    _p.loadStatus = function (){
-        status =""
+
+
+
+    //Runtime 관련
+
+    _p.loadRuntimeInfo = function() {
         $.ajax({
             type: 'get',
             url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id + '/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
-                //화면 세팅
-                status = resultData.status
-                if(status === "ready"){
+                console.log(resultData.status)
+                if(resultData.status === "ready"){
                     $('#loader').removeClass("loader");
                     $('#runButton').prop('disabled', false);
                     $('.toggle-disable').prop('disabled', false);
@@ -43,7 +44,7 @@ var $FRONTEND = (function (module) {
                     $('.pre-conf').prop('disabled', false);
 
                 }else{
-                    if(status === "preprocessing"){
+                    if(resultData.status === "preprocessing"){
                         $('#preprocess_loader').addClass("loader");
                     } else if(resultData.status === "learning"){
                         $('#leaderboard_loader').addClass("loader");
@@ -55,26 +56,9 @@ var $FRONTEND = (function (module) {
                     $('.pre-conf').prop('disabled', true);
 
                 }
-            },
-            error: function (res) {
-                alert(res.responseJSON.message);
-            }
-        });
-        return status
-    };
-
-
-
-
-    //Runtime 관련
-
-    _p.loadRuntimeInfo = function() {
-        return $.ajax({
-            type: 'get',
-            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id,
-            dataType: 'json',
-            success: function (resultData, textStatus, request) {
                 $("#runtime_name").text("Exeperiment-"+resultData['id']);
+
+                $('#estimator_type').val(resultData.estimatorType)
                 metricCombobox ="";
                 $.each(resultData['availableMetrics'], function( index, value ) {
                     if(value === resultData['metric']){
@@ -197,6 +181,31 @@ var $FRONTEND = (function (module) {
                 alert(res.responseJSON.message);
             }
         });
+
+        return $.ajax({
+            type: 'get',
+            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/columns/',
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                if (resultData['error_msg'] == null) {
+                    columnCombobox ="";
+                    $.each(resultData, function( index, value ) {
+                        if(value.isTarget){
+                            targetColumnId = value.id
+                            columnCombobox += '<option value="'+value.id+'" selected>'+value.name+'</option>';
+                        }else{
+                            columnCombobox += '<option value="'+value.id+'">'+value.name+'</option>';
+                        }
+                    });
+                    $('#target').html(columnCombobox)
+                } else {
+                    alert(resultData['error_msg']);
+                }
+            },
+            error: function (res) {
+                console.log(res);
+            }
+        })
     }
 
     //AJAX call
@@ -210,6 +219,7 @@ var $FRONTEND = (function (module) {
 
     _p.updateGenConf = function() {
         var data = {};
+        data.estimatorType = $('#estimator_type option:selected').val();
         data.metric = $('#metric option:selected').val();
         data.resamplingStrategy = $('#resampling_strategy option:selected').val();
         data.resamplingStrategyHoldoutTrainSize = $('#split_testdata_rate').val();
@@ -278,11 +288,48 @@ var $FRONTEND = (function (module) {
             data: JSON.stringify(data),
             dataType: 'json',
             contentType: 'application/json',
-            success: function (resultData, textStatus, request) {
-
-            },
             error: function (res) {
                 console.log(res)
+            }
+        })
+    };
+
+    _p.updateTarget = function(){
+        var data ={};
+        data.isTarget = false;
+        return $.ajax({
+            type: 'patch',
+            url: g_RESTAPI_HOST_BASE+'runtimes/{0}/dataset/columns/{1}/'.format(runtime_id, targetColumnId),
+            data: data,
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                if (resultData['error_msg'] == null ){
+                    var data ={};
+                    var rowid = $('#target option:selected').val()
+                    data.isFeature = false;
+                    data.isTarget = true;
+                    $.ajax({
+                        type: 'patch',
+                        url: g_RESTAPI_HOST_BASE+'runtimes/{0}/dataset/columns/{1}/'.format(runtime_id, rowid),
+                        data: data,
+                        dataType: 'json',
+                        success: function (resultData, textStatus, request) {
+                            if (resultData['error_msg'] == null ){
+                                targetColumnId = resultData.id;
+                            } else {
+                                 console.log(resultData['error_msg']);
+                            }
+                        },
+                        error: function (res) {
+                             console.log(res.responseJSON.message);
+                        }
+                    })
+                } else {
+                    console.log(resultData['error_msg']);
+                }
+            },
+            error: function (res) {
+                 console.log(res.responseJSON.message);
             }
         })
     };

@@ -1012,10 +1012,10 @@ main {
     border-radius: 0 5px 5px 0;
     background-color:#fff;
 }
-.cont_overview .list_general dt {
+.cont_overview .list_evaluation dt {
     min-width:230px
 }
-.cont_overview .list_general .wrap_select {
+.cont_overview .list_evaluation .wrap_select {
     height: 40px;
 }
 .cont_overview .item_evaluation > div {
