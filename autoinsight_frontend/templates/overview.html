@@ -39,20 +39,6 @@
 
     </script>
 
-    <script>
-        $(function(){
-            // 테이블네비게이션 sticky
-            var offset= $('.tbl_preprocess').offset().top;
-            $(window).scroll(function(){
-                if (window.pageYOffset >= offset) {
-                    $('.tbl_nav').addClass("sticky")
-                } else {
-                    $('.tbl_nav').removeClass("sticky");
-                }
-            })
-        });
-    </script>
-
 {% endblock %}
 
 {% block page_content %}
@@ -70,10 +56,10 @@
             <div class="container">
                 <nav>
                     <ul class="list_menu">
-                        <li>
+                        <li class="active">
                             <a class="link_menu" href="/overview/{{ runtime_id }}/">Overview</a>
                         </li>
-                        <li class="active">
+                        <li>
                             <a class="link_menu" href="/preprocess/{{ runtime_id }}/">Preprocess<div id="preprocess_loader"></div></a>
                         </li>
                         <li>
@@ -122,77 +108,6 @@
                     </div>
 
                     <div class="area_util">
-                        <div class="info_table">
-                            <div class="tab_preprocess">
-                                <ul id="pipeline" class="nav">
-                                    <!--<li class="nav-item">
-                                        <a class="nav-link active" href="#">
-                                            <span class="ico_automl ico_table">결과</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link active" href="#">
-                                            <span class="ico_automl ico_set">preprocess</span>
-                                            <span class="ico_automl ico_del">삭제</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item item_point">
-                                        <a class="nav-link active" href="#">
-                                            <span class="ico_automl ico_table">결과</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item item_point">
-                                        <a class="nav-link active" href="#">
-                                            <span class="ico_automl ico_set">preprocess</span>
-                                            <span class="ico_automl ico_del">삭제</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link active" href="#">
-                                            <span class="ico_automl ico_table">결과</span>
-                                            <span class="ico_automl ico_on">선택됨</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item item_add">
-                                        <a class="nav-link active" href="#">
-                                            <span class="ico_automl ico_add">추가</span>
-                                        </a>
-                                    </li>-->
-                                </ul>
-                            </div>
-                            <button id="runButton" class="btn_b btn_run" type="button" data-toggle="modal" data-target="#modal-run" onclick="$FRONTEND._p.setRunSetting()">
-                                Run AutoML <span class="ico_automl ico_arr"></span>
-                            </button>
-                            <div id="run-setting" class="layer_automl layer"> <!-- Run AutoML 클릭시 block 처리-->
-                                <div class="wrap_btn layer">
-                                    <button id="classification_confirm" type="button" class="btn_m" onclick="$FRONTEND._p.updateEstimatorType('classifier',true)">Classification</button> <!-- 선택시 on 클래스 추가 -->
-                                    <button id="regression_confirm" type="button" class="btn_m" onclick="$FRONTEND._p.updateEstimatorType('regressor',true)">Regression</button>
-                                </div>
-                                <dl>
-                                    <div class="item_dl type_inline">
-                                        <dt>Target</dt>
-                                        <dd>
-                                            <span id="target_confirm"></span>
-                                        </dd>
-                                    </div>
-                                    <div class="item_dl type_inline">
-                                        <dt>Metric</dt>
-                                        <dd>
-                                            <div class="wrap_select">
-                                                <select id="metric_confirm" class="form-control layer" onchange="$FRONTEND._p.updateMetric()">
-                                                </select>
-                                            </div>
-                                            <!--<button class="btn_set"><span class="ico_automl ico_set">설정</span></button>-->
-                                        </dd>
-                                    </div>
-                                </dl>
-                                <span class="tail"></span>
-                            </div>
-                        </div>
-                        <!-- <div class="wrap_btn">
-                            <button class="btn_m btn_border">Export</button>
-                            <button class="btn_m btn_border">Delete</button>
-                        </div> -->
                         <ul class="list_count">
                             <li>
                                 <span class="ico_automl ico_arr"></span>Row Count <span id="row_count" class="txt_emph"></span>
@@ -208,115 +123,6 @@
                             </li>
                         </ul>
                     </div>
-                    <div id="preview_area">
-                        <button class="btn_m btn_correlation" type="button" data-toggle="modal" data-target="#modal-correlation" onclick="$FRONTEND._p.setCorrModal()">Feature correlation</button>
-                        <table id="preview_table"
-                               data-pagination="false"
-                               class="tbl_g tbl_preprocess">
-                        </table>
-                        <!--<div class="tbl_nav">
-                            <button class="btn_prev" disabled="disabled"><span class="screen_out">prev<span></button>
-                            <button class="btn_next float-right"><span class="screen_out">next<span></button>
-                        </div>-->
-                    </div>
-                    <div id="column_area">
-
-                        <table id="column_table"
-                               data-pagination="false"
-                               class="tbl_g tbl_preprocess">
-                            <!--<thead>
-                            <tr>
-                                <th class="txt_l" data-field="name">Name-->
-                            <!--<button class="btn_sort" type="button"><span class="ico_automl ico_sort">정렬</span></button>-->
-                            <!--</th>
-                            <th data-field="datatype" data-formatter="$FRONTEND._p.datatypeFormatter">Datatype</th>
-                            <th data-field="missing">Missing</th>
-                            <th data-field="imputation" data-formatter="$FRONTEND._p.imputationFormatter">Imputation
-                            </th>
-                            <th data-field="transformationStrategy" data-formatter="$FRONTEND._p.powerTransFormatter">Power<br>Transformation
-                            </th>
-                            <th data-field="useOutlier" data-formatter="$FRONTEND._p.outlierEliFormatter">Outlier<br>Elimination
-                            </th>
-                            <th data-field="unique">Unique</th>
-                            <th data-field="mean">Mean</th>
-                            <th data-field="min">Min</th>
-                            <th data-field="max">Max</th>
-                            <th data-field="id" data-formatter="$FRONTEND._p.distributionFormatter">Distribution</th>
-                            <th data-field="isFeature" data-formatter="$FRONTEND._p.featureFormatter">Features</th>
-                            <th data-field="isTarget" data-formatter="$FRONTEND._p.targetFormatter">Target</th>
-                            <th data-field="taskType" data-visible="false">Task Type</th>
-                        </tr>
-                        </thead>-->
-                        </table>
-                        <!--<div class="tbl_nav"><button class="btn_prev"><span class="screen_out">prev<span></button><button class="btn_next float-right"><span class="screen_out">next<span></button></div>-->
-
-                        <div class="area_util2">
-                            <!-- <strong class="tit_select">AutoML Type</strong>
-                            <div class="wrap_select">
-                                <select id="estimator_type" class="form-control toggle-disable">
-                                    <option value = "classifier" selected>
-                                        <a class="link_option" href="#none">Classification</a>
-                                    </option>
-                                    <option value = "regressor">
-                                        <a class="link_option" href="#none">Regression</a>
-                                    </option>
-                                </select>
-                            </div> -->
-                            <div class="wrap_btn">
-                                <button class="btn_m btn_border" type="button" data-toggle="modal" data-target="#modal-setting">
-                                    Configure
-                                </button>
-                                <button class="btn_m" type="button" onclick="$FRONTEND._p.preprocess()">
-                                    Preprocess
-                                </button>
-                            </div>
-                            <!--<div class="wrap_btn">
-                                <button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.autoConf()">Auto Configure</button>
-                                <button class="btn_m btn_setup" type="button" data-toggle="modal" data-target="#modal-setting">
-                                    <span class="ico_automl ico_setup">설정</span>
-                                </button>
-                                <button class="btn_m btn_confirm toggle-disable" type="button" onclick="$FRONTEND._p.preprocess()">Preprocess</button>
-                            </div>-->
-                        </div>
-                    </div>
-                    <!--<h3 class="tit_table">Preview</h3>
-                    <nav>
-                        <ul class="nav nav-tabs list_menu" id="previewTab"  role="tablist">
-                            <li class="nav-item active">
-                                <a class="nav-link link_menu" data-toggle="tab" href="#original" role="tab" aria-controls="original" aria-selected="true">Original</a>
-                            </li>
-                            <li id="preprocessed_link" class="nav-item">
-                                <a class="nav-link link_menu" data-toggle="tab" href="#preprocessed" role="tab" aria-controls="preprocessed" aria-selected="false" onclick="$FRONTEND._p.loadPreprocessed()">Preprocessed</a>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="tab-content" id="previewTabContent">
-                        <div class="tab-pane fade active in" id="original" role="tabpanel" aria-labelledby="original-tab">
-                            <table id="original_table"
-                                   class="tbl_g tbl_preprocess">
-                            </table>
-                        </div>
-                        <div class="tab-pane fade" id="preprocessed" role="tabpanel" aria-labelledby="preprocessed-tab">
-                            <table id="preprocessed_table"
-                                   class="tbl_g tbl_preprocess">
-                            </table>
-                        </div>
-                    </div>-->
-                </section>
-            </div>
-        </main>
-        <!-- //main -->
-
-    </div>
-
-
-    <div class="modal fade popup_parameter" id="modal-setting" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"  aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="header_popup">
-                    <strong class="tit_popup">Preprocessor Setting</strong>
-                </div>
-                <div class="body_popup">
                     <ul class="nav nav-tabs list_menu" id="myTab"  role="tablist">
                         <li class="nav-item active">
                             <a class="nav-link link_menu" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">General</a>
@@ -473,7 +279,6 @@
 
                         <!-- Preprocessor -->
                         <div class="tab-pane fade" id="processor" role="tabpanel" aria-labelledby="processor-tab">
-                            <button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.autoConf()"style="position: absolute; left: 100px;">Auto Configure</button>
                             <dl class="list_processor">
                                 <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                     <div class='txt_tooltip'>
@@ -482,129 +287,11 @@
                                         The options shown here is in the order of execution.
                                     </div>
                                 </a>
-                                <!-- <div class="item_dl type_inline">
-                                    <dt>                                  ============= processor Add Dataset Button =============
-                                        <div class="wrap_check">        seems like there is no button except general page Check it...
-                                            <input type="checkbox" name="" id="pre_DrpNCols" class="inp_check modal_check conf">       1st check box NoN
-                                            <label for="processor1" class="label_check"><span class="ico_automl ico_check"></span>Drop NaN Columns</label>
-                                            <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                                <div class="txt_tooltip">
-                                                    Column 내에서 threshold 이상의 결측값 비율이 있을 경우, <br>해당 Column을 삭제합니다.
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </dt>
-                                    <dd>
-                                        <label for="na_col_drop_threshold" class="label_txt">Threshold(%)</label>
-                                        <input id="na_col_drop_threshold" type="number" name="" value="0.9" min="0" max="1" step="0.05" class="inp_txt conf">
-                                    </dd>
-                                </div> -->
 
-                                <div class="item_dl type_inline">
-                                    <dt>
-                                        <div class="wrap_check">
-                                            <input type="checkbox" name="" id="pre_OtlrElmntn" class="inp_check modal_check pre-conf">
-                                            <label for="pre_OtlrElmntn" class="label_check"><span class="ico_automl ico_check"></span>Outlier Elimination</label>
-                                            <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                                <div class="txt_tooltip">
-                                                    If there exist outliers in the selected columns, preprocessor deletes the corresponding rows from the dataset.
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </dt>
-                                    <!--<dd>
-                                        <label for="processor4_text" class="label_txt">Column</label>
-                                        <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                            <div class="txt_tooltip">
-                                                Outlier 제거할 column
-                                            </div>
-                                        </a>
-                                        <select name="" id="pre_Ocolumn" class="form-control columns conf" multiple="multiple">
-                                        </select>
-                                    </dd>-->
-                                    <dd>
-                                        <label for="processor4_text" class="label_txt">Method</label>
-                                        <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                            <div class="txt_tooltip">
-                                                The method to detect the outliers in the dataset.
-                                                <!--Box Plot Rule appends the outlier detection method using <a href=“https://en.wikipedia.org/wiki/Five-number_summary”>Five-number summary</a>. <br>
-                                                It defines the outlier as those values that are located further than 1.5 IQR (the distance between 1st quantile and 3rd quantile in the data) downward from the 1st quantile and upward from the 3rd quantile. <br>
-                                                Z-score appends the outlier method based on the Standard Score (Z-value). Those data points with the absolute value of Z-score larger than 3 (by default) are defined as outliers here.-->
-                                            </div>
-                                        </a>
-                                        <div class="wrap_select">
-                                            <select name="" id="pre_Omethod" class="form-control pre-conf">
-                                                <option value="BOX_PLOT_RULE">Box Plot Rule</option>
-                                                <option value="Z_SCORE" selected>Z-score</option>
-                                            </select>
-                                        </div>
-                                    </dd>
-                                    <dd>
-                                        <div id="pre_Othreshold_all">
-                                            <label for="processor4_text" class="label_txt">Threshold</label>
-                                            <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                                <div class="txt_tooltip">
-                                                    The absolute value of Z-score. Data with Z-score greater than this threshold are detected as outliers (Default 3)
-                                                </div>
-                                            </a>
-                                            <input type="number" name="" id="pre_Othreshold" class="inp_txt pre-conf" value="3">
-                                        </div>
-                                    </dd>
-                                </div>
 
-                                <div id="powerTrans_area">
-                                    <div class="item_dl type_inline">
-                                        <dt>
-                                            <div class="wrap_check">
-                                                <input type="checkbox" name="" id="pre_PrTrnsfrm" class="inp_check modal_check pre-conf">
-                                                <label for="pre_PrTrnsfrm" class="label_check"><span class="ico_automl ico_check"></span>Power Transformation</label>
-                                                <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                                    <div class="txt_tooltip">
-                                                        Preprocessor transforms the selected columns using the given strategy. <!--<br>
-                                                        Box-Cox Transformation and Yeo-Johnson Transformation tries to map the data into a Gaussian distribution. <br>
-                                                        [Note] If there are any negative values in the column, Yeo-Johnson Transformation is recommended since Box-Cox can only be applied to positive data.-->
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </dt>
-                                        <!--<dd>
-                                            <span class="label_txt">Column</span>
-                                            <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                                <div class="txt_tooltip">
-                                                    Transform 할 column 선택
-                                                </div>
-                                            </a>
-                                            <div class="wrap_select">
-                                                <select id="pre_Pcolumn_0" class="pre_Pcolumns form-control columns conf">
-                                                </select>
-                                            </div>
-                                        </dd>
-                                        <dd>
-                                            <span class="label_txt">Strategy</span>
-                                            <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                                <div class="txt_tooltip">
-                                                    Algorithm Information <br>
-                                                    알고리즘 설명
-                                                </div>
-                                            </a>
-                                            <div class="wrap_select">
-                                                <select id="pre_Pstrategy_0" class="pre_Pstrategies form-control conf">
-                                                    <option value="Log" selected>Log</option>
-                                                    <option value="SquaredRoot">Squared Root</option>
-                                                    <option value="Square">Square</option>
-                                                    <option value="BoxCoxTransformation">Box-Cox Transformation</option>
-                                                    <option value="YeoJohnsonTransformation">Yeo-Johnson Transformation</option>
-                                                </select>
-                                            </div>
-                                        </dd>
-                                        <button type="button" class="btn_cal" style="opacity: 0;"></button>
-                                    </div>
-                                    <dd><div class="txt_next">
-                                        <button type="button" class="btn_cal" onclick="$FRONTEND._p.addPowerTrans('1')">+</button>
-                                    </div></dd>-->
-                                    </div>
-                                </div>
-                                <hr>
+
+
+
 
                                 <div class="item_dl type_inline">
                                     <dt>
@@ -844,7 +531,21 @@
                         </div>
                         <!-- //estimator-->
                     </div>
+                </section>
+            </div>
+        </main>
+        <!-- //main -->
+
+    </div>
+
+
+    <div class="modal fade popup_parameter" id="modal-setting" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"  aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="header_popup">
+                    <strong class="tit_popup">Preprocessor Setting</strong>
                 </div>
+
                 <div class="footer_popup">
                     <div class="wrap_btn txt_r">
                         <!--<button type="button" class="btn_m btn_custom pull-left" onclick="$FRONTEND._p.reset()">Reset</button>--><!-- pre processor tab일때만 노출 -->

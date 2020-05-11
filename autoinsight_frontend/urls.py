@@ -22,6 +22,7 @@ app_name = "autoinsight_frontend"
 urlpatterns = [
     path(r'', views.view_index),
     path(r'experiment', views.view_experiment),
+    path(r'overview/<int:runtime_id>/', views.view_overview),
     path(r'preprocess/<int:runtime_id>/', views.view_preprocess),
     path(r'leaderboard/<int:runtime_id>/', views.view_leaderboard),
     path(r'deploy/<int:runtime_id>/', views.view_deploy),
