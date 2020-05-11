@@ -245,6 +245,9 @@ button:disabled{
 .wrap_check .inp_check:checked + .label_check .ico_check {
     background-position: -30px -50px;
 }
+.inp_check:disabled + .label_check {
+    cursor: not-allowed;
+}
 .wrap_check.type_check2 .ico_check {
     width:11px;
     height:8px;
@@ -847,6 +850,7 @@ main {
     position: absolute;
     top:-55px;
     right:0;
+    z-index:10;
 }
 .btn_back {
     position: absolute;
@@ -1231,7 +1235,7 @@ main {
     display: none;
     position: absolute;
     top:10px;
-    right:40px;
+    right:10px;
     padding:15px 15px 20px;
     border:1px solid #bbb;
     border-radius: 10px;
@@ -1241,15 +1245,15 @@ main {
 .layer_automl:before {
     content:'';
     position: absolute;
-    bottom:-6px;
-    left:50%;
+    top:-6px;
+    right:70px;
     width: 10px;
     height: 10px;
     margin-left:-5px;
     border:1px solid #bbb;
     border-width: 0 1px 1px 0;
     background-color: #fff;
-    transform: rotate(45deg);
+    transform: rotate(-135deg);
 }
 .layer_automl .wrap_btn {
     overflow: hidden;
