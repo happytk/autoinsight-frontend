@@ -41,7 +41,7 @@
 
         <main>
             <div class="container">
-                <nav>
+                <nav class="nav_cont">
                     <ul class="list_menu">
                         <li>
                             <a class="link_menu" href="/overview/{{ runtime_id }}/">Overview</a>
@@ -101,7 +101,7 @@
                                         The model binary files can be used in individual environments using the pickle library.<br>
                                         It requires python 3.7 or higher, scikit-learn==0.22.1, Autoinsight module(optional)
                                     </p>
-                                    
+
                                     <a class="btn_down" href="{{ BACKEND_RESTAPI_URL }}runtimes/{{ runtime_id }}/deployment/export">Download model binary</a>
                                 </div>
                                 <pre>

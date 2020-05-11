@@ -68,7 +68,7 @@
 
         <main>
             <div class="container">
-                <nav>
+                <nav class="nav_cont">
                     <ul class="list_menu">
                         <li>
                             <a class="link_menu" href="/overview/{{ runtime_id }}/">Overview</a>
@@ -473,15 +473,15 @@
 
                         <!-- Preprocessor -->
                         <div class="tab-pane fade" id="processor" role="tabpanel" aria-labelledby="processor-tab">
-                            <button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.autoConf()"style="position: absolute; left: 100px;">Auto Configure</button>
+                            <button class="btn_m btn_border" type="button" onclick="$FRONTEND._p.autoConf()">Auto Configure</button>
+                            <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                <div class='txt_tooltip'>
+                                    The dataset is pre-processed as selected before the modeling processes. <br>
+                                    Auto-configure option automatically determines the necessary preprocessor options judging by the given dataset. <br>
+                                    The options shown here is in the order of execution.
+                                </div>
+                            </a>
                             <dl class="list_processor">
-                                <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                    <div class='txt_tooltip'>
-                                        The dataset is pre-processed as selected before the modeling processes. <br>
-                                        Auto-configure option automatically determines the necessary preprocessor options judging by the given dataset. <br>
-                                        The options shown here is in the order of execution.
-                                    </div>
-                                </a>
                                 <!-- <div class="item_dl type_inline">
                                     <dt>                                  ============= processor Add Dataset Button =============
                                         <div class="wrap_check">        seems like there is no button except general page Check it...
