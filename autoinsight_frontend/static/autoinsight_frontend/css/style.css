@@ -1736,6 +1736,52 @@ path.highcharts-grid-line {
 .popup_dataset .box_content {
     height: 425px;
 }
+.popup_parameter .modal-dialog {
+    width:925px;
+}
+.popup_parameter .list_general dt {
+    min-width:230px
+}
+.popup_parameter .item_evaluation > div {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+            align-items: center;
+}
+.popup_parameter .item_evaluation > div + div {
+    margin-left:50px
+}
+.popup_parameter .item_evaluation > div + div dt {
+    min-width: auto;
+}
+.popup_parameter .btn_custom {
+    color:#fff;
+    vertical-align: top;
+    background-color:#666;
+}
+.popup_parameter .inp_timeout {
+    width:140px;
+    border-radius: 3px;
+}
+.popup_parameter .list_processor dt {
+    width:243px;
+    margin-top:20px
+}
+.popup_parameter .list_processor dd .label_txt {
+    font-size: 12px;
+}
+.popup_parameter .list_processor .item_dl {
+    min-height:36px;
+}
+.popup_parameter .list_processor .item_dl + .item_dl {
+    margin-top:20px
+}
+.popup_parameter .list_processor .tooltip_model {
+    margin-top:1px;
+}
+.popup_parameter .list_processor .wrap_select {
+    width:100%;
+}
 .content_estimator {
     display: -webkit-box;
     display: flex;
