@@ -1015,6 +1015,9 @@ main {
 .cont_overview .list_general dt {
     min-width:230px
 }
+.cont_overview .list_general .wrap_select {
+    height: 40px;
+}
 .cont_overview .item_evaluation > div {
     display: -webkit-box;
     display: flex;
