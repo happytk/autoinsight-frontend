@@ -85,316 +85,316 @@
                         <h3 id="runtime_name" class="tit_table"></h3>
                     </div>
 
-<div class="row cont_overview">
-                    <ul class="nav flex-column col-lg-2" id="myTab"  role="tablist">
-                        <li class="nav-item active">
-                            <a class="nav-link link_menu" data-toggle="tab" href="#objective" role="tab" aria-controls="objective" aria-selected="true">Objective</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link link_menu" data-toggle="tab" href="#evaluation" role="tab" aria-controls="evaluation" aria-selected="true">Evaluation</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link link_menu" data-toggle="tab" href="#processor" role="tab" aria-controls="processor" aria-selected="false">Preprocessor</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link link_menu" data-toggle="tab" href="#estimator" role="tab" aria-controls="estimator" aria-selected="false">Estimators</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content box_content col-lg-10" id="myTabContent">
-                        <!-- Objective -->
-                        <div class="tab-pane fade active in" id="objective" role="tabpanel" aria-labelledby="objective-tab">
-                            <dl class="list_evaluation">
-                                <div class="item_dl type_inline">
-                                    <dt>Estimator Type
-                                        <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                            <div class="txt_tooltip">
-                                                The type of problem to solve. <!--<br>
-                                                Check <a href="https://scikit-learn.org/stable/modules/model_evaluation.html">scoring functions</a> for more details about each of them.-->
-                                            </div>
-                                        </a>
-                                    </dt>
-                                    <dd>
-                                        <div class="wrap_select">
-                                            <select id="estimator_type" class="form-control toggle-disable" onchange="$FRONTEND._p.updateGenConf()">
-                                                <option value = "classifier" selected>
-                                                    <a class="link_option" href="#none">Classification</a>
-                                                </option>
-                                                <option value = "regressor">
-                                                    <a class="link_option" href="#none">Regression</a>
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </dd>
-                                </div>
-                                <div class="item_dl type_inline">
-                                    <dt>Target
-                                        <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                            <div class="txt_tooltip">
-                                                The variable that needs to be predicted.
-                                            </div>
-                                        </a>
-                                    </dt>
-                                    <dd>
-                                        <div class="wrap_select">
-                                            <select id="target" class="form-control toggle-disable" onchange="$FRONTEND._p.updateTarget()">
-                                            </select>
-                                        </div>
-                                    </dd>
-                                </div>
-
-
-                                <div class="item_dl type_inline">
-                                    <dt>Time Out (.min)
-                                        <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                            <div class="txt_tooltip">
-                                                The time limit for the entire experiment by minutes.
-                                            </div>
-                                        </a>
-                                    </dt>
-                                    <dd>
-                                        <input type="number" name="" id="gen_time_out" class="inp_txt inp_timeout gen-conf" min="1" max="180" value="60">
-                                    </dd>
-                                </div>
-
-                                <div class="item_dl type_inline">
-                                    <dt>Additional Framework
-                                        <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                            <div class="txt_tooltip">
-                                                Additional Frameworks to be used for modelling.
-                                            </div>
-                                        </a>
-                                    </dt>
-                                    <dd>
-                                        <div class="wrap_check">
-                                            <input type="checkbox" name="autosklearn" id="autosklearn" class="inp_check modal_check gen-conf">
-                                            <label for="autosklearn" class="label_check"><span class="ico_automl ico_check"></span>AutoSklearn</label>
-                                        </div>
-                                    </dd>
-                                    <dd>
-                                        <div class="wrap_check">
-                                            <input type="checkbox" name="tpot" id="tpot" class="inp_check modal_check gen-conf">
-                                            <label for="tpot" class="label_check"><span class="ico_automl ico_check"></span>TPOT</label>
-                                        </div>
-                                    </dd>
-                                    <dd>
-                                        <div class="wrap_check">
-                                            <input type="checkbox" name="ensemble" id="ensemble" class="inp_check modal_check gen-conf">
-                                            <label for="ensemble" class="label_check"><span class="ico_automl ico_check"></span>Ensemble</label>
-                                        </div>
-                                    </dd>
-                                </div>
-                            </dl>
-                        </div>
-
-                        <!-- Evaluation -->
-                        <div class="tab-pane fade" id="evaluation" role="tabpanel" aria-labelledby="evaluation-tab">
-                            <dl class="list_evaluation">
-                                <div class="item_dl type_inline">
-                                    <dt>Scoring Metric
-                                        <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                            <div class="txt_tooltip">
-                                                The method to evaluate the quality of a model. <!--<br>
-                                                Check <a href="https://scikit-learn.org/stable/modules/model_evaluation.html">scoring functions</a> for more details about each of them.-->
-                                            </div>
-                                        </a>
-                                    </dt>
-                                    <dd>
-                                        <div class="wrap_select">
-                                            <select name="" id="metric" class="form-control gen-conf">
-                                            </select>
-                                        </div>
-                                    </dd>
-                                </div>
-                                <div class="item_dl item_evaluation type_inline">
-                                    <div>
-                                        <dt>Method
+                    <div class="row cont_overview">
+                        <ul class="nav flex-column col-lg-2" id="myTab"  role="tablist">
+                            <li class="nav-item active">
+                                <a class="nav-link link_menu" data-toggle="tab" href="#objective" role="tab" aria-controls="objective" aria-selected="true">Objective</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link link_menu" data-toggle="tab" href="#evaluation" role="tab" aria-controls="evaluation" aria-selected="true">Evaluation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link link_menu" data-toggle="tab" href="#processor" role="tab" aria-controls="processor" aria-selected="false">Preprocessor</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link link_menu" data-toggle="tab" href="#estimator" role="tab" aria-controls="estimator" aria-selected="false">Estimators</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content box_content col-lg-10" id="myTabContent">
+                            <!-- Objective -->
+                            <div class="tab-pane fade active in" id="objective" role="tabpanel" aria-labelledby="objective-tab">
+                                <dl class="list_evaluation">
+                                    <div class="item_dl type_inline">
+                                        <dt>Estimator Type
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
-                                                    The method to split the dataset into training set and test set to avoid overfitting in the model validation process. <!--<br>
-                                                    CV (Cross-Validation) randomly splits the dataset into k subsets of equal size. The model is trained on k-1 folds while one remaining fold is kept as a test set. <br>
-                                                    This process is repeated for k times, and the performance measure is the average of the scoring metric computed in the loop. <br>
-                                                    Holdout simply splits the whole dataset into random train / test subsets. The default ratio of split is 0.67 / 0.33.-->
+                                                    The type of problem to solve. <!--<br>
+                                                Check <a href="https://scikit-learn.org/stable/modules/model_evaluation.html">scoring functions</a> for more details about each of them.-->
                                                 </div>
                                             </a>
                                         </dt>
                                         <dd>
                                             <div class="wrap_select">
-                                                <select name="" id="resampling_strategy" class="form-control gen-conf">
-                                                    <option value="holdout">Holdout</option>
-                                                    <!--<option value="holdout-iterative-fit">Holdout-Iterative-Fit</option>-->
-                                                    <option value="cv">CV</option>
-                                                    <!--<option value="partial-cv">Partial-CV</option>-->
+                                                <select id="estimator_type" class="form-control toggle-disable" onchange="$FRONTEND._p.updateGenConf()">
+                                                    <option value = "classifier" selected>
+                                                        <a class="link_option" href="#none">Classification</a>
+                                                    </option>
+                                                    <option value = "regressor">
+                                                        <a class="link_option" href="#none">Regression</a>
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </dd>
+                                    </div>
+                                    <div class="item_dl type_inline">
+                                        <dt>Target
+                                            <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                                <div class="txt_tooltip">
+                                                    The variable that needs to be predicted.
+                                                </div>
+                                            </a>
+                                        </dt>
+                                        <dd>
+                                            <div class="wrap_select">
+                                                <select id="target" class="form-control toggle-disable" onchange="$FRONTEND._p.updateTarget()">
                                                 </select>
                                             </div>
                                         </dd>
                                     </div>
 
-                                    <div id="train_split_area">
-                                        <dt>Train Split
+
+                                    <div class="item_dl type_inline">
+                                        <dt>Time Out (.min)
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
-                                                    The ratio of training set (values between 0 and 1).
+                                                    The time limit for the entire experiment by minutes.
                                                 </div>
                                             </a>
                                         </dt>
                                         <dd>
-                                            <input id="split_testdata_rate" class="inp_txt gen-conf" type="number" step="0.01" value="0.67">
+                                            <input type="number" name="" id="gen_time_out" class="inp_txt inp_timeout gen-conf" min="1" max="180" value="60">
                                         </dd>
-                                        <!--<button type="button" class="btn btn_custom" data-toggle="modal" data-target="#modal-customize">Customize</button>-->
                                     </div>
 
-                                    <div id="k_folds_area">
-                                        <dt>K-folds
+                                    <div class="item_dl type_inline">
+                                        <dt>Additional Framework
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
-                                                    The number of folds made in CV, which should be an integer.
+                                                    Additional Frameworks to be used for modelling.
                                                 </div>
                                             </a>
                                         </dt>
                                         <dd>
-                                            <input type="number" name="" id="resampling_strategy_cv_folds" class="inp_txt inp_timeout gen-conf" min="1" max="10" value="5">
+                                            <div class="wrap_check">
+                                                <input type="checkbox" name="autosklearn" id="autosklearn" class="inp_check modal_check gen-conf">
+                                                <label for="autosklearn" class="label_check"><span class="ico_automl ico_check"></span>AutoSklearn</label>
+                                            </div>
+                                        </dd>
+                                        <dd>
+                                            <div class="wrap_check">
+                                                <input type="checkbox" name="tpot" id="tpot" class="inp_check modal_check gen-conf">
+                                                <label for="tpot" class="label_check"><span class="ico_automl ico_check"></span>TPOT</label>
+                                            </div>
+                                        </dd>
+                                        <dd>
+                                            <div class="wrap_check">
+                                                <input type="checkbox" name="ensemble" id="ensemble" class="inp_check modal_check gen-conf">
+                                                <label for="ensemble" class="label_check"><span class="ico_automl ico_check"></span>Ensemble</label>
+                                            </div>
                                         </dd>
                                     </div>
-                                </div>
+                                </dl>
+                            </div>
 
-
-                                <div class="item_dl type_inline">
-                                    <dt>Max Evaluation Time (.min)
-                                        <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                            <div class="txt_tooltip">
-                                                The time limit for each model in the experiment by minutes.
+                            <!-- Evaluation -->
+                            <div class="tab-pane fade" id="evaluation" role="tabpanel" aria-labelledby="evaluation-tab">
+                                <dl class="list_evaluation">
+                                    <div class="item_dl type_inline">
+                                        <dt>Scoring Metric
+                                            <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                                <div class="txt_tooltip">
+                                                    The method to evaluate the quality of a model. <!--<br>
+                                                Check <a href="https://scikit-learn.org/stable/modules/model_evaluation.html">scoring functions</a> for more details about each of them.-->
+                                                </div>
+                                            </a>
+                                        </dt>
+                                        <dd>
+                                            <div class="wrap_select">
+                                                <select name="" id="metric" class="form-control gen-conf">
+                                                </select>
                                             </div>
-                                        </a>
-                                    </dt>
-                                    <dd>
-                                        <input type="number" name="" id="gen_max_eval_time" class="inp_txt inp_timeout" min="1" value="3">
-                                    </dd>
-                                </div>
-
-                            </dl>
-                        </div>
-                        <!-- //Evaluation -->
-
-                        <!-- Preprocessor -->
-                        <div class="tab-pane fade" id="processor" role="tabpanel" aria-labelledby="processor-tab">
-                            <dl class="list_processor">
-                                <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                    <div class='txt_tooltip'>
-                                        The dataset is pre-processed as selected before the modeling processes. <br>
-                                        Auto-configure option automatically determines the necessary preprocessor options judging by the given dataset. <br>
-                                        The options shown here is in the order of execution.
+                                        </dd>
                                     </div>
-                                </a>
+                                    <div class="item_dl item_evaluation type_inline">
+                                        <div>
+                                            <dt>Method
+                                                <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                                    <div class="txt_tooltip">
+                                                        The method to split the dataset into training set and test set to avoid overfitting in the model validation process. <!--<br>
+                                                    CV (Cross-Validation) randomly splits the dataset into k subsets of equal size. The model is trained on k-1 folds while one remaining fold is kept as a test set. <br>
+                                                    This process is repeated for k times, and the performance measure is the average of the scoring metric computed in the loop. <br>
+                                                    Holdout simply splits the whole dataset into random train / test subsets. The default ratio of split is 0.67 / 0.33.-->
+                                                    </div>
+                                                </a>
+                                            </dt>
+                                            <dd>
+                                                <div class="wrap_select">
+                                                    <select name="" id="resampling_strategy" class="form-control gen-conf">
+                                                        <option value="holdout">Holdout</option>
+                                                        <!--<option value="holdout-iterative-fit">Holdout-Iterative-Fit</option>-->
+                                                        <option value="cv">CV</option>
+                                                        <!--<option value="partial-cv">Partial-CV</option>-->
+                                                    </select>
+                                                </div>
+                                            </dd>
+                                        </div>
+
+                                        <div id="train_split_area">
+                                            <dt>Train Split
+                                                <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                                    <div class="txt_tooltip">
+                                                        The ratio of training set (values between 0 and 1).
+                                                    </div>
+                                                </a>
+                                            </dt>
+                                            <dd>
+                                                <input id="split_testdata_rate" class="inp_txt gen-conf" type="number" step="0.01" value="0.67">
+                                            </dd>
+                                            <!--<button type="button" class="btn btn_custom" data-toggle="modal" data-target="#modal-customize">Customize</button>-->
+                                        </div>
+
+                                        <div id="k_folds_area">
+                                            <dt>K-folds
+                                                <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                                    <div class="txt_tooltip">
+                                                        The number of folds made in CV, which should be an integer.
+                                                    </div>
+                                                </a>
+                                            </dt>
+                                            <dd>
+                                                <input type="number" name="" id="resampling_strategy_cv_folds" class="inp_txt inp_timeout gen-conf" min="1" max="10" value="5">
+                                            </dd>
+                                        </div>
+                                    </div>
 
 
-
-
-
-
-                                <div class="item_dl type_inline">
-                                    <dt>
-                                        <div class="wrap_check">
-                                            <input type="checkbox" name="" id="pre_1HotEncod" class="inp_check modal_check gen-conf">
-                                            <label for="pre_1HotEncod" class="label_check"><span class="ico_automl ico_check"></span>One Hot Encoding</label>
+                                    <div class="item_dl type_inline">
+                                        <dt>Max Evaluation Time (.min)
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
-                                                    Categorical or Object columns (e.g. texts) used as Features in the experiment are One-Hot-Encoded if this option is checked.<br>
-                                                    Otherwise, categorical columns are encoded into integers (Label Encoding).<br>
-                                                    [Note] One Hot Encoding converts each category of a column into binary columns that can lead to a larger dataset.
+                                                    The time limit for each model in the experiment by minutes.
                                                 </div>
                                             </a>
-                                        </div>
-                                    </dt>
-                                </div>
+                                        </dt>
+                                        <dd>
+                                            <input type="number" name="" id="gen_max_eval_time" class="inp_txt inp_timeout" min="1" value="3">
+                                        </dd>
+                                    </div>
 
-                                <div class="item_dl type_inline">
-                                    <dt>
-                                        <div class="wrap_check">
-                                            <input type="checkbox" name="" id="pre_VarThreshold" class="inp_check modal_check gen-conf">
-                                            <label for="pre_VarThreshold" class="label_check"><span class="ico_automl ico_check"></span>Variance Threshold</label>
-                                            <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                                <div class="txt_tooltip">
-                                                    Preprocessor finds out the features with their variances lower than the standard (0 by default),<br>
-                                                    and deletes those features with low or no predictive power.
-                                                </div>
-                                            </a>
+                                </dl>
+                            </div>
+                            <!-- //Evaluation -->
+
+                            <!-- Preprocessor -->
+                            <div class="tab-pane fade" id="processor" role="tabpanel" aria-labelledby="processor-tab">
+                                <dl class="list_processor">
+                                    <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                        <div class='txt_tooltip'>
+                                            The dataset is pre-processed as selected before the modeling processes. <br>
+                                            Auto-configure option automatically determines the necessary preprocessor options judging by the given dataset. <br>
+                                            The options shown here is in the order of execution.
                                         </div>
-                                    </dt>
-                                </div>
+                                    </a>
 
 
-                                <div class="item_dl type_inline item_scaling">
-                                    <dt>
-                                        <div class="wrap_check">
-                                            <input type="checkbox" name="" id="pre_Scaling" class="inp_check modal_check gen-conf">
-                                            <label for="pre_Scaling" class="label_check"><span class="ico_automl ico_check"></span>Scaling</label>
-                                            <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                                <div class="txt_tooltip">
-                                                    Preprocessor scales or standardizes the entire features by the selected method, which can lead to better results in certain models.
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </dt>
-                                    <dd>
-                                        <span class="label_txt">Methods</span>
-                                        <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                            <div class="txt_tooltip">
-                                                Details for each method can be found in scikit-learn official website.
+
+
+
+
+                                    <div class="item_dl type_inline">
+                                        <dt>
+                                            <div class="wrap_check">
+                                                <input type="checkbox" name="" id="pre_1HotEncod" class="inp_check modal_check gen-conf">
+                                                <label for="pre_1HotEncod" class="label_check"><span class="ico_automl ico_check"></span>One Hot Encoding</label>
+                                                <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                                    <div class="txt_tooltip">
+                                                        Categorical or Object columns (e.g. texts) used as Features in the experiment are One-Hot-Encoded if this option is checked.<br>
+                                                        Otherwise, categorical columns are encoded into integers (Label Encoding).<br>
+                                                        [Note] One Hot Encoding converts each category of a column into binary columns that can lead to a larger dataset.
+                                                    </div>
+                                                </a>
                                             </div>
-                                        </a>
-                                        <div class="wrap_select">
-                                            <select id="pre_SMethod" class="form-control gen-conf" multiple="multiple">
-                                                <!--<option value="Standard" selected>Standardize</option>
-                                                <option value="MinMax">Minmax</option>
-                                                <option value="MaxAbs">Normalize</option>-->
-                                            </select>
-                                        </div>
-                                    </dd>
-                                </div>
+                                        </dt>
+                                    </div>
 
-                                <div class="item_dl type_inline item_engineering">
-                                    <dt>
-                                        <div class="wrap_check">
-                                            <input type="checkbox" name="" id="pre_FtrSlcon" class="inp_check modal_check gen-conf">
-                                            <label for="pre_FtrSlcon" class="label_check"><span class="ico_automl ico_check"></span>Feature Engineering</label>
+                                    <div class="item_dl type_inline">
+                                        <dt>
+                                            <div class="wrap_check">
+                                                <input type="checkbox" name="" id="pre_VarThreshold" class="inp_check modal_check gen-conf">
+                                                <label for="pre_VarThreshold" class="label_check"><span class="ico_automl ico_check"></span>Variance Threshold</label>
+                                                <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                                    <div class="txt_tooltip">
+                                                        Preprocessor finds out the features with their variances lower than the standard (0 by default),<br>
+                                                        and deletes those features with low or no predictive power.
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </dt>
+                                    </div>
+
+
+                                    <div class="item_dl type_inline item_scaling">
+                                        <dt>
+                                            <div class="wrap_check">
+                                                <input type="checkbox" name="" id="pre_Scaling" class="inp_check modal_check gen-conf">
+                                                <label for="pre_Scaling" class="label_check"><span class="ico_automl ico_check"></span>Scaling</label>
+                                                <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                                    <div class="txt_tooltip">
+                                                        Preprocessor scales or standardizes the entire features by the selected method, which can lead to better results in certain models.
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </dt>
+                                        <dd>
+                                            <span class="label_txt">Methods</span>
                                             <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                                 <div class="txt_tooltip">
-                                                    Feature Engineering methods including Feature Selection and Dimension Reduction are applied to improve the or boost the performance for a high-dimensional dataset.<br>
-                                                    [Note] Some of these methods including matrix decomposition or kernel approximation can convert the shape of whole features.
+                                                    Details for each method can be found in scikit-learn official website.
                                                 </div>
                                             </a>
-                                        </div>
-                                    </dt>
-                                    <dd>
-                                        <span class="label_txt">Methods</span>
-                                        <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                            <div class="txt_tooltip">
-                                                Preprocessor figures out the one optimal method among selected feature engineering methods to apply to the dataset.
+                                            <div class="wrap_select">
+                                                <select id="pre_SMethod" class="form-control gen-conf" multiple="multiple">
+                                                    <!--<option value="Standard" selected>Standardize</option>
+                                                    <option value="MinMax">Minmax</option>
+                                                    <option value="MaxAbs">Normalize</option>-->
+                                                </select>
                                             </div>
-                                        </a>
-                                        <div class="wrap_select">
-                                            <select name="" id="pre_FMethod" class="form-control gen-conf" multiple="multiple">
-                                            </select>
-                                        </div>
-                                    </dd>
-                                </div>
+                                        </dd>
+                                    </div>
+
+                                    <div class="item_dl type_inline item_engineering">
+                                        <dt>
+                                            <div class="wrap_check">
+                                                <input type="checkbox" name="" id="pre_FtrSlcon" class="inp_check modal_check gen-conf">
+                                                <label for="pre_FtrSlcon" class="label_check"><span class="ico_automl ico_check"></span>Feature Engineering</label>
+                                                <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                                    <div class="txt_tooltip">
+                                                        Feature Engineering methods including Feature Selection and Dimension Reduction are applied to improve the or boost the performance for a high-dimensional dataset.<br>
+                                                        [Note] Some of these methods including matrix decomposition or kernel approximation can convert the shape of whole features.
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </dt>
+                                        <dd>
+                                            <span class="label_txt">Methods</span>
+                                            <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                                <div class="txt_tooltip">
+                                                    Preprocessor figures out the one optimal method among selected feature engineering methods to apply to the dataset.
+                                                </div>
+                                            </a>
+                                            <div class="wrap_select">
+                                                <select name="" id="pre_FMethod" class="form-control gen-conf" multiple="multiple">
+                                                </select>
+                                            </div>
+                                        </dd>
+                                    </div>
 
 
 
-                            </dl>
-                        </div>
-                        <!-- //Processor -->
+                                </dl>
+                            </div>
+                            <!-- //Processor -->
 
-                        <!-- estimator -->
-                        <div class="tab-pane fade" id="estimator" role="tabpanel" aria-labelledby="estimator-tab">
-                            <div class="content_estimator">
-                                <div id="available_estimators">
+                            <!-- estimator -->
+                            <div class="tab-pane fade" id="estimator" role="tabpanel" aria-labelledby="estimator-tab">
+                                <div class="content_estimator">
+                                    <div id="available_estimators">
+                                    </div>
                                 </div>
                             </div>
+                            <!-- //estimator-->
                         </div>
-                        <!-- //estimator-->
                     </div>
-                </div>
                 </section>
             </div>
         </main>
