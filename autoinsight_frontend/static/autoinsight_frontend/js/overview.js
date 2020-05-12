@@ -24,9 +24,6 @@ var $FRONTEND = (function (module) {
 
     }
 
-
-
-
     //Runtime 관련
 
     _p.loadRuntimeInfo = function() {
@@ -35,7 +32,6 @@ var $FRONTEND = (function (module) {
             url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id + '/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
-                console.log(resultData.status)
                 if(resultData.status === "ready"){
                     $('#loader').removeClass("loader");
                     $('#runButton').prop('disabled', false);
