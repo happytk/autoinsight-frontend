@@ -53,28 +53,55 @@
 
         <main>
             <div class="container">
-                <nav class="nav_cont">
-                    <ul class="list_menu">
-                        <li>
-                            <a class="link_menu" href="/overview/{{ runtime_id }}/">Overview</a>
-                        </li>
-                        <li>
-                            <a class="link_menu" href="/preprocess/{{ runtime_id }}/">Preprocess</a>
-                        </li>
-                        <li class="active">
-                            <a class="link_menu" href="/leaderboard/{{ runtime_id }}/">Leaderboard <div id="leaderboard_loader"></div></a>
-                        </li>
-                        <li>
-                            <a class="link_menu" href="/deploy/{{ runtime_id }}/">Deploy Model</a>
-                        </li>
-                    </ul>
-                </nav>
-                <button id="data_btn" class="btn_back" type="button"
-                        onclick="window.location.href='/experiment'"><span class="ico_automl ico_back">Back to Experiments</span>
-                </button>
-            </div>
-
-            <div class="container">
+                <div class="wrap_nav">
+                    <button id="data_btn" class="btn_back" type="button"
+                            onclick="window.location.href='/experiment'"><span class="ico_automl ico_back">Back to Experiments</span>
+                    </button>
+                    <nav class="nav_cont">
+                        <ul class="list_menu">
+                            <li>
+                                <a class="link_menu" href="/overview/{{ runtime_id }}/">Overview</a>
+                            </li>
+                            <li>
+                                <a class="link_menu" href="/preprocess/{{ runtime_id }}/">Preprocess</a>
+                            </li>
+                            <li class="active">
+                                <a class="link_menu" href="/leaderboard/{{ runtime_id }}/">Leaderboard <div id="leaderboard_loader"></div></a>
+                            </li>
+                            <li>
+                                <a class="link_menu" href="/deploy/{{ runtime_id }}/">Deploy Model</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <button id="runButton" class="btn_b btn_run" type="button" data-toggle="modal" data-target="#modal-run" onclick="$FRONTEND._p.setRunSetting()">
+                        Run AutoML <span class="ico_automl ico_arr"></span>
+                    </button>
+                    <div id="run-setting" class="layer_automl layer"> <!-- Run AutoML 클릭시 block 처리-->
+                        <div class="wrap_btn layer">
+                            <button id="classification_confirm" type="button" class="btn_m" onclick="$FRONTEND._p.updateEstimatorType('classifier',true)">Classification</button> <!-- 선택시 on 클래스 추가 -->
+                            <button id="regression_confirm" type="button" class="btn_m" onclick="$FRONTEND._p.updateEstimatorType('regressor',true)">Regression</button>
+                        </div>
+                        <dl>
+                            <div class="item_dl type_inline">
+                                <dt>Target</dt>
+                                <dd>
+                                    <span id="target_confirm"></span>
+                                </dd>
+                            </div>
+                            <div class="item_dl type_inline">
+                                <dt>Metric</dt>
+                                <dd>
+                                    <div class="wrap_select">
+                                        <select id="metric_confirm" class="form-control layer" onchange="$FRONTEND._p.updateMetric()">
+                                        </select>
+                                    </div>
+                                    <!--<button class="btn_set"><span class="ico_automl ico_set">설정</span></button>-->
+                                </dd>
+                            </div>
+                        </dl>
+                        <span class="tail"></span>
+                    </div>
+                </div>
                 <section class="section_content">
                     <h2 class="screen_out">Leaderboard</h2><!-- tab menu 에서 선택된 텍스트가 들어갑니다. -->
                     <div class='help-text help-tab'>

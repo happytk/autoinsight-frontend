@@ -704,6 +704,30 @@ main {
 
 /** sub **/
 /* nav */
+.wrap_nav {
+    position: relative;
+    display: flex;
+    margin:0 -40px;
+}
+.wrap_nav .btn_back {
+    width:40px;
+    height:40px;
+    padding:0;
+    border:1px solid #000;
+    border-radius: 50%;
+    background-color:transparent;
+}
+.wrap_nav .btn_back .ico_back {
+    width:21px;
+    height:20px;
+    background-position: -35px -75px;
+}
+.wrap_nav .btn_run {
+    align-self: flex-start;
+}
+.wrap_nav .nav_cont {
+    flex:1;
+}
 .list_menu:after {
     content:'';
     display: block;;
@@ -845,28 +869,6 @@ main {
     flex:none;
     width:100%;
     white-space: nowrap;
-}
-.info_table .btn_run {
-    position: absolute;
-    top:-55px;
-    right:0;
-    z-index:10;
-}
-.btn_back {
-    position: absolute;
-    bottom: 13px;
-    left:0;
-    width:40px;
-    height:40px;
-    padding:0;
-    border:1px solid #000;
-    border-radius: 50%;
-    background-color:transparent;
-}
-.btn_back .ico_back {
-    width:21px;
-    height:20px;
-    background-position: -35px -75px;
 }
 .btn_sort {
     float: right;
@@ -1234,7 +1236,7 @@ main {
 .layer_automl {
     display: none;
     position: absolute;
-    top:10px;
+    top:100%;
     right:10px;
     padding:15px 15px 20px;
     border:1px solid #bbb;
