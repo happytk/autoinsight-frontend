@@ -27,6 +27,7 @@ var $FRONTEND = (function (module) {
                 if(status === "ready"){
                     $('#loader').removeClass("loader");
                     $('#runButton').prop('disabled', false);
+                    $('#runButton').addClass('btn_run');
                     $('#runButton').html('Run AutoML <span class="ico_automl ico_arr"></span>')
                     $('.toggle-disable').prop('disabled', false);
                     $('.gen-conf').prop('disabled', false);
@@ -122,6 +123,46 @@ var $FRONTEND = (function (module) {
             a = a.replace("{" + k + "}", arguments[k])
         }
         return a
+    };
+
+    _p.updateEstimatorType = function(estimator_type) {
+        var data = {};
+        data.estimatorType = estimator_type//$('#estimator_type option:selected').val();
+        return $.ajax({
+            type: 'patch',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id+'/',
+            data: JSON.stringify(data),
+            dataType: 'json', //
+            success: function (resultData, textStatus, request) {
+                if (resultData['error_msg'] == null ){
+                    _p.setRunSetting()
+                }
+            },
+            contentType: 'application/json',
+            error: function (res) {
+                alert(res.responseJSON.message);
+            }
+        })
+    };
+
+    _p.updateMetric = function() {
+        var data = {};
+        data.metric = $('#metric_confirm option:selected').val()
+        return $.ajax({
+            type: 'patch',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id+'/',
+            data: JSON.stringify(data),
+            dataType: 'json', //
+            success: function (resultData, textStatus, request) {
+                if (resultData['error_msg'] == null ){
+                    _p.setRunSetting()
+                }
+            },
+            contentType: 'application/json',
+            error: function (res) {
+                alert(res.responseJSON.message);
+            }
+        })
     };
 
 

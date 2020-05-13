@@ -10,7 +10,7 @@ var $FRONTEND = (function (module) {
 
 
         $('#column_table').on('load-success.bs.table', function (data, jqXHR) {
-            targetColumn={};
+            // targetColumn={};
             if(jqXHR.length<20){
                 $('.dist_buttons').hide()
                 $('canvas').show()
@@ -18,19 +18,19 @@ var $FRONTEND = (function (module) {
                     _p.drawDistribution(column.id, column.freqIdxJson, column.freqJson);
                     if(column.isTarget){
                         $('#feature_'+column['id']).attr("disabled", true);
-                        if(isFirst === true){
-                            if(column.taskType === 'multiclass' || column.taskType === 'binary'){
-                                $estimator_type = "classifier"
-                                $('#metric').val('accuracy');
-                            }else{
-                                estimator_type = "classifier"
-                                $('#metric').val('r2');
-                            }
-                            if(status === 'ready') _p.updateEstimatorType(estimator_type, false);
-                            isFirst = false
-                        }
-                        targetColumn.id = column.id;
-                        targetColumn.name = column.name;
+                        // if(isFirst === true){
+                        //     if(column.taskType === 'multiclass' || column.taskType === 'binary'){
+                        //         $estimator_type = "classifier"
+                        //         $('#metric').val('accuracy');
+                        //     }else{
+                        //         estimator_type = "classifier"
+                        //         $('#metric').val('r2');
+                        //     }
+                        //     if(status === 'ready') _p.updateEstimatorType(estimator_type, false);
+                        //     isFirst = false
+                        // }
+                        // targetColumn.id = column.id;
+                        // targetColumn.name = column.name;
                     }
                 });
 
@@ -43,19 +43,19 @@ var $FRONTEND = (function (module) {
                     if(column.isTarget){
                         _p.drawDistribution(column.id);
                         $('#feature_'+column['id']).attr("disabled", true);
-                        if(isFirst === true){
-                            if(column.taskType === 'multiclass' || column.taskType === 'binary'){
-                                estimator_type = "classifier"
-                                $('#metric').val('accuracy');
-                            }else{
-                                estimator_type = "regressor"
-                                $('#metric').val('r2');
-                            }
-                            if(status === 'ready') _p.updateEstimatorType(estimator_type, false);
-                            isFirst = false
-                        }
-                        targetColumn.id = column.id;
-                        targetColumn.name = column.name;
+                        // if(isFirst === true){
+                        //     if(column.taskType === 'multiclass' || column.taskType === 'binary'){
+                        //         estimator_type = "classifier"
+                        //         $('#metric').val('accuracy');
+                        //     }else{
+                        //         estimator_type = "regressor"
+                        //         $('#metric').val('r2');
+                        //     }
+                        //     if(status === 'ready') _p.updateEstimatorType(estimator_type, false);
+                        //     isFirst = false
+                        // }
+                        // targetColumn.id = column.id;
+                        // targetColumn.name = column.name;
                     }
                 });
 
@@ -267,6 +267,7 @@ var $FRONTEND = (function (module) {
                             }else{
                                 $('#preprocess_loader').removeClass("loader")
                                 $('#runButton').prop('disabled', false);
+                                $('#runButton').addClass('btn_run');
                                 $('#runButton').html('Run AutoML <span class="ico_automl ico_arr"></span>')
                                 pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline preview item_point" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadPreviewArea('+value.id+')"><a class="nav-link"><span class="ico_automl ico_table">결과</span><span class="ico_automl ico_on">선택됨</span></a></li>'
                                 step += 1
@@ -343,46 +344,7 @@ var $FRONTEND = (function (module) {
         });
     }
 
-    //Runtime 관련
-    _p.updateEstimatorType = function(estimator_type, show) {
-        var data = {};
-        data.estimatorType = estimator_type//$('#estimator_type option:selected').val();
-        return $.ajax({
-            type: 'patch',
-            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id+'/',
-            data: JSON.stringify(data),
-            dataType: 'json', //
-            success: function (resultData, textStatus, request) {
-                if (resultData['error_msg'] == null ){
-                    if(show) _p.setRunSetting()
-                }
-            },
-            contentType: 'application/json',
-            error: function (res) {
-                alert(res.responseJSON.message);
-            }
-        })
-    };
 
-    _p.updateMetric = function() {
-        var data = {};
-        data.metric = $('#metric_confirm option:selected').val()
-        return $.ajax({
-            type: 'patch',
-            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id+'/',
-            data: JSON.stringify(data),
-            dataType: 'json', //
-            success: function (resultData, textStatus, request) {
-                if (resultData['error_msg'] == null ){
-                    _p.setRunSetting()
-                }
-            },
-            contentType: 'application/json',
-            error: function (res) {
-                alert(res.responseJSON.message);
-            }
-        })
-    };
 
     //Preprocess 관련
 

@@ -64,7 +64,7 @@ var $FRONTEND = (function (module) {
     _p.getColumns = function(){
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE +'runtimes/'+runtime_id + '/dataset/columns/',
+            url: g_RESTAPI_HOST_BASE +'runtimes/'+runtime_id + '/dataset_preprocessed/columns/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){

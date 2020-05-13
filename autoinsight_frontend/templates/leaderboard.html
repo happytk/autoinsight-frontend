@@ -75,12 +75,12 @@
                             </li>
                         </ul>
                     </nav>
-                    <button id="runButton" class="btn_b btn_run" type="button" onclick="$FRONTEND._p.setRunSetting()">
+                    <button id="runButton" class="btn_b" type="button" onclick="$FRONTEND._p.setRunSetting()">
                     </button>
                     <div id="run-setting" class="layer_automl layer"> <!-- Run AutoML 클릭시 block 처리-->
                         <div class="wrap_btn layer">
-                            <button id="classification_confirm" type="button" class="btn_m" onclick="$FRONTEND._p.updateEstimatorType('classifier',true)">Classification</button> <!-- 선택시 on 클래스 추가 -->
-                            <button id="regression_confirm" type="button" class="btn_m" onclick="$FRONTEND._p.updateEstimatorType('regressor',true)">Regression</button>
+                            <button id="classification_confirm" type="button" class="btn_m" onclick="$FRONTEND._p.updateEstimatorType('classifier')">Classification</button> <!-- 선택시 on 클래스 추가 -->
+                            <button id="regression_confirm" type="button" class="btn_m" onclick="$FRONTEND._p.updateEstimatorType('regressor')">Regression</button>
                         </div>
                         <dl>
                             <div class="item_dl type_inline">

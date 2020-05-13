@@ -1,7 +1,7 @@
 var $FRONTEND = (function (module) {
     var _p = module._p = module._p || {};
 
-    var targetColumnId;
+    var targetColumnId=""
     //초기화면 세팅
     _p.init = function(){
         _p.loadRuntimeInfo()
@@ -172,7 +172,7 @@ var $FRONTEND = (function (module) {
 
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset/columns/',
+            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset_preprocessed/columns/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null) {
@@ -279,41 +279,67 @@ var $FRONTEND = (function (module) {
     _p.updateTarget = function(){
         var data ={};
         data.isTarget = false;
-        return $.ajax({
-            type: 'patch',
-            url: g_RESTAPI_HOST_BASE+'runtimes/{0}/dataset/columns/{1}/'.format(runtime_id, targetColumnId),
-            data: data,
-            dataType: 'json',
-            success: function (resultData, textStatus, request) {
-                if (resultData['error_msg'] == null ){
-                    var data ={};
-                    var rowid = $('#target option:selected').val()
-                    data.isFeature = false;
-                    data.isTarget = true;
-                    $.ajax({
-                        type: 'patch',
-                        url: g_RESTAPI_HOST_BASE+'runtimes/{0}/dataset/columns/{1}/'.format(runtime_id, rowid),
-                        data: data,
-                        dataType: 'json',
-                        success: function (resultData, textStatus, request) {
-                            if (resultData['error_msg'] == null ){
-                                targetColumnId = resultData.id;
-                            } else {
-                                console.log(resultData['error_msg']);
-                            }
-                        },
-                        error: function (res) {
-                            console.log(res.responseJSON.message);
-                        }
-                    })
-                } else {
-                    console.log(resultData['error_msg']);
+        if(targetColumnId === ""){
+            var data ={};
+            var rowid = $('#target option:selected').val()
+            data.isFeature = false;
+            data.isTarget = true;
+            return $.ajax({
+                type: 'patch',
+                url: g_RESTAPI_HOST_BASE+'runtimes/{0}/dataset_preprocessed/columns/{1}/'.format(runtime_id, rowid),
+                data: data,
+                dataType: 'json',
+                success: function (resultData, textStatus, request) {
+                    if (resultData['error_msg'] == null ){
+                        targetColumnId = resultData.id;
+                    } else {
+                        console.log(resultData['error_msg']);
+                    }
+                },
+                error: function (res) {
+                    console.log(res.responseJSON.message);
                 }
-            },
-            error: function (res) {
-                console.log(res.responseJSON.message);
-            }
-        })
+            })
+
+
+        }else{
+            return $.ajax({
+                type: 'patch',
+                url: g_RESTAPI_HOST_BASE+'runtimes/{0}/dataset_preprocessed/columns/{1}/'.format(runtime_id, targetColumnId),
+                data: data,
+                dataType: 'json',
+                success: function (resultData, textStatus, request) {
+                    if (resultData['error_msg'] == null ){
+                        var data ={};
+                        var rowid = $('#target option:selected').val()
+                        data.isFeature = false;
+                        data.isTarget = true;
+                        $.ajax({
+                            type: 'patch',
+                            url: g_RESTAPI_HOST_BASE+'runtimes/{0}/dataset_preprocessed/columns/{1}/'.format(runtime_id, rowid),
+                            data: data,
+                            dataType: 'json',
+                            success: function (resultData, textStatus, request) {
+                                if (resultData['error_msg'] == null ){
+                                    targetColumnId = resultData.id;
+                                } else {
+                                    console.log(resultData['error_msg']);
+                                }
+                            },
+                            error: function (res) {
+                                console.log(res.responseJSON.message);
+                            }
+                        })
+                    } else {
+                        console.log(resultData['error_msg']);
+                    }
+                },
+                error: function (res) {
+                    console.log(res);
+                }
+            })
+        }
+
     };
 
 
