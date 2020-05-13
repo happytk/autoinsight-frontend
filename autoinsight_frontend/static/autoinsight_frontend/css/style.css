@@ -1007,7 +1007,7 @@ main {
 /** content **/
 /* overview */
 .cont_overview {
-    margin:15px 0 0 0;
+    margin:25px 0 0 0;
 }
 .cont_overview .nav {
     margin-right:-20px;
@@ -1243,6 +1243,7 @@ main {
     border-radius: 10px;
     background-color:#fff;
     box-shadow: 0 1px 10px #eee;
+    z-index: 10;
 }
 .layer_automl:before {
     content:'';
