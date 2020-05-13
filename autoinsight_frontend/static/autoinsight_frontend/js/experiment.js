@@ -6,32 +6,32 @@ var $FRONTEND = (function (module) {
     var hasPending
     var thread = 0
     var REFRESH_RUNTIMES_QUERY = `
-                                    query {
-                                      env {
-                                        activeContainerCount
-                                        totalContainerCount
-                                      }
-                                      runtimes {
-                                        id
-                                        metric
-                                        estimatorType
-                                        modelsCnt
-                                        doneSlot
-                                        timeout
-                                        bestScore
-                                        status
-                                        scaleUnit
-                                        availableMetrics
-                                        dataset {
-                                          id
-                                          name
-                                          targetName
-                                          featureCount
-                                          rowCount
-                                        }
-                                      }
-                                    }
-                                    `;
+        query {
+            env {
+                activeContainerCount
+                totalContainerCount
+            }
+            runtimes {
+                id
+                metric
+                estimatorType
+                modelsCnt
+                doneSlot
+                timeout
+                bestScore
+                status
+                scaleUnit
+                availableMetrics
+                targetColumnName
+                dataset {
+                    id
+                    name
+                    featureCount
+                    rowCount
+                }
+            }
+        }
+    `;
 
     //초기화면 세팅
     _p.init = function(){
@@ -143,7 +143,7 @@ var $FRONTEND = (function (module) {
         }else if(row.status === 'learning'){
             hasPending = true
         }
-        return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+value.targetName+', '+value.featureCount+' features, '+value.rowCount+' rows)'
+        return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+row.targetColumnName+', '+value.featureCount+' features, '+value.rowCount+' rows)'
 
 
     }

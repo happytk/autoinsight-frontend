@@ -74,10 +74,10 @@ var $FRONTEND = (function (module) {
                                         metric
                                         availableMetrics
                                         estimatorType
+                                        targetColumnName
                                         dataset {
                                           id
                                           name
-                                          targetName
                                         }
                                       }
                                     }
@@ -96,7 +96,7 @@ var $FRONTEND = (function (module) {
                         $('#classification_confirm').removeClass("on")
                         $('#regression_confirm').addClass("on")
                     }
-                    $('#target_confirm').text(resultData.data.runtime.dataset.targetName);
+                    $('#target_confirm').text(resultData.data.runtime.targetColumnName);
                     metricCombobox ="";
                     $.each(resultData.data.runtime.availableMetrics, function( index, value ) {
                         if(value === resultData.data.runtime.metric){
