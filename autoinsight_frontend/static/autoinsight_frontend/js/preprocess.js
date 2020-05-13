@@ -1,7 +1,7 @@
 var $FRONTEND = (function (module) {
     var _p = module._p = module._p || {};
 
-    var targetColumn, isFirst, estimator_type, showOutlier, showPowerTrans, distributions, curStep, maxStep, datasetId;
+    var isFirst, showOutlier, showPowerTrans, distributions, curStep, maxStep, datasetId;
     //초기화면 세팅
     _p.init = function(){
         _p.loadPipeline()
@@ -16,8 +16,8 @@ var $FRONTEND = (function (module) {
                 $('canvas').show()
                 $(jqXHR).each(function(index, column) {
                     _p.drawDistribution(column.id, column.freqIdxJson, column.freqJson);
-                    if(column.isTarget){
-                        $('#feature_'+column['id']).attr("disabled", true);
+                    // if(column.isTarget){
+                    //     $('#feature_'+column['id']).attr("disabled", true);
                         // if(isFirst === true){
                         //     if(column.taskType === 'multiclass' || column.taskType === 'binary'){
                         //         $estimator_type = "classifier"
@@ -31,7 +31,7 @@ var $FRONTEND = (function (module) {
                         // }
                         // targetColumn.id = column.id;
                         // targetColumn.name = column.name;
-                    }
+                    // }
                 });
 
             }else{
@@ -40,9 +40,9 @@ var $FRONTEND = (function (module) {
                 distributions={};
                 $(jqXHR).each(function(index, column) {
                     distributions[column.id]  = [column.freqIdxJson, column.freqJson]
-                    if(column.isTarget){
-                        _p.drawDistribution(column.id);
-                        $('#feature_'+column['id']).attr("disabled", true);
+                    // if(column.isTarget){
+                    //     _p.drawDistribution(column.id);
+                    //     $('#feature_'+column['id']).attr("disabled", true);
                         // if(isFirst === true){
                         //     if(column.taskType === 'multiclass' || column.taskType === 'binary'){
                         //         estimator_type = "classifier"
@@ -56,7 +56,7 @@ var $FRONTEND = (function (module) {
                         // }
                         // targetColumn.id = column.id;
                         // targetColumn.name = column.name;
-                    }
+                    // }
                 });
 
             }
@@ -256,14 +256,14 @@ var $FRONTEND = (function (module) {
                                 $('#preprocess_loader').addClass("loader")
                                 $('#runButton').prop('disabled', true);
                                 $('#runButton').html('Preprocessing')
-                                pipelinehtml += '<li class="nav-item"><a class="nav-link"><span class="ico_automl ico_table">결과</span><span class="ico_automl ico_on">선택됨</span></a></li>'
-                                pipelinehtml += '<li class="nav-item"><a class="nav-link active"><span class="ico_automl ico_set">preprocess</span><span class="ico_automl ico_del">삭제</span></a></li>'
-                                pipelinehtml += '<li class="nav-item pipeline preview"><a class="nav-link"><div class="loader"></div></a></li>'
+                                $('#addButton').html('<a class="nav-link"><div class="loader"></div></a>')
                                 setTimeout(function(){
                                     _p.loadPipeline()
                                     return false
                                 }, 1000)
                                 return false
+                            }else if(value.processingStatus==="ERROR" ){
+                                console.log("An unexpected error occurred.")
                             }else{
                                 $('#preprocess_loader').removeClass("loader")
                                 $('#runButton').prop('disabled', false);
@@ -272,7 +272,8 @@ var $FRONTEND = (function (module) {
                                 pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline preview item_point" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadPreviewArea('+value.id+')"><a class="nav-link"><span class="ico_automl ico_table">결과</span><span class="ico_automl ico_on">선택됨</span></a></li>'
                                 step += 1
                                 maxStep = step
-                                pipelinehtml += '<li class="nav-item item_add" ><a class="nav-link active"><span class="ico_automl ico_add" onclick="$FRONTEND._p.addElement('+value.id+')">추가</span></a></li>'
+                                pipelinehtml += '<li id="addButton" class="nav-item item_add" ><a class="nav-link active"><span class="ico_automl ico_add" onclick="$FRONTEND._p.addElement('+value.id+')">추가</span></a></li>'
+                                $('#pipeline').html(pipelinehtml)
                                 _p.loadPreviewArea(value.id)
                             }
 
@@ -280,7 +281,7 @@ var $FRONTEND = (function (module) {
 
                     })
 
-                    $('#pipeline').html(pipelinehtml)
+
                     return false
                 } else {
                     alert(resultData['error_msg']);
@@ -293,15 +294,14 @@ var $FRONTEND = (function (module) {
 
     }
     _p.addElement = function (id) {
-        $('.item_point').removeClass('item_point')
         if($('.pipeline:last').hasClass( 'preview' )){
-            $('<li class="nav-item pipeline item_point"><a id="step_' + maxStep + '" class="nav-link" onclick="$FRONTEND._p.changePoint(' + maxStep + '); $FRONTEND._p.loadColumnArea('+id+')"><span class="ico_automl ico_set">preprocess</span><span class="ico_automl ico_del" onclick="$FRONTEND._p.deletePreprocess('+id+');">삭제</span></a></li>').insertAfter( ".pipeline:last")
+            $('.item_point').removeClass('item_point')
+            $('<li id="step_' + maxStep + '" class="nav-item pipeline item_point" onclick="$FRONTEND._p.changePoint(' + maxStep + '); $FRONTEND._p.loadColumnArea('+id+')"><a class="nav-link"><span class="ico_automl ico_set">preprocess</span><span class="ico_automl ico_del" onclick="$FRONTEND._p.deletePreprocess('+id+');">삭제</span></a></li>').insertAfter( ".pipeline:last")
+            _p.changePoint(maxStep)
             _p.loadColumnArea(id)
 
         }else{
-            _p.preprocess().done(function() {
-                _p.loadPreviewArea(id)
-            })
+            _p.preprocess()
 
         }
     }
@@ -394,10 +394,10 @@ var $FRONTEND = (function (module) {
                 formatter: '$FRONTEND._p.distributionFormatter'
             }, {
                 field: 'isFeature',
-                title: 'Features',
+                title: 'Use',
                 formatter: '$FRONTEND._p.featureFormatter'
             }, {
-                field: 'isTarget',
+                field: 'name',
                 title: 'Target',
                 formatter: '$FRONTEND._p.targetFormatter',
             }, {
@@ -529,7 +529,7 @@ var $FRONTEND = (function (module) {
 
     _p.targetFormatter = function(value,row){
         var str = "";
-        if (value == true) {
+        if (value === targetColumnName) {
             str = '<div class="wrap_check check_target on"><input type="radio" id="target_'+row.id+'" name="target" colum_name="'+row.name+'" class="inp_check toggle-disable" checked><label for="target_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
         }
         // else{
@@ -1223,7 +1223,6 @@ var $FRONTEND = (function (module) {
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
-                    //_p.loadStatus()
                     _p.loadPipeline()
                     alert("Preprocess를 요청하였습니다.");
 

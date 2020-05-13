@@ -192,11 +192,11 @@ var $FRONTEND = (function (module) {
 
     _p.statsFormatter = function (value, row) {
         if(row.evaluationStatStatus =="INIT"){
-            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-stats" onclick="$FRONTEND._p.setStatsnModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'post')
+            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-stats" onclick="$FRONTEND._p.setStatsModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'post')
         }else if(row.evaluationStatStatus =="PROCESSING"){
             return '<button class="btn_s btn_border" disabled>Processing</button>';
         }else if(row.evaluationStatStatus =="DONE"){
-            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-stats" onclick="$FRONTEND._p.setStatsnModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'get')
+            return '<button class="btn_s btn_border" data-toggle="modal" data-target="#modal-stats" onclick="$FRONTEND._p.setStatsModal(\'{0}\',\'{1}\')" type="button" >View</button>'.format(value, 'get')
         }else{
             return '<button class="btn_s btn_border" disabled>Error</button>';
         }
@@ -278,7 +278,7 @@ var $FRONTEND = (function (module) {
 
 
     // Modal 관련
-    _p.setStatsnModal = function (model_pk, method) {
+    _p.setStatsModal = function (model_pk, method) {
         if(method==='post') {
             $('#modal-stats #modal-stats-loading').show()
             $('#modal-stats #modal-stats-done').hide()
@@ -290,9 +290,9 @@ var $FRONTEND = (function (module) {
             url: g_RESTAPI_HOST_BASE + 'runtimes/{0}/models/{1}/stats/'.format(runtime_id, model_pk),
             dataType: 'json',
             success: function (resultData, textStatus, request) {
-                if(resultData.status==="INIT" || resultData.status==="PROCESSING"){
+                if(resultData.status==="REQUEST" || resultData.status==="PROCESSING"){
                     setTimeout(function(){
-                        _p.setStatsnModal(model_pk, 'get');
+                        _p.setStatsModal(model_pk, 'get');
                         if(status ==="finished") $('#learderboard_table').bootstrapTable('refresh', { silent: true })
                     }, 1000)
                     return false
@@ -351,7 +351,7 @@ var $FRONTEND = (function (module) {
             data: data,
             dataType: 'json',
             success: function (resultData, textStatus, request) {
-                if(resultData.status==="INIT" || resultData.status==="PROCESSING"){
+                if(resultData.status==="REQUEST" || resultData.status==="PROCESSING"){
                     setTimeout(function(){
                         _p.setExplanationModal(model_pk, 'get')
                         if(status ==="finished") $('#learderboard_table').bootstrapTable('refresh', { silent: true })
@@ -419,7 +419,7 @@ var $FRONTEND = (function (module) {
             url: g_RESTAPI_HOST_BASE + 'runtimes/{0}/models/{1}/metrics/'.format(runtime_id, model_pk),
             dataType: 'json',
             success: function (resultData, textStatus, request) {
-                if(resultData.status==="INIT" || resultData.status==="PROCESSING"){
+                if(resultData.status==="REQUEST" || resultData.status==="PROCESSING"){
                     setTimeout(function(){
                         _p.loadMetrics(model_pk, 'get');
                         if(status ==="finished") $('#learderboard_table').bootstrapTable('refresh', { silent: true })

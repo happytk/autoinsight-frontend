@@ -71,7 +71,7 @@ var $FRONTEND = (function (module) {
                     var tablehtml = ""
                     columns = []
                     $(resultData).each(function(index, column) {
-                        if(column.isFeature === true){
+                        if(column.name !== targetColumnName){
                             tablehtml += '<tr><td>'+column.name+'</td><td>'+column.datatype+'</td><td><input type="text" class="form-control predict-input" mostFrequent="'+column.mostFrequent+'"></td></tr>'
                             columns.push(column.name)
                         }
@@ -85,6 +85,7 @@ var $FRONTEND = (function (module) {
                 console.log(res.responseJSON.message)
             }
         })
+
     }
 
     _p.fillMostFrequent = function(){

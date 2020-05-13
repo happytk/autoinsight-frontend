@@ -80,8 +80,8 @@
                     </button>
                     <div id="run-setting" class="layer_automl layer"> <!-- Run AutoML 클릭시 block 처리-->
                         <div class="wrap_btn layer">
-                            <button id="classification_confirm" type="button" class="btn_m" onclick="$FRONTEND._p.updateEstimatorType('classifier')">Classification</button> <!-- 선택시 on 클래스 추가 -->
-                            <button id="regression_confirm" type="button" class="btn_m" onclick="$FRONTEND._p.updateEstimatorType('regressor')">Regression</button>
+                            <button id="classification_confirm" type="button" class="btn_m" onclick="$FRONTEND._p.updateConfirmInfo('classifier')">Classification</button> <!-- 선택시 on 클래스 추가 -->
+                            <button id="regression_confirm" type="button" class="btn_m" onclick="$FRONTEND._p.updateConfirmInfo('regressor')">Regression</button>
                         </div>
                         <dl>
                             <div class="item_dl type_inline">
@@ -94,7 +94,7 @@
                                 <dt>Metric</dt>
                                 <dd>
                                     <div class="wrap_select">
-                                        <select id="metric_confirm" class="form-control layer" onchange="$FRONTEND._p.updateMetric()">
+                                        <select id="metric_confirm" class="form-control layer" onchange="$FRONTEND._p.updateConfirmInfo()">
                                         </select>
                                     </div>
                                     <!--<button class="btn_set"><span class="ico_automl ico_set">설정</span></button>-->
@@ -143,12 +143,12 @@
                                         </dt>
                                         <dd>
                                             <div class="wrap_select">
-                                                <select id="estimator_type" class="form-control toggle-disable" onchange="$FRONTEND._p.updateGenConf()">
+                                                <select id="estimator_type" class="form-control toggle-disable gen-conf">
                                                     <option value = "classifier" selected>
-                                                        <a class="link_option" href="#none">Classification</a>
+                                                        <a class="link_option">Classification</a>
                                                     </option>
                                                     <option value = "regressor">
-                                                        <a class="link_option" href="#none">Regression</a>
+                                                        <a class="link_option">Regression</a>
                                                     </option>
                                                 </select>
                                             </div>
@@ -164,7 +164,7 @@
                                         </dt>
                                         <dd>
                                             <div class="wrap_select">
-                                                <select id="target" class="form-control toggle-disable" onchange="$FRONTEND._p.updateTarget()">
+                                                <select id="target" class="form-control toggle-disable gen-conf">
                                                 </select>
                                             </div>
                                         </dd>

@@ -1,10 +1,10 @@
 var $FRONTEND = (function (module) {
     var _p = module._p = module._p || {};
 
-    var status;
     //초기화면 세팅
     _p.base = function(){
-        status = _p.loadStatus()
+        var status, targetColumnName
+        _p.loadStatus()
         $('html').click(function(e){
             if(!$(e.target).hasClass('layer')){
                 $('#run-setting').css('display','none')
@@ -17,12 +17,14 @@ var $FRONTEND = (function (module) {
 
     _p.loadStatus = function (){
         status =""
+        targetColumnName = ""
         $.ajax({
             type: 'get',
             url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id + '/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 status = resultData.status
+                targetColumnName = resultData.targetColumnName
                 //화면 세팅
                 if(status === "ready"){
                     $('#loader').removeClass("loader");
@@ -56,7 +58,6 @@ var $FRONTEND = (function (module) {
                 alert(res.responseJSON.message);
             }
         });
-        return status
     };
 
 
@@ -125,28 +126,9 @@ var $FRONTEND = (function (module) {
         return a
     };
 
-    _p.updateEstimatorType = function(estimator_type) {
+    _p.updateConfirmInfo = function(estimator_type) {
         var data = {};
-        data.estimatorType = estimator_type//$('#estimator_type option:selected').val();
-        return $.ajax({
-            type: 'patch',
-            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id+'/',
-            data: JSON.stringify(data),
-            dataType: 'json', //
-            success: function (resultData, textStatus, request) {
-                if (resultData['error_msg'] == null ){
-                    _p.setRunSetting()
-                }
-            },
-            contentType: 'application/json',
-            error: function (res) {
-                alert(res.responseJSON.message);
-            }
-        })
-    };
-
-    _p.updateMetric = function() {
-        var data = {};
+        if(estimator_type !== null) data.estimatorType = estimator_type//$('#estimator_type option:selected').val();
         data.metric = $('#metric_confirm option:selected').val()
         return $.ajax({
             type: 'patch',
@@ -181,7 +163,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                console(res);
+                console.log(res);
             }
         })
     };
