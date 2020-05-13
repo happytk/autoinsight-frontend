@@ -59,29 +59,38 @@ var $FRONTEND = (function (module) {
             url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
-                _p.loadStatus()
                 if (resultData.error_msg) {
                     clearInterval(interval)
-                    status ="finished"
+                    $('#runButton').prop('disabled', true);
+                    $('#runButton').html('Error')
                     console.log('stopped', resultData.error_msg)
                 } else {
-                    if (resultData.status !== "learning" && resultData.status !== "preprocessing") {
-                        $('#leaderboard_loader').removeClass('loader')
+                    if(resultData.status === "finished"){
                         clearInterval(interval)
-                        status ="finished"
+                        $('#leaderboard_loader').removeClass('loader')
+                        $('#runButton').prop('disabled', true);
+                        $('#runButton').html('Finished')
                     }
-                    if(resultData.status === "preprocessing"){
-                        percent = 0+'%'
-                        elapsed = "preprocessing"
+                    else if(resultData.status === "error"){
+                        $('#runButton').prop('disabled', true);
+                        $('#runButton').html('Error')
+                    }
+                    else if(resultData.status === "preprocessing"){
+                        $('#preprocess_loader').addClass("loader")
+                        $('#runButton').prop('disabled', true);
+                        $('#runButton').html('Preprocessing')
                     }else{
-                        percent = Math.round(resultData.doneSlot / resultData.timeout * 100) + '%'
-                        var s = parseInt(resultData.doneSlot)
-                        var h = Math.floor(s / 3600) // Get whole hours
-                        s -= h * 3600
-                        var m = Math.floor(s / 60) // Get remaining minutes
-                        s -= m * 60
-                        elapsed = h + ':' + (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s)
+                        $('#runButton').prop('disabled', true);
+                        $('#runButton').html('Learning')
                     }
+                    percent = Math.round(resultData.doneSlot / resultData.timeout * 100) + '%'
+                    var s = parseInt(resultData.doneSlot)
+                    var h = Math.floor(s / 3600) // Get whole hours
+                    s -= h * 3600
+                    var m = Math.floor(s / 60) // Get remaining minutes
+                    s -= m * 60
+                    elapsed = h + ':' + (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s)
+                    if(resultData.status === "preprocessing") elapsed = "Preprocessing"
 
                     $('#percent').text(percent)
                     $('#progress_bar').css('width', percent)
@@ -142,7 +151,8 @@ var $FRONTEND = (function (module) {
                 if (resultData.err_msg == null) {
                     $('#leaderboard_loader').removeClass('loader')
                     $('#stopButton').attr('disabled', true)
-
+                    $('#runButton').prop('disabled', true);
+                    $('#runButton').html('Finished')
                     alert("AutoML 구동을 종료합니다.")
                 } else {
                     alert(resultData.err_msg)

@@ -23,7 +23,6 @@ var $FRONTEND = (function (module) {
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 status = resultData.status
-                console.log(status)
                 //화면 세팅
                 if(status === "ready"){
                     $('#loader').removeClass("loader");

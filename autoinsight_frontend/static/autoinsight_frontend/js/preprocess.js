@@ -242,7 +242,6 @@ var $FRONTEND = (function (module) {
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
-                    _p.loadStatus()
                     var pipelinehtml =""
                     var step
                     maxStep =0
@@ -253,22 +252,26 @@ var $FRONTEND = (function (module) {
                             step += 1
                             pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadColumnArea('+value.id+')"><a class="nav-link"><span class="ico_automl ico_set">preprocess</span><span class="ico_automl ico_del" onclick="$FRONTEND._p.deletePreprocess('+value.id+');">삭제</span></a></li>'
                         }else{
-                            if(value.processingStatus==="REQUEST"){
+                            if(value.processingStatus==="REQUEST" || value.processingStatus==="STARTED" || value.processingStatus==="FINISHED"){
+                                $('#preprocess_loader').addClass("loader")
+                                $('#runButton').prop('disabled', true);
+                                $('#runButton').html('Preprocessing')
                                 pipelinehtml += '<li class="nav-item"><a class="nav-link"><span class="ico_automl ico_table">결과</span><span class="ico_automl ico_on">선택됨</span></a></li>'
                                 pipelinehtml += '<li class="nav-item"><a class="nav-link active"><span class="ico_automl ico_set">preprocess</span><span class="ico_automl ico_del">삭제</span></a></li>'
                                 pipelinehtml += '<li class="nav-item pipeline preview"><a class="nav-link"><div class="loader"></div></a></li>'
-                                $('#runButton').prop('disabled', true)
                                 setTimeout(function(){
                                     _p.loadPipeline()
                                     return false
                                 }, 1000)
                                 return false
                             }else{
+                                $('#preprocess_loader').removeClass("loader")
+                                $('#runButton').prop('disabled', false);
+                                $('#runButton').html('Run AutoML <span class="ico_automl ico_arr"></span>')
                                 pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline preview item_point" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadPreviewArea('+value.id+')"><a class="nav-link"><span class="ico_automl ico_table">결과</span><span class="ico_automl ico_on">선택됨</span></a></li>'
                                 step += 1
                                 maxStep = step
                                 pipelinehtml += '<li class="nav-item item_add" ><a class="nav-link active"><span class="ico_automl ico_add" onclick="$FRONTEND._p.addElement('+value.id+')">추가</span></a></li>'
-                                if(status==="ready") $('#runButton').prop('disabled', false)
                                 _p.loadPreviewArea(value.id)
                             }
 

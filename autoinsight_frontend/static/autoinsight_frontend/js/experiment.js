@@ -143,7 +143,7 @@ var $FRONTEND = (function (module) {
         }else if(row.status === 'learning'){
             hasPending = true
         }
-        return '<a  href="/preprocess/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+row.targetColumnName+', '+value.featureCount+' features, '+value.rowCount+' rows)'
+        return '<a  href="/overview/'+row.id+'/" style="color: #337ab7; text-decoration: underline;">'+value.name+'</a><br>(target : '+row.targetColumnName+', '+value.featureCount+' features, '+value.rowCount+' rows)'
 
 
     }
