@@ -10,6 +10,18 @@ var $FRONTEND = (function (module) {
             _p.updateGenConf()
         });
 
+        $('#gen_max_eval_time').change(function() {
+            var max_eval_time = $(this).val()
+            var tmp = Math.floor($('#gen_time_out').val()/10)
+
+            if (max_eval_time < 1 ||max_eval_time > tmp) {
+                alert("Max Evaluation Time은 최소 1에서 최대 "+tmp+"사이의 값으로 입력해 주세요");
+                $(this).val(tmp)
+                return false;
+            }
+            _p.updateGenConf()
+        });
+
         $('#resampling_strategy').change(function() {
             if ($(this).val() === 'holdout') {
                 $('#k_folds_area').hide();
@@ -32,26 +44,6 @@ var $FRONTEND = (function (module) {
             url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id + '/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
-                if(resultData.status === "ready"){
-                    $('#loader').removeClass("loader");
-                    $('#runButton').prop('disabled', false);
-                    $('.toggle-disable').prop('disabled', false);
-                    $('.gen-conf').prop('disabled', false);
-                    $('.pre-conf').prop('disabled', false);
-
-                }else{
-                    if(resultData.status === "preprocessing"){
-                        $('#preprocess_loader').addClass("loader");
-                    } else if(resultData.status === "learning"){
-                        $('#leaderboard_loader').addClass("loader");
-                    }
-
-                    $('#runButton').prop('disabled', true);
-                    $('.toggle-disable').prop('disabled', true);
-                    $('.gen-conf').prop('disabled', true);
-                    $('.pre-conf').prop('disabled', true);
-
-                }
                 $("#runtime_name").text("Exeperiment-"+resultData['id']);
 
                 $('#estimator_type').val(resultData.estimatorType)
@@ -205,13 +197,7 @@ var $FRONTEND = (function (module) {
     }
 
     //AJAX call
-    String.prototype.format = function() {
-        a = this;
-        for (k in arguments) {
-            a = a.replace("{" + k + "}", arguments[k])
-        }
-        return a
-    };
+
 
     _p.updateGenConf = function() {
         var data = {};
@@ -313,11 +299,11 @@ var $FRONTEND = (function (module) {
                             if (resultData['error_msg'] == null ){
                                 targetColumnId = resultData.id;
                             } else {
-                                 console.log(resultData['error_msg']);
+                                console.log(resultData['error_msg']);
                             }
                         },
                         error: function (res) {
-                             console.log(res.responseJSON.message);
+                            console.log(res.responseJSON.message);
                         }
                     })
                 } else {
@@ -325,7 +311,7 @@ var $FRONTEND = (function (module) {
                 }
             },
             error: function (res) {
-                 console.log(res.responseJSON.message);
+                console.log(res.responseJSON.message);
             }
         })
     };

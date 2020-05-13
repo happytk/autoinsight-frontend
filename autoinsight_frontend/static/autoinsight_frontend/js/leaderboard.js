@@ -4,7 +4,7 @@ var $FRONTEND = (function (module) {
     var _p = module._p = module._p || {}
     // 초기화면 세팅
 
-    var interval, status
+    var interval
     var scores = []
     var labels = []
 
@@ -59,6 +59,7 @@ var $FRONTEND = (function (module) {
             url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
+                _p.loadStatus()
                 if (resultData.error_msg) {
                     clearInterval(interval)
                     status ="finished"
