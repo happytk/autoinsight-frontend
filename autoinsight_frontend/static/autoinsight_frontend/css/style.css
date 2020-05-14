@@ -140,6 +140,10 @@ button:disabled{
     color:#666666;
     background-color:#cccccc;
 }
+button .tooltip_model {
+    text-align: left;
+    margin-top: 0;
+}
 
 .btn_s {
     height:30px;
@@ -820,6 +824,7 @@ main {
     display: none;
 }
 .modal-content .nav-link, .modal-content .link_menu, .panel-heading .link_menu {
+    overflow: visible;
     margin:0;
     padding: 0 15px;
     font-size: 15px;
@@ -842,6 +847,9 @@ main {
 }
 .modal-content .list_menu .active:before, .panel-heading .list_menu .active:before {
     display: none;
+}
+.modal-content .list_menu .tooltip_model {
+    margin-top:8px;
 }
 .modal-content .box_content, .panel-body.box_content {
     overflow: initial;
@@ -1013,6 +1021,17 @@ main {
     margin-right:-20px;
     padding:0;
 }
+.cont_overview .nav-item .tooltip_model {
+    margin-top:0;
+}
+.cont_overview .nav-item .txt_tooltip {
+    left: 0;
+    transform: translateX(-20px);
+}
+.cont_overview .nav-item .txt_tooltip:before {
+    left:28px;
+    transform: translateX(0);
+}
 .cont_overview .nav .link_menu {
     margin-bottom: 5px;
     color:#999;
@@ -1028,6 +1047,7 @@ main {
 .cont_overview .box_content {
     overflow: visible;
     position: relative;
+    max-height: none;
     min-height:200px;
     margin:0;
     border-radius: 0 5px 5px 0;
@@ -1037,6 +1057,7 @@ main {
     min-width:230px
 }
 .cont_overview .list_evaluation .wrap_select {
+    min-width: 120px;
     height: 40px;
 }
 .cont_overview .item_evaluation > div {
@@ -1081,6 +1102,12 @@ main {
 }
 .cont_overview .list_processor .wrap_select {
     width:100%;
+}
+.tit_overview {
+    display: block;
+    margin-top:50px;
+    font-size: 24px;
+    font-weight: 700;
 }
 /* preprocess */
 .tab_preprocess {
@@ -1748,6 +1775,10 @@ main {
 }
 .modal-content .area_file .wrap_select {
     margin-right:10px;
+}
+.modal-content .area_file .wrap_select + .tooltip_model {
+    transform: translate(-12px, 3px);
+    z-index: 10;
 }
 .modal-content .wrap_file {
     height:36px;
