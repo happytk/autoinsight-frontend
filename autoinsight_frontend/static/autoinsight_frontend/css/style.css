@@ -1288,26 +1288,26 @@ main {
     background-color: #fff;
     transform: rotate(-135deg);
 }
-.layer_automl .wrap_btn {
+.layer_automl .wrap_btn, .popup_run .body_popup .wrap_btn {
     overflow: hidden;
     display: flex;
     margin:0 0 15px 0;
     border-radius: 5px;
 }
-.layer_automl .wrap_btn button {
+.layer_automl .wrap_btn button, .popup_run .body_popup .wrap_btn button {
     flex:1;
     margin:0;
     color:#999999;    border-radius: 0;
     background-color:#e6e6e6;
 }
-.layer_automl .wrap_btn button:first-child {
+.layer_automl .wrap_btn button:first-child, .popup_run .body_popup .wrap_btn button:first-child {
     border-radius: 5px 0 0 5px;
 }
 
-.layer_automl .wrap_btn button:last-child {
+.layer_automl .wrap_btn button:last-child, .popup_run .body_popup .wrap_btn button:last-child {
     border-radius: 0 5px 5px 0;
 }
-.layer_automl .wrap_btn .on {
+.layer_automl .wrap_btn .on, .popup_run .body_popup .wrap_btn .on {
     color:#000;
     border:1px solid #d6d6d6;
     background-color:#fff;
