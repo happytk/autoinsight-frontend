@@ -1,9 +1,8 @@
 var $FRONTEND = (function (module) {
     var _p = module._p = module._p || {};
-
+    // module._p.status, module._p.targetColumnName
     //초기화면 세팅
     _p.base = function(){
-        var status, targetColumnName
         _p.loadStatus()
         $('html').click(function(e){
             if(!$(e.target).hasClass('layer')){
@@ -23,32 +22,34 @@ var $FRONTEND = (function (module) {
             url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id + '/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
-                status = resultData.status
-                targetColumnName = resultData.targetColumnName
+                module._p.status = resultData.status
+                module._p.targetColumnName = resultData.targetColumnName
                 //화면 세팅
-                if(status === "ready"){
+                if(module._p.status === "ready"){
                     $('#loader').removeClass("loader");
                     $('#runButton').prop('disabled', false);
                     $('#runButton').addClass('btn_run');
                     $('#runButton').html('Run AutoML <span class="ico_automl ico_arr"></span>')
                     $('.toggle-disable').prop('disabled', false);
+                    $('#preprocessButton').prop('disabled', false);
                     $('.gen-conf').prop('disabled', false);
                     $('.pre-conf').prop('disabled', false);
 
                 }else{
                     $('#runButton').prop('disabled', true);
-                    if(status === "preprocessing"){
+                    if(module._p.status === "preprocessing"){
                         $('#preprocess_loader').addClass("loader")
                         $('#runButton').html('Preprocessing')
                     }
-                    if(status === "learning"){
+                    if(module._p.status === "learning"){
                         $('#leaderboard_loader').addClass("loader")
                         $('#runButton').html('Learning')
                     }
-                    if(status === "finished") $('#runButton').html('Finished')
-                    if(status === "error") $('#runButton').html('Error')
+                    if(module._p.status === "finished") $('#runButton').html('Finished')
+                    if(module._p.status === "error") $('#runButton').html('Error')
 
                     $('.toggle-disable').prop('disabled', true);
+                    $('#preprocessButton').prop('disabled', true);
                     $('.gen-conf').prop('disabled', true);
                     $('.pre-conf').prop('disabled', true);
 

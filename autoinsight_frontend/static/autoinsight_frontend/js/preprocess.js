@@ -272,7 +272,7 @@ var $FRONTEND = (function (module) {
                                 pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline preview item_point" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadPreviewArea('+value.id+')"><a class="nav-link"><span class="ico_automl ico_table">결과</span><span class="ico_automl ico_on">선택됨</span></a></li>'
                                 step += 1
                                 maxStep = step
-                                pipelinehtml += '<li id="addButton" class="nav-item item_add" ><a class="nav-link active"><span class="ico_automl ico_add" onclick="$FRONTEND._p.addElement('+value.id+')">추가</span></a></li>'
+                                pipelinehtml += '<li id="addButton" class="nav-item item_add" ><a class="nav-link active"><span class="ico_automl ico_add toggle-disable" onclick="$FRONTEND._p.addElement('+value.id+')">추가</span></a></li>'
                                 $('#pipeline').html(pipelinehtml)
                                 _p.loadPreviewArea(value.id)
                             }

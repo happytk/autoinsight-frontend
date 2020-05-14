@@ -6,32 +6,10 @@ var $FRONTEND = (function (module) {
         $('#not_deployed').hide()
         $('#bulk_result').hide()
         $('#single_result').hide()
-        _p.getStatus()
         _p.getDeployment()
         _p.getColumns()
     }
 
-    _p.getStatus = function(){
-        return $.ajax({
-            type: 'get',
-            url: g_RESTAPI_HOST_BASE +'runtimes/'+runtime_id + '/',
-            dataType: 'json',
-            success: function (resultData, textStatus, request) {
-                if (resultData['error_msg'] == null ){
-                    if(resultData['status']==="learning"){
-                        $('#leaderboard_loader').addClass("loader")
-                    }else{
-                        $('#leaderboard_loader').removeClass("loader")
-                    }
-                } else {
-                    console.log(resultData['error_msg'])
-                }
-            },
-            error: function (res) {
-                console.log(res.responseJSON.message)
-            }
-        })
-    }
 
     _p.getDeployment = function(){
         return $.ajax({
@@ -64,25 +42,36 @@ var $FRONTEND = (function (module) {
     _p.getColumns = function(){
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE +'runtimes/'+runtime_id + '/dataset_preprocessed/columns/',
+            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id + '/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
-                if (resultData['error_msg'] == null ){
-                    var tablehtml = ""
-                    columns = []
-                    $(resultData).each(function(index, column) {
-                        if(column.name !== targetColumnName){
-                            tablehtml += '<tr><td>'+column.name+'</td><td>'+column.datatype+'</td><td><input type="text" class="form-control predict-input" mostFrequent="'+column.mostFrequent+'"></td></tr>'
-                            columns.push(column.name)
+                var targetColumnName = resultData.targetColumnName
+                $.ajax({
+                    type: 'get',
+                    url: g_RESTAPI_HOST_BASE +'runtimes/'+runtime_id + '/dataset_preprocessed/columns/',
+                    dataType: 'json',
+                    success: function (resultData, textStatus, request) {
+                        if (resultData['error_msg'] == null ){
+                            var tablehtml = ""
+                            columns = []
+                            $(resultData).each(function(index, column) {
+                                if(column.name !== targetColumnName){
+                                    tablehtml += '<tr><td>'+column.name+'</td><td>'+column.datatype+'</td><td><input type="text" class="form-control predict-input" mostFrequent="'+column.mostFrequent+'"></td></tr>'
+                                    columns.push(column.name)
+                                }
+                            })
+                            $('#predict_table').html(tablehtml)
+                        } else {
+                            console.log(resultData['error_msg'])
                         }
-                    })
-                    $('#predict_table').html(tablehtml)
-                } else {
-                    console.log(resultData['error_msg'])
-                }
+                    },
+                    error: function (res) {
+                        console.log(res.responseJSON.message)
+                    }
+                })
             },
             error: function (res) {
-                console.log(res.responseJSON.message)
+                alert(res.responseJSON.message);
             }
         })
 

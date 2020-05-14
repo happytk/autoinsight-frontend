@@ -143,7 +143,7 @@
                                         </dt>
                                         <dd>
                                             <div class="wrap_select">
-                                                <select id="estimator_type" class="form-control toggle-disable gen-conf">
+                                                <select id="estimator_type" class="form-control toggle-disable gen-conf" onchange="$FRONTEND._p.updateEstimatorType()">
                                                     <option value = "classifier" selected>
                                                         <a class="link_option">Classification</a>
                                                     </option>
@@ -422,6 +422,16 @@
                             </div>
                             <!-- //estimator-->
                         </div>
+                        <h4 class="tit_table">Preview Table</h4>
+                        <table id="overview_preview_table"
+                               data-pagination="false"
+                               class="tbl_g tbl_preprocess">
+                        </table>
+                        <h4 class="tit_table">Column Table</h4>
+                        <table id="overview_column_table"
+                               data-pagination="false"
+                               class="tbl_g tbl_preprocess">
+                        </table>
                     </div>
                 </section>
             </div>

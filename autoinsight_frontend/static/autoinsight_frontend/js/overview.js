@@ -4,6 +4,7 @@ var $FRONTEND = (function (module) {
     //초기화면 세팅
     _p.init = function(){
         _p.loadRuntimeInfo()
+        _p.loadOverviewArea()
 
         $('.gen-conf').change(function() {
             _p.updateRuntimeConf()
@@ -29,6 +30,26 @@ var $FRONTEND = (function (module) {
                 $('#k_folds_area').show();
                 $('#train_split_area').hide();
             }
+        });
+
+        $('#overview_column_table').on('load-success.bs.table', function (data, jqXHR) {
+            if(jqXHR.length<20){
+                $('.dist_buttons').hide()
+                $('canvas').show()
+                $(jqXHR).each(function(index, column) {
+                    _p.drawDistribution(column.id, column.freqIdxJson, column.freqJson)
+                });
+
+            }else{
+                $('canvas').hide()
+                $('.dist_buttons').show()
+                distributions={};
+                $(jqXHR).each(function(index, column) {
+                    distributions[column.id]  = [column.freqIdxJson, column.freqJson]
+                });
+
+            }
+
         });
 
 
@@ -194,7 +215,148 @@ var $FRONTEND = (function (module) {
 
     }
 
-    //AJAX call
+    _p.loadOverviewArea = function(){
+        return $.ajax({
+            type: 'get',
+            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset_preprocessed/preview_source/',
+            contentType: "application/json",
+            success: function (resultData, textStatus, request) {
+                $('#overview_preview_table').bootstrapTable('destroy')
+                var columns =[]
+                $.each(resultData[0], function(key, value){
+                    columns.push({
+                        title: key,
+                        field: key
+                    })
+                });
+                $('#overview_preview_table').bootstrapTable({
+                    columns: columns
+                })
+
+                $('#overview_preview_table').bootstrapTable('load',{rows: resultData})
+
+                var columns = [{
+                    class: 'txt_l',
+                    field: 'name',
+                    title: 'Name'
+                }, {
+                    field: 'datatype',
+                    title: 'Datatype'
+                }, {
+                    field: 'missing',
+                    title: 'Missing'
+                }, {
+                    field: 'unique',
+                    title: 'Unique'
+                }, {
+                    field: 'mean',
+                    title: 'Mean'
+                }, {
+                    field: 'min',
+                    title: 'Min'
+                }, {
+                    field: 'max',
+                    title: 'Max'
+                }, {
+                    field: 'id',
+                    title: 'Distribution',
+                    formatter: '$FRONTEND._p.distributionFormatter'
+                }]
+                $('#overview_column_table').bootstrapTable('destroy')
+                $('#overview_column_table').bootstrapTable({
+                    url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id+'/dataset_preprocessed/columns/',
+                    columns: columns
+                })
+
+            },
+            error: function (res) {
+                console.log(res);
+            }
+        });
+    }
+    _p.distributionFormatter = function(value,row){
+        return '<button class="btn_s btn_border dist_buttons" id="dist_button_'+value+'" data-toggle="modal" data-target="#modal-metric" onclick="$FRONTEND._p.drawDistribution('+value+')" type="button" >View</button><canvas id="distribution_'+row.id+'"></canvas>'
+    };
+    _p.drawDistribution = function(id, label=null, data=null) {
+
+        $('#dist_button_'+id).hide()
+        if(label === null && data === null){
+            label = distributions[id][0]
+            data = distributions[id][1]
+        }
+        try {
+            label = JSON.parse(label);
+            data = JSON.parse(data);
+        }
+        catch(err) {
+            return false
+        }
+
+        new Chart($('#distribution_'+id),{
+            type: 'bar',
+            data: {
+                labels: label,//['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+                datasets: [{
+                    label: '',
+                    backgroundColor: 'rgb(167, 89, 190)',
+                    barThickness: 1,
+                    data: data
+                }]
+            },
+            options: {
+                legend: {
+                    display:false
+                },
+                title:{
+                    display:false
+                },
+                tooltips:{
+                    enabled:false
+                },
+                scales:{
+                    yAxes: [{
+                        gridLines:{
+                            display:false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            display:false,
+                            beginAtZero: true
+                        }
+
+                    }],
+                    xAxes: [{
+                        gridLines:{
+                            display:false,
+                            drawBorder: false
+                        },
+                        ticks:{
+                            display:false
+                        }
+                    }]
+                }
+            }
+        });
+        $('#distribution_'+id).show()
+    };
+
+    _p.updateEstimatorType = function(estimator_type) {
+        var data = {};
+        data.estimatorType = $('#estimator_type option:selected').val();
+        return $.ajax({
+            type: 'patch',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id+'/',
+            data: JSON.stringify(data),
+            dataType: 'json', //
+            success: function (resultData, textStatus, request) {
+                _p.loadRuntimeInfo()
+            },
+            contentType: 'application/json',
+            error: function (res) {
+                alert(res.responseJSON.message);
+            }
+        })
+    };
 
 
     _p.updateRuntimeConf = function() {
