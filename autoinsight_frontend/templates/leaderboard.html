@@ -222,7 +222,13 @@
                             </a>
                         </li>
                         <li id ="residualsChart_tab" style="display: none;">
-                            <a class="link_menu" data-toggle="tab" href="#residuals" role="tab" aria-controls="residuals" aria-selected="false">Residuals</a>
+                            <a class="link_menu" data-toggle="tab" href="#residuals" role="tab" aria-controls="residuals" aria-selected="false">Residuals
+                                <div class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
+                                    <div class="txt_tooltip">
+                                        Graph that shows the residuals on the vertical axis and the independent variable on the horizontal axis
+                                    </div>
+                                </div>
+                            </a>
                         </li>
                     </ul>
                     <div id="myTabContent" class="tab-content box_content">
@@ -241,11 +247,7 @@
                             <div id="balanceChart"></div>
                         </div>
                         <div class="tab-pane" id="residuals" role="tabpanel" aria-labelledby="residuals-tab">
-                            <a class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
-                                <div class="txt_tooltip">
-                                    Graph that shows the residuals on the vertical axis and the independent variable on the horizontal axis
-                                </div>
-                            </a>
+
                             <canvas id="residualsChart"></canvas>
                         </div>
                     </div>

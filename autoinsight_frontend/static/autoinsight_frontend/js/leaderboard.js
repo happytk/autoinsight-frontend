@@ -906,6 +906,9 @@ var $FRONTEND = (function (module) {
                             labelString: 'Residuals'
                         }
                     }]
+                },
+                legend: {
+                    display: false
                 }
             }
         })
