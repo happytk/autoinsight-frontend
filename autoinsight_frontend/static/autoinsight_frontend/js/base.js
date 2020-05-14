@@ -3,11 +3,11 @@ var $FRONTEND = (function (module) {
     //초기화면 세팅
     _p.base = function(){
         _p.loadStatus()
-        $('html').click(function(e){
-            if(!$(e.target).hasClass('layer')){
-                $('#run-setting').css('display','none')
-            }
-        })
+        // $('html').click(function(e){
+        //     if(!$(e.target).hasClass('layer')){
+        //         $('#run-setting').css('display','none')
+        //     }
+        // })
 
     };
 
@@ -109,7 +109,6 @@ var $FRONTEND = (function (module) {
                     }
                 });
                 $('#metric_confirm').html(metricCombobox);
-                $('#run-setting').css('display','block')
             },
             error: function (res) {
                 console.log(res)

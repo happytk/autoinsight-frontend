@@ -8,6 +8,7 @@ var $FRONTEND = (function (module) {
         $('#single_result').hide()
         _p.getDeployment()
         _p.getColumns()
+
     }
 
 
