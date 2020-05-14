@@ -625,7 +625,7 @@ var $FRONTEND = (function (module) {
                 })
             })
             datasets.push({
-                label: 'roc curve' + (i + 1),
+                label: 'ROC Curve' + (i + 1),
                 steppedLine: 'after',
                 data: tmp,
                 borderColor: colors[i % 3],
@@ -889,10 +889,16 @@ var $FRONTEND = (function (module) {
                     xAxes: [{
                         type: 'linear',
                         position: 'bottom',
-                        labelString: 'Predicted Values'
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Predicted Values'
+                        }
                     }],
                     yAxes: [{
-                        labelString: 'Residuals'
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Residuals'
+                        }
                     }]
                 }
             }
