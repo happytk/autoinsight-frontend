@@ -106,7 +106,11 @@ var $FRONTEND = (function (module) {
                     var tablehtml = ""
                     tablehtml += '<tr><td>'+resultData.result+'</td><td>'+resultData.error+'</td></tr>'
                     $('#single_result_tbody').html(tablehtml)
-                    $('#single_result_lime iframe').attr('srcdoc', resultData.lime.asHtml)
+                    if(typeof resultData.lime.asHtml !=="undefined"){
+                        $('#single_result_lime iframe').attr('srcdoc', resultData.lime.asHtml)
+                    }else{
+                        $('#single_result_lime').text("There is no lime explanation for this prediction.")
+                    }
                     $('#single_result').show()
                 } else {
                     console.log(resultData['error_msg'])

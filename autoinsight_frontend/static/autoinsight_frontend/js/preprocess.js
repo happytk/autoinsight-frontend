@@ -1,10 +1,16 @@
 var $FRONTEND = (function (module) {
     var _p = module._p = module._p || {};
 
-    var isFirst, showOutlier, showPowerTrans, distributions, curStep, maxStep, datasetId;
+    var isFirst, status, targetColumnName, showOutlier, showPowerTrans, distributions, curStep, maxStep, datasetId;
     //초기화면 세팅
     _p.init = function(){
-        _p.loadPipeline()
+        _p.loadStatusnPipeline()
+        $('html').click(function(e){
+            if(!$(e.target).hasClass('layer')){
+                $('#run-setting').css('display','none')
+            }
+        })
+
 
         isFirst = true
 
@@ -18,19 +24,19 @@ var $FRONTEND = (function (module) {
                     _p.drawDistribution(column.id, column.freqIdxJson, column.freqJson);
                     // if(column.isTarget){
                     //     $('#feature_'+column['id']).attr("disabled", true);
-                        // if(isFirst === true){
-                        //     if(column.taskType === 'multiclass' || column.taskType === 'binary'){
-                        //         $estimator_type = "classifier"
-                        //         $('#metric').val('accuracy');
-                        //     }else{
-                        //         estimator_type = "classifier"
-                        //         $('#metric').val('r2');
-                        //     }
-                        //     if(status === 'ready') _p.updateEstimatorType(estimator_type, false);
-                        //     isFirst = false
-                        // }
-                        // targetColumn.id = column.id;
-                        // targetColumn.name = column.name;
+                    // if(isFirst === true){
+                    //     if(column.taskType === 'multiclass' || column.taskType === 'binary'){
+                    //         $estimator_type = "classifier"
+                    //         $('#metric').val('accuracy');
+                    //     }else{
+                    //         estimator_type = "classifier"
+                    //         $('#metric').val('r2');
+                    //     }
+                    //     if(status === 'ready') _p.updateEstimatorType(estimator_type, false);
+                    //     isFirst = false
+                    // }
+                    // targetColumn.id = column.id;
+                    // targetColumn.name = column.name;
                     // }
                 });
 
@@ -43,19 +49,19 @@ var $FRONTEND = (function (module) {
                     // if(column.isTarget){
                     //     _p.drawDistribution(column.id);
                     //     $('#feature_'+column['id']).attr("disabled", true);
-                        // if(isFirst === true){
-                        //     if(column.taskType === 'multiclass' || column.taskType === 'binary'){
-                        //         estimator_type = "classifier"
-                        //         $('#metric').val('accuracy');
-                        //     }else{
-                        //         estimator_type = "regressor"
-                        //         $('#metric').val('r2');
-                        //     }
-                        //     if(status === 'ready') _p.updateEstimatorType(estimator_type, false);
-                        //     isFirst = false
-                        // }
-                        // targetColumn.id = column.id;
-                        // targetColumn.name = column.name;
+                    // if(isFirst === true){
+                    //     if(column.taskType === 'multiclass' || column.taskType === 'binary'){
+                    //         estimator_type = "classifier"
+                    //         $('#metric').val('accuracy');
+                    //     }else{
+                    //         estimator_type = "regressor"
+                    //         $('#metric').val('r2');
+                    //     }
+                    //     if(status === 'ready') _p.updateEstimatorType(estimator_type, false);
+                    //     isFirst = false
+                    // }
+                    // targetColumn.id = column.id;
+                    // targetColumn.name = column.name;
                     // }
                 });
 
@@ -137,45 +143,63 @@ var $FRONTEND = (function (module) {
 
         });
 
-        $("#modal-setting").on('hide.bs.modal', function(){
-            $('#column_table').bootstrapTable('refresh')
-        });
-
     };
 
 
 
-    // _p.loadStatus = function (){
-    //     status =""
-    //     $.ajax({
-    //         type: 'get',
-    //         url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id + '/',
-    //         dataType: 'json',
-    //         success: function (resultData, textStatus, request) {
-    //             //화면 세팅
-    //             status = resultData.status
-    //             if(status === "ready"){
-    //                 $('#loader').removeClass("loader");
-    //                 $('#runButton').prop('disabled', false);
-    //                 $('.toggle-disable').prop('disabled', false);
-    //                 $('.gen-conf').prop('disabled', false);
-    //                 $('.pre-conf').prop('disabled', false);
-    //
-    //             }else{
-    //                 if(resultData.status === "learning") $('#leaderboard_loader').addClass("loader");
-    //                 $('#runButton').prop('disabled', true);
-    //                 $('.toggle-disable').prop('disabled', true);
-    //                 $('.gen-conf').prop('disabled', true);
-    //                 $('.pre-conf').prop('disabled', true);
-    //
-    //             }
-    //         },
-    //         error: function (res) {
-    //             alert(res.responseJSON.message);
-    //         }
-    //     });
-    //     return status
-    // };
+    _p.loadStatusnPipeline = function (){
+        status =""
+        targetColumnName = ""
+        $.ajax({
+            type: 'get',
+            url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id + '/',
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                status = resultData.status
+                targetColumnName = resultData.targetColumnName
+                //화면 세팅
+                if(status === "ready"){
+                    $('.loader').removeClass("loader");
+                    $('#runButton').prop('disabled', false);
+                    $('#runButton').addClass('btn_run');
+                    $('#runButton').html('Run AutoML <span class="ico_automl ico_arr"></span>')
+                    $('.toggle-disable').prop('disabled', false);
+                    $('#preprocessButton').prop('disabled', false);
+                    $('.gen-conf').prop('disabled', false);
+                    $('.pre-conf').prop('disabled', false);
+
+                }else{
+                    $('#runButton').prop('disabled', true);
+                    if(status === "preprocessing"){
+                        $('#preprocess_loader').addClass("loader")
+                        $('#runButton').html('Preprocessing')
+                    }
+                    if(status === "learning"){
+                        $('#leaderboard_loader').addClass("loader")
+                        $('#runButton').html('Learning')
+                    }
+                    if(status === "finished"){
+                        $('.loader').removeClass("loader");
+                        $('#runButton').html('Finished')
+                    }
+                    if(status === "error"){
+                        $('.loader').removeClass("loader");
+                        $('#runButton').html('Error')
+                    }
+
+                    $('.toggle-disable').prop('disabled', true);
+                    $('#preprocessButton').prop('disabled', true);
+                    $('.gen-conf').prop('disabled', true);
+                    $('.pre-conf').prop('disabled', true);
+
+                }
+                _p.loadPipeline()
+            },
+            error: function (res) {
+                alert(res.responseJSON.message);
+            }
+        });
+    };
 
     _p.loadDatasetInfo = function(dataset_id){
         return $.ajax({
@@ -253,26 +277,19 @@ var $FRONTEND = (function (module) {
                             pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadColumnArea('+value.id+')"><a class="nav-link"><span class="ico_automl ico_set">preprocess</span><span class="ico_automl ico_del" onclick="$FRONTEND._p.deletePreprocess('+value.id+');">삭제</span></a></li>'
                         }else{
                             if(value.processingStatus==="REQUEST" || value.processingStatus==="STARTED" || value.processingStatus==="FINISHED"){
-                                $('#preprocess_loader').addClass("loader")
-                                $('#runButton').prop('disabled', true);
-                                $('#runButton').html('Preprocessing')
                                 $('#addButton').html('<a class="nav-link"><div class="loader"></div></a>')
                                 setTimeout(function(){
-                                    _p.loadPipeline()
+                                    _p.loadStatusnPipeline()
                                     return false
                                 }, 1000)
                                 return false
                             }else if(value.processingStatus==="ERROR" ){
                                 console.log("An unexpected error occurred.")
                             }else{
-                                $('#preprocess_loader').removeClass("loader")
-                                $('#runButton').prop('disabled', false);
-                                $('#runButton').addClass('btn_run');
-                                $('#runButton').html('Run AutoML <span class="ico_automl ico_arr"></span>')
                                 pipelinehtml += '<li id="step_' + step + '" class="nav-item pipeline preview item_point" onclick="$FRONTEND._p.changePoint('+step+'); $FRONTEND._p.loadPreviewArea('+value.id+')"><a class="nav-link"><span class="ico_automl ico_table">결과</span><span class="ico_automl ico_on">선택됨</span></a></li>'
                                 step += 1
                                 maxStep = step
-                                pipelinehtml += '<li id="addButton" class="nav-item item_add" ><a class="nav-link active"><span class="ico_automl ico_add toggle-disable" onclick="$FRONTEND._p.addElement('+value.id+')">추가</span></a></li>'
+                                if(status === "ready") pipelinehtml += '<li id="addButton" class="nav-item item_add" ><a class="nav-link active"><span class="ico_automl ico_add toggle-disable" onclick="$FRONTEND._p.addElement('+value.id+')">추가</span></a></li>'
                                 $('#pipeline').html(pipelinehtml)
                                 _p.loadPreviewArea(value.id)
                             }
@@ -369,13 +386,13 @@ var $FRONTEND = (function (module) {
             }, {
                 field: 'transformationStrategy',
                 title: 'Power<br>Transformation',
-                formatter: '$FRONTEND._p.powerTransFormatter',
-                visible: showPowerTrans
+                formatter: '$FRONTEND._p.powerTransFormatter'//,
+                //visible: showPowerTrans
             }, {
                 field: 'useOutlier',
                 title: 'Outlier<br>Elimination',
-                formatter: '$FRONTEND._p.outlierEliFormatter',
-                visible: showOutlier
+                formatter: '$FRONTEND._p.outlierEliFormatter'//,
+                //visible: showOutlier
             }, {
                 field: 'unique',
                 title: 'Unique'
@@ -412,10 +429,10 @@ var $FRONTEND = (function (module) {
                 columns: columns
             })
 
-            var max_width = 1280
-            if(showPowerTrans) max_width += 150
-            if(showOutlier) max_width += 150
-            $('main > .container').css("max-width", max_width);
+            // var max_width = 1280
+            // if(showPowerTrans) max_width += 150
+            // if(showOutlier) max_width += 150
+            $('main > .container').css("max-width", 1580);
 
             $('#column_area').show()
         })
@@ -430,7 +447,7 @@ var $FRONTEND = (function (module) {
             dataType: 'json',
             contentType: 'application/json',
             success: function (resultData, textStatus, request) {
-                _p.loadPipeline()
+                _p.loadStatusnPipeline()
             },
             error: function (res) {
                 alert(res.responseJSON.message);
@@ -485,7 +502,7 @@ var $FRONTEND = (function (module) {
     };
 
     _p.powerTransFormatter = function(value, row){
-        if(showPowerTrans) {
+        // if(showPowerTrans) {
             var strategies = ['NONE', 'LOG', 'SQUARED_ROOT', 'SQUARE', 'BOX_COX_TRANSFORMATION', 'YEO_JOHNSON_TRANSFORMATION'];
             var selectBox = '<div class="wrap_select"><select id="powertrans_' + row.id + '" class="form-control toggle-disable" data-style="btn-info" onchange="$FRONTEND._p.updateColumn(' + row.id + ')">';
             for (var i = 0; i < strategies.length; i++) {
@@ -497,13 +514,13 @@ var $FRONTEND = (function (module) {
             }
             selectBox += '</select></div>';
             return selectBox;
-        }else{
-            return null
-        }
+        // }else{
+        //     return null
+        // }
     };
 
     _p.outlierEliFormatter = function(value,row){
-        if(showOutlier){
+        // if(showOutlier){
             var str = "";
             if (value == true) {
                 str = '<div class="wrap_check type_check2 on"><input type="checkbox" id="outlier_'+row.id+'" class="inp_check features toggle-disable" onclick="$FRONTEND._p.updateColumn('+row.id+')" checked><label for="outlier_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
@@ -511,9 +528,9 @@ var $FRONTEND = (function (module) {
                 str = '<div class="wrap_check type_check2"><input type="checkbox" id="outlier_'+row.id+'" class="inp_check features toggle-disable" onclick="$FRONTEND._p.updateColumn('+row.id+')" ><label for="outlier_'+row.id+'" class="label_check"><span class="ico_automl ico_check">sepal.lenght Features</span></label></div>'
             }
             return str;
-        }else{
-            return null
-        }
+        // }else{
+        //     return null
+        // }
 
     };
 
@@ -849,18 +866,18 @@ var $FRONTEND = (function (module) {
                         $('#pre_OtlrElmntn').prop( "checked", true );
                         $('#pre_Omethod').val(resultData['outlierStrategy']);
                         $('#pre_Othreshold').val(resultData['outlierThreshold']);
-                        showOutlier = true
+                        // showOutlier = true
                     }else{
-                        $('#pre_OtlrElmntn').prop( "checked", false );
-                        showOutlier = false
+                        // $('#pre_OtlrElmntn').prop( "checked", false );
+                        // showOutlier = false
                     }
 
                     if(resultData['colTransUse']){
                         $('#pre_PrTrnsfrm').prop( "checked", true );
-                        showPowerTrans = true
+                        // showPowerTrans = true
                     }else{
-                        $('#pre_PrTrnsfrm').prop( "checked", false );
-                        showPowerTrans = false
+                        // $('#pre_PrTrnsfrm').prop( "checked", false );
+                        // showPowerTrans = false
                     }
 
 
@@ -1023,6 +1040,19 @@ var $FRONTEND = (function (module) {
         })
 
     };
+
+    function chkItem(chkValue) {
+        if (chkValue === '' || chkValue === ' ') {
+            alert('Pleaese Check the input value : ', chkValue) ;
+            return false ;
+        } else if (Number.isInteger(+chkValue)) {
+            return true ;
+        }
+        else {
+            alert('Warning. Checked item is what?', chkValue) ;
+            return false ;
+        }
+    }
 
 
     // _p.saveGenConf = function() {
@@ -1223,7 +1253,221 @@ var $FRONTEND = (function (module) {
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){
-                    _p.loadPipeline()
+                    _p.loadStatusnPipeline()
+                    alert("Preprocess를 요청하였습니다.");
+
+                } else {
+                    alert(resultData['error_msg']);
+                }
+            },
+            error: function (res) {
+                alert(res.responseText);
+            }
+        })
+    };
+
+    return module;
+
+
+    // _p.saveGenConf = function() {
+    //     var data = {};
+    //     data.metric = $('#metric option:selected').val();
+    //     data.resamplingStrategy = $('#resampling_strategy option:selected').val();
+    //     data.resamplingStrategyHoldoutTrainSize = $('#split_testdata_rate').val();
+    //     data.resamplingStrategyCvFolds = $('#resampling_strategy_cv_folds').val();
+    //     data.overSampling = $('#gen_over_sampling option:selected').val();
+    //
+    //     var timeout = $('#gen_time_out').val();
+    //     if (timeout < 1 ||timeout > 180) {
+    //         alert("Timeout은 1~180 사이의 값으로 입력해 주세요");
+    //         return false;
+    //     }
+    //     data.timeout = timeout*60;
+    //
+    //     var max_eval_time = $('#gen_max_eval_time').val();
+    //     data.maxEvalTime = max_eval_time*60;
+    //
+    //     if  ($('#autosklearn').is(':checked')) {
+    //         data.useAutosklearn = true;
+    //     }else{
+    //         data.useAutosklearn = false;
+    //     }
+    //
+    //     if  ($('#tpot').is(':checked')) {
+    //         data.useTpot = true;
+    //     }else{
+    //         data.useTpot = false;
+    //     }
+    //
+    //     if  ($('#ensemble').is(':checked')) {
+    //         data.useEnsemble = true;
+    //     }else{
+    //         data.useEnsemble = false;
+    //     }
+    //
+    //     if  ($('#pre_1HotEncod').is(':checked')) {
+    //         data.includeOneHotEncoding = true;
+    //     }else{
+    //         data.includeOneHotEncoding = false;
+    //     }
+    //
+    //     if  ($('#pre_VarThreshold').is(':checked')) {
+    //         data.includeVarianceThreshold = true;
+    //     }else{
+    //         data.includeVarianceThreshold = false;
+    //     }
+    //
+    //     if  ($('#pre_Scaling').is(':checked')) {
+    //
+    //         data.includeScalingMethodsJson = JSON.stringify($('select[id=pre_SMethod]').val());
+    //     }
+    //
+    //     if  ($('#pre_FtrSlcon').is(':checked')) {
+    //
+    //         data.includeFeatureEngineeringsJson = JSON.stringify($('select[id=pre_FMethod]').val());
+    //     }
+    //
+    //     var include_estimators = []
+    //     $(".estimators").each(function () {
+    //         if($(this).is(":checked")) include_estimators.push($(this)[0].name)
+    //     });
+    //     data.includeEstimatorsJson = JSON.stringify(include_estimators)
+    //
+    //     return $.ajax({
+    //         type: 'patch',
+    //         url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id +'/',
+    //         data: JSON.stringify(data),
+    //         dataType: 'json',
+    //         contentType: 'application/json',
+    //         success: function (resultData, textStatus, request) {
+    //
+    //         },
+    //         error: function (res) {
+    //             console.log(res)
+    //         }
+    //     })
+    // };
+
+    _p.savePreConf = function(){
+        var data = {};
+
+        //-------------------------- 1. Drop NaN Columns --------------------------
+        // if  ($('#pre_DrpNCols').is(':checked')) {
+        //     data.naColDropUse = true;
+        //     if  ($('#na_col_drop_threshold').val()!="") {
+        //         data.naColDropThreshold = $('#na_col_drop_threshold').val();      		// "Else" unnecessary
+        //     }else{
+        //         alert("Threshold 값을 확인해 주세요.")
+        //         return false;
+        //     }
+        //     console.log('1. na_col_drop_threshold = ',data.naColDropThreshold ) ;
+        // }
+
+
+        // ---------------- 2. Outlier Elimination - Loop Impossible -------------------------
+        if  ($('#pre_OtlrElmntn').is(':checked')) {
+            data.outlierUse = true;
+            showOutlier =true
+            // var outlier_columns = $('select[id=pre_Ocolumn]').val();
+
+            // data.outlierColumns = outlier_columns;					// Outlier Elimination Column
+            // console.log('3.1  outlier_cols : ',data.outlierColumns) ;
+
+
+            data.outlierStrategy = $('select[id=pre_Omethod]').val();			 			// Outlier Elimination Method
+
+
+
+            if  (chkItem($('#pre_Othreshold').val())) {										// Outlier Elimination stratege
+                data.outlierThreshold = $('#pre_Othreshold').val();
+            }else{
+                alert("Threshold 값을 확인해 주세요.")
+                return false;
+            }
+        }else{
+            data.outlierUse = false;
+            showOutlier =false
+        }
+
+
+        // ---------------- 3. Power Transformation - Column / Strategy -------------------------
+        if  ($('#pre_PrTrnsfrm').is(':checked')) {
+            data.colTransUse = true
+            showPowerTrans = true
+            var col_trans_columns = []
+            $(".pre_Pcolumns").each(function () {
+                col_trans_columns.push($(this).val())
+            });
+            data.colTransColumns = col_trans_columns
+
+            var col_trans_strategies = [];
+            $(".pre_Pstrategies").each(function () {
+                col_trans_strategies.push($(this).val())
+            });
+            data.colTransStrategies = col_trans_strategies
+        }else{
+            data.colTransUse = false;
+            showPowerTrans = false
+        }
+
+        // -------------------------- 4. One Hot Encoding -------------------------------
+
+
+        // // ---------------------- 5. Feature Selection - K -------------------------
+        // if  (chkItem($('input:checkbox[id=pre_FtrSlcon]').is(":checked"))) {
+        // 	if  (chkItem($('#pre_feature_k').val())) {										// 일단보류
+        // 		data.pre_feature_k = $('#pre_feature_k').val();
+        // 		console.log('5.  pre_feature_k : ',data.pre_feature_k) ;
+        // 	}
+        // }
+
+        // --------------------------- 6. Scaling ----------------------------------
+        // if  ($('#pre_Scaling').is(':checked')) {
+        //     data.scalerUse = true;
+        //     data.scalerStrategy = $("#pre_Sstrategy option:selected").val();
+        //     console.log('6.  scaler : ',data.scalerStrategy) ;
+        // }
+
+        // // ---------------- 7. Dimensionality Reduction --------------------------
+        // if  ($('#pre_DmnsnltyRdctn').is(':checked')) {
+        //     data.dim_reduc_strategy = $("#pre_algorithm option:selected").text(); 			 	// 일단보류
+        //     console.log('7.1  dim_reduc_strategy : ',data.dim_reduc_strategy) ;
+        //
+        //
+        // 	if  (chkItem($('#pre_numFeature').val())) {
+        // 		data.dim_reduc_n = $('#pre_numFeature').val() ;
+        // 		console.log('7. dim_reduc_n : ',data.dim_reduc_n) ;
+        // 	}
+        // }
+        return $.ajax({
+            type: 'patch',
+            url : g_RESTAPI_HOST_BASE + 'datasets/{0}/'.format(datasetId),//'runtimes/'+runtime_id + '/dataset/',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (resultData, textStatus, request) {
+                if (resultData['error_msg'] == null ){
+                    //$('#modal-setting').modal('hide');
+                } else {
+                    alert(resultData['error_msg']);
+                }
+            },
+            error: function (res) {
+                alert(res.responseJSON.message);
+            }
+        })
+
+    };
+
+    _p.preprocess = function(){
+
+        return $.ajax({
+            type: 'post',
+            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id + '/dataset_preprocessed/preprocess/',
+            dataType: 'json',
+            success: function (resultData, textStatus, request) {
+                if (resultData['error_msg'] == null ){
+                    _p.loadStatusnPipeline()
                     alert("Preprocess를 요청하였습니다.");
 
                 } else {

@@ -35,7 +35,6 @@
     <script type="text/javascript" src="{% static 'autoinsight_frontend/js/preprocess.js' %}"></script>
     <script>
         $(document).ready(function() {
-            $FRONTEND._p.base();
             $FRONTEND._p.init();
         });
 
@@ -334,7 +333,7 @@
                         <div class="item_dl type_inline">
                             <dt>
                                 <div class="wrap_check">
-                                    <input type="checkbox" name="" id="pre_OtlrElmntn" class="inp_check modal_check pre-conf">
+                                    <input type="checkbox" name="" id="pre_OtlrElmntn" class="inp_check modal_check pre-conf" checked>
                                     <label for="pre_OtlrElmntn" class="label_check"><span class="ico_automl ico_check"></span>Outlier Elimination</label>
                                     <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                         <div class="txt_tooltip">
@@ -378,7 +377,7 @@
                             <div class="item_dl type_inline">
                                 <dt>
                                     <div class="wrap_check">
-                                        <input type="checkbox" name="" id="pre_PrTrnsfrm" class="inp_check modal_check pre-conf">
+                                        <input type="checkbox" name="" id="pre_PrTrnsfrm" class="inp_check modal_check pre-conf" checked>
                                         <label for="pre_PrTrnsfrm" class="label_check"><span class="ico_automl ico_check"></span>Power Transformation</label>
                                         <a href="#none" class="tooltip_model"><span class="ico_automl ico_info">자세히보기</span>
                                             <div class="txt_tooltip">

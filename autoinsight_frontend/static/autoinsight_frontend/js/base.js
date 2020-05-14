@@ -1,6 +1,5 @@
 var $FRONTEND = (function (module) {
     var _p = module._p = module._p || {};
-    // module._p.status, module._p.targetColumnName
     //초기화면 세팅
     _p.base = function(){
         _p.loadStatus()
@@ -22,10 +21,10 @@ var $FRONTEND = (function (module) {
             url: g_RESTAPI_HOST_BASE+'runtimes/'+runtime_id + '/',
             dataType: 'json',
             success: function (resultData, textStatus, request) {
-                module._p.status = resultData.status
-                module._p.targetColumnName = resultData.targetColumnName
+                var status = resultData.status
+                var targetColumnName = resultData.targetColumnName
                 //화면 세팅
-                if(module._p.status === "ready"){
+                if(status === "ready"){
                     $('#loader').removeClass("loader");
                     $('#runButton').prop('disabled', false);
                     $('#runButton').addClass('btn_run');
@@ -37,16 +36,16 @@ var $FRONTEND = (function (module) {
 
                 }else{
                     $('#runButton').prop('disabled', true);
-                    if(module._p.status === "preprocessing"){
+                    if(status === "preprocessing"){
                         $('#preprocess_loader').addClass("loader")
                         $('#runButton').html('Preprocessing')
                     }
-                    if(module._p.status === "learning"){
+                    if(status === "learning"){
                         $('#leaderboard_loader').addClass("loader")
                         $('#runButton').html('Learning')
                     }
-                    if(module._p.status === "finished") $('#runButton').html('Finished')
-                    if(module._p.status === "error") $('#runButton').html('Error')
+                    if(status === "finished") $('#runButton').html('Finished')
+                    if(status === "error") $('#runButton').html('Error')
 
                     $('.toggle-disable').prop('disabled', true);
                     $('#preprocessButton').prop('disabled', true);
