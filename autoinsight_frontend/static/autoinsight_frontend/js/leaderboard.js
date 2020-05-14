@@ -83,14 +83,20 @@ var $FRONTEND = (function (module) {
                         $('#runButton').prop('disabled', true);
                         $('#runButton').html('Learning')
                     }
-                    percent = Math.round(resultData.doneSlot / resultData.timeout * 100) + '%'
-                    var s = parseInt(resultData.doneSlot)
-                    var h = Math.floor(s / 3600) // Get whole hours
-                    s -= h * 3600
-                    var m = Math.floor(s / 60) // Get remaining minutes
-                    s -= m * 60
-                    elapsed = h + ':' + (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s)
-                    if(resultData.status === "preprocessing") elapsed = "Preprocessing"
+                    if(resultData.status === "preprocessing"){
+                        percent = '0%'
+                        elapsed = "Preprocessing"
+                    }else{
+                        percent = Math.round(resultData.doneSlot / resultData.timeout * 100) + '%'
+                        var s = parseInt(resultData.doneSlot)
+                        var h = Math.floor(s / 3600) // Get whole hours
+                        s -= h * 3600
+                        var m = Math.floor(s / 60) // Get remaining minutes
+                        s -= m * 60
+                        elapsed = h + ':' + (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s)
+                    }
+
+
 
                     $('#percent').text(percent)
                     $('#progress_bar').css('width', percent)
