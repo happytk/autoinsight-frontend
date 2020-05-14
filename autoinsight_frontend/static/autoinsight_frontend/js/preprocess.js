@@ -204,7 +204,7 @@ var $FRONTEND = (function (module) {
     _p.loadDatasetInfo = function(dataset_id){
         return $.ajax({
             type: 'get',
-            url: g_RESTAPI_HOST_BASE+'datasets/{0}/'.format(dataset_id), //'runtimes/'+runtime_id+'/dataset/',
+            url: g_RESTAPI_HOST_BASE+'datasets/{0}/'.format(dataset_id),
             dataType: 'json',
             success: function (resultData, textStatus, request) {
                 if (resultData['error_msg'] == null ){

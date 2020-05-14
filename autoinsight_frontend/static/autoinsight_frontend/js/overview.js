@@ -340,23 +340,7 @@ var $FRONTEND = (function (module) {
         $('#distribution_'+id).show()
     };
 
-    _p.updateEstimatorType = function(estimator_type) {
-        var data = {};
-        data.estimatorType = $('#estimator_type option:selected').val();
-        return $.ajax({
-            type: 'patch',
-            url: g_RESTAPI_HOST_BASE + 'runtimes/'+runtime_id+'/',
-            data: JSON.stringify(data),
-            dataType: 'json', //
-            success: function (resultData, textStatus, request) {
-                _p.loadRuntimeInfo()
-            },
-            contentType: 'application/json',
-            error: function (res) {
-                alert(res.responseJSON.message);
-            }
-        })
-    };
+
 
 
     _p.updateRuntimeConf = function() {

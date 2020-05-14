@@ -76,11 +76,11 @@
                             </li>
                         </ul>
                     </nav>
-                    <button id="runButton" class="btn_b" type="button" onclick="$FRONTEND._p.setRunSetting()">
+                    <button id="runButton" class="btn_b" type="button" data-toggle="modal" data-target="#modal-run" onclick="$FRONTEND._p.setRunModal()" >
                     </button>
-                    <div id="run-setting" class="layer_automl layer"> <!-- Run AutoML 클릭시 block 처리-->
+                    <!--<div id="run-setting" class="layer_automl layer">
                         <div class="wrap_btn layer">
-                            <button id="classification_confirm" type="button" class="btn_m" onclick="$FRONTEND._p.updateConfirmInfo('classifier')">Classification</button> <!-- 선택시 on 클래스 추가 -->
+                            <button id="classification_confirm" type="button" class="btn_m" onclick="$FRONTEND._p.updateConfirmInfo('classifier')">Classification</button>
                             <button id="regression_confirm" type="button" class="btn_m" onclick="$FRONTEND._p.updateConfirmInfo('regressor')">Regression</button>
                         </div>
                         <dl>
@@ -97,12 +97,12 @@
                                         <select id="metric_confirm" class="form-control layer" onchange="$FRONTEND._p.updateConfirmInfo()">
                                         </select>
                                     </div>
-                                    <!--<button class="btn_set"><span class="ico_automl ico_set">설정</span></button>-->
+                                   <button class="btn_set"><span class="ico_automl ico_set">설정</span></button>
                                 </dd>
                             </div>
                         </dl>
                         <span class="tail"></span>
-                    </div>
+                    </div>-->
                 </div>
                 <section class="section_content">
                     <h2 class="screen_out">Preprocess</h2><!-- tab menu 에서 선택된 텍스트가 들어갑니다. -->
@@ -460,6 +460,51 @@
         <!-- //main -->
 
     </div>
+
+    <!-- run automl -->
+    <div id="modal-run" class="modal popup_run">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="header_popup">
+                    <strong class="tit_popup">Run Automl</strong>
+                </div>
+                <div class="body_popup">
+                    <div class="wrap_btn layer">
+                        <button id="classification_confirm" type="button" class="btn_m" onclick="$FRONTEND._p.updateEstimatorType('classifier')">Classification</button> <!-- 선택시 on 클래스 추가 -->
+                        <button id="regression_confirm" type="button" class="btn_m" onclick="$FRONTEND._p.updateEstimatorType('regressor')">Regression</button>
+                    </div>
+                    <dl>
+                        <div class="item_dl type_inline">
+                            <dt>Target</dt>
+                            <dd>
+                                <span id="target_confirm"></span>
+                            </dd>
+                        </div>
+                        <div class="item_dl type_inline">
+                            <dt>Metric</dt>
+                            <dd>
+                                <div class="wrap_select">
+                                    <select id="metric_confirm" class="form-control layer" onchange="$FRONTEND._p.updateMetric()">
+                                    </select>
+                                </div>
+                                <!--<button class="btn_set"><span class="ico_automl ico_set">설정</span></button>-->
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+                <div class="footer_popup">
+                    <div class="wrap_btn txt_r">
+                        <button class="btn_m btn_run" type="button" onclick="$FRONTEND._p.runAutoml()">
+                            Run AutoML <span class="ico_automl ico_arr"></span>
+                        </button>
+                        <button type="button" class="btn_m" data-dismiss="modal">Cancel</button>
+                    </div>
+                    <button type="button" class="btn_close" data-dismiss="modal"><span class="ico_automl ico_close">팝업닫기</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //run automl -->
 
     <!-- //popup -->
 {% endblock %}
