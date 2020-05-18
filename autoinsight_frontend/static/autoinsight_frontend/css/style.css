@@ -1122,9 +1122,10 @@ main {
 .tab_preprocess .nav-item {
     float: left;
     height: 73px;
-    margin-top: 15px;
-    padding-left:52px;
+    padding-top: 15px;
+    padding-left:30px;
     text-align: center;
+    box-sizing: content-box;
 }
 .tab_preprocess .nav-item:hover {
     position: relative;
@@ -1143,8 +1144,8 @@ main {
 }
 .tab_preprocess .nav-link{
     position: relative;
-    width:35px;
     height:100%;
+    margin-right:20px;
     padding:0;
     cursor: pointer;
 }
@@ -1169,10 +1170,13 @@ main {
     margin-top:23px;
 }
 .tab_preprocess .item_add:after {
-    left:-15px;
-    right:15px;
+    left: calc(-50% + 20px);
+    right: 50%;
     border-bottom:4px dotted #9289ab;
     background-color:#e6e6e6
+}
+.tab_preprocess .item_point + .item_add:after {
+    left: calc(-50% + 13px);
 }
 .tab_preprocess .item_add .nav-link:after {
     background-color:#000;
@@ -1200,27 +1204,31 @@ main {
 }
 .tab_preprocess .ico_on {
     position: absolute;
-    top:15px;
-    right:-6px;
-    width:20px;
-    height:20px;
-    background-position: -100px -75px;
+    top:10px;
+    right:-20px;
+    width:30px;
+    height:30px;
+    border-radius: 50%;
+    background-position: 0 -205px;
 }
 .tab_preprocess .ico_del {
     display: none;
     position: absolute;
-    top:15px;
-    right:-7px;
-    width:20px;
-    height:20px;
-    background-position: -100px -100px;
+    top:10px;
+    right:-20px;
+    width:30px;
+    height:30px;
+    background-position: -35px -205px;
+    z-index: 10;
 }
-.tab_preprocess .nav-link:hover .ico_del {
+.tab_preprocess li:hover .ico_del {
     display: block;
+}
+.tab_preprocess .item_point {
+    margin-right:-13px;
 }
 .tab_preprocess .item_point .nav-link {
     width:55px;
-    margin:0 -10px;
 }
 .tab_preprocess .item_point .nav-link:before {
     content:'';
@@ -1252,6 +1260,10 @@ main {
 }
 .tab_preprocess .item_point .nav-link .ico_automl {
     top:0;
+}
+.tab_preprocess .item_point .nav-link .ico_del, .tab_preprocess .item_point .nav-link .ico_on {
+    top:-10px;
+    right:-15px;
 }
 .btn_run {
     align-self: flex-end;
