@@ -80,10 +80,18 @@
                                 <a class="link_menu" href="/overview/{{ runtime_id }}/">Overview</a>
                             </li>
                             <li class="active">
-                                <a class="link_menu" href="/preprocess/{{ runtime_id }}/">Preprocess<div id="preprocess_loader"></div></a>
+                                <a class="link_menu" href="/preprocess/{{ runtime_id }}/">Preprocess
+                                    <div id="preprocess_loader">
+                                        <img src="{% static 'autoinsight_frontend/img/loading2.gif' %}" alt="">
+                                    </div>
+                                </a>
                             </li>
                             <li>
-                                <a class="link_menu" href="/leaderboard/{{ runtime_id }}/">Leaderboard <div id="leaderboard_loader"></div></a>
+                                <a class="link_menu" href="/leaderboard/{{ runtime_id }}/">Leaderboard
+                                    <div id="leaderboard_loader">
+                                        <img src="{% static 'autoinsight_frontend/img/loading2.gif' %}" alt="">
+                                    </div>
+                                </a>
                             </li>
                             <li>
                                 <a class="link_menu" href="/deploy/{{ runtime_id }}/">Deploy Model</a>
@@ -203,7 +211,7 @@
                                     <span class="ico_automl ico_add">추가</span>
                                 </button>-->
                             </li>
-                            <li>
+                            <li class="disabled">
                                 <span class="ico_automl ico_arr"></span>Column Count <span id="col_count" class="txt_emph"></span>
                                 <!--<button class="btn_add">
                                     <span class="ico_automl ico_add">추가</span>

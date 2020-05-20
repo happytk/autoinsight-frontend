@@ -68,7 +68,11 @@
                                 <a class="link_menu" href="/preprocess/{{ runtime_id }}/">Preprocess</a>
                             </li>
                             <li class="active">
-                                <a class="link_menu" href="/leaderboard/{{ runtime_id }}/">Leaderboard <div id="leaderboard_loader"></div></a>
+                                <a class="link_menu" href="/leaderboard/{{ runtime_id }}/">Leaderboard
+                                    <div id="leaderboard_loader">
+                                        <img src="{% static 'autoinsight_frontend/img/loading2.gif' %}" alt="">
+                                    </div>
+                                </a>
                             </li>
                             <li>
                                 <a class="link_menu" href="/deploy/{{ runtime_id }}/">Deploy Model</a>
