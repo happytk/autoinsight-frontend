@@ -1,0 +1,40 @@
+{% load static %}
+{% block style_head %}
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Autoinsight</title>
+	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400;700&display=swap" rel="stylesheet">
+    <!-- static -->
+    <link href="{% static 'autoinsight_frontend/css/style.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'autoinsight_frontend/img/favicon.ico' %}">
+{% endblock %}
+
+{% block script_foot %}
+    <script type="text/javascript" src="{% static 'autoinsight_frontend/js/jquery-3.3.1.min.js' %}" ></script>
+{% endblock %}
+
+{% block page_content %}
+<div class="login">
+	<div class="wrapper">
+        <!-- <h1 class="screen_out">AutoInsight LAB</h1> -->
+        <div class="wrap_login">
+            <div class="info_login">
+                <strong>Welcome to <span class="txt_emph">AutoInsight LAB</span></strong>
+                Login in to your account
+            </div>
+            <form action="#" class="form_login">
+                <fieldset>
+                    <legend class="screen_out">login form</legend>
+                    <input type="text" class="inp_txt" placeholder="id">
+                    <input type="password" class="inp_txt" placeholder="password">
+                    <button type="submit" class="btn_login">login</button>
+                    <a href="#none" class="link_forget">Forgot id/password?</a>
+                </fieldset>
+            </form>
+
+        </div>
+	</div>
+	<!-- //wrapper-->
+</div>
+{% endblock %}
