@@ -1,1 +1,3 @@
 # autoinsight-frontend
+
+(deprecated)
